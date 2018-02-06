@@ -1,0 +1,352 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"num",
+				"numThreads"
+			],
+			[
+				"ar",
+				"argv"
+			],
+			[
+				"aux",
+				"aux16"
+			],
+			[
+				"puer",
+				"puerto_destino"
+			],
+			[
+				"opt",
+				"optarg"
+			],
+			[
+				"fichero",
+				"fichero_pcap_destino"
+			],
+			[
+				"in",
+				"inv_out"
+			],
+			[
+				"d",
+				"dat"
+			],
+			[
+				"mult",
+				"mult_out"
+			],
+			[
+				"tmi",
+				"time_"
+			],
+			[
+				"del",
+				"deltaUD"
+			],
+			[
+				"delta",
+				"deltaTD"
+			],
+			[
+				"delt",
+				"deltaTS"
+			],
+			[
+				"plo",
+				"plot3"
+			],
+			[
+				"pl",
+				"plot2"
+			],
+			[
+				"gnu",
+				"gnuord"
+			],
+			[
+				"u",
+				"udpsrc"
+			],
+			[
+				"tcp",
+				"tcpdst"
+			],
+			[
+				"tcpdst",
+				"tcpdstpaquetes"
+			],
+			[
+				"numero",
+				"numero_paquetes"
+			],
+			[
+				"top",
+				"topip"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 130.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/adrian/arqo/p4_arqo/ej4/pi_par7.c",
+		"/home/adrian/arqo/p4_arqo/ej4/pi_par6.c",
+		"/home/adrian/arqo/p4_arqo/ej4/pi_par5.c",
+		"/home/adrian/arqo/p4_arqo/ej4/pi_par4.c",
+		"/home/adrian/arqo/p4_arqo/ej4/pi_serie.c",
+		"/home/adrian/arqo/p4_arqo/ej4/pi_par1.c",
+		"/home/adrian/arqo/p4_arqo/ej4/pi_par2.c",
+		"/home/adrian/arqo/p4_arqo/ej4/pi_par3.c",
+		"/home/adrian/arqo/p4_arqo/ej4/pi_par3_mod.c",
+		"/home/adrian/arqo/p4_arqo/ej2/ejercicio2.sh",
+		"/home/adrian/arqo/p4_arqo/ej2/ejercicio2.c",
+		"/home/adrian/arqo/p4_arqo/ej3/ejercicio3.1.sh",
+		"/home/adrian/arqo/p4_arqo/ej3/ejercicio3.2.sh",
+		"/home/adrian/arqo/p4_arqo/pescalar_par2.c",
+		"/home/adrian/arqo/p4_arqo/arqo4.h",
+		"/home/adrian/arqo/p4_arqo/arqo4.c",
+		"/home/adrian/arqo/p4_arqo/pescalar_serie.c",
+		"/home/adrian/arqo/p4_arqo/pescalar_par1.c",
+		"/home/adrian/arqo/p4_arqo/Makefile",
+		"/home/adrian/arqo/p4_arqo/respuestas.txt",
+		"/home/adrian/arqo/p4_arqo/omp1.c",
+		"/home/adrian/arqo/p4_arqo/omp2.c",
+		"/home/adrian/arqo/p4_arqo/ej1/ejercicio1.c",
+		"/home/adrian/arqo/p4_arqo/ej1/makefile",
+		"/home/adrian/redes1/Pr4/practica4.h",
+		"/home/adrian/redes1/Pr4/practica4.c",
+		"/home/adrian/redes1/Pr4/makefile",
+		"/home/adrian/redes1/Pr4/interface.h",
+		"/home/adrian/redes1/Pr4/interface.c",
+		"/home/adrian/arqo/p3_arqo/ejercicio2.sh",
+		"/home/adrian/arqo/p3_arqo/ejercicio3.sh",
+		"/home/adrian/arqo/p3_arqo/mult_inv.c",
+		"/home/adrian/arqo/p3_arqo/mult.c",
+		"/home/adrian/arqo/p3_arqo/slow_fast_time.sh",
+		"/home/adrian/arqo/p3_arqo/Makefile",
+		"/home/adrian/arqo/p3_arqo/fast.c",
+		"/home/adrian/arqo/p3_arqo/slow.c",
+		"/home/adrian/arqo/p3_arqo/arqo3.h",
+		"/home/adrian/arqo/p3_arqo/arqo3.c",
+		"/home/adrian/arqo/p3_arqo/a.sh",
+		"/home/adrian/Escritorio/a.sh",
+		"/home/adrian/arqo/p3_arqo/ejercicio1.sh",
+		"/home/adrian/arqo/p3_arqo/generador_tamanos.sh",
+		"/home/adrian/arqo/p3_arqo/ejercicio0.sh",
+		"/home/adrian/redes1/Pr3/a3/a3plot.gp",
+		"/home/adrian/redes1/Pr3/apartado3.sh",
+		"/home/adrian/redes1/Pr3/apartado5.sh",
+		"/home/adrian/redes1/Pr3/a5/a5plot.gp",
+		"/home/adrian/redes1/Pr3/a5/deltaTS.dat",
+		"/home/adrian/redes1/Pr3/apartado4.sh",
+		"/home/adrian/redes1/Pr3/a4/a4plot.gp",
+		"/home/adrian/redes1/Pr3/a2/a2plot.gp",
+		"/home/adrian/redes1/Pr3/a4/bw.dat",
+		"/home/adrian/redes1/Pr3/a4/plot.dat",
+		"/home/adrian/redes1/Pr3/a4/limpio.dat",
+		"/home/adrian/redes1/Pr3/a4/aux.dat",
+		"/home/adrian/redes1/Pr3/apartado2.sh",
+		"/home/adrian/redes1/Pr3/apartado1.sh",
+		"/home/adrian/redes1/Pr3/gnuplot3.gp",
+		"/home/adrian/redes1/Pr3/a2/ipsrc.gp",
+		"/home/adrian/redes1/Pr3/practica3_analisis.sh",
+		"/home/adrian/Escritorio/Pr2/lvls.txt",
+		"/home/adrian/Escritorio/Pr2/makefile",
+		"/home/adrian/Escritorio/Pr2/practica2.c",
+		"/home/adrian/arqo/arq0_p1/ej2/rtl/processor.vhd"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"shared",
+			"mensaje",
+			"protocolos_registrados",
+			"obtenerPuertoOrigen",
+			"archivo_datos",
+			"fichero_pcap_destino",
+			"protocolos_registrados",
+			"TODO",
+			"optarg",
+			"tipo compute(tipo **matrix,int n)\n{\n\ttipo sum;\n\tint i,j;\n\t\n\tfor(i=0;i<n;i++)\n\t{\n\t\tfor(j=0;j<n;j++)\n\t\t{\n\t\t\tsum += matrix[i][j];\n\t\t}\n\t}\n\treturn sum;\n}",
+			"#include <stdio.h>\n#include <stdlib.h>\n#include <sys/time.h>\n\n#include \"arqo3.h\"\n\ntipo compute(tipo **matrix,int n);\n\nint main( int argc, char *argv[])\n{\n\tint n;\n\ttipo **m=NULL;\n\tstruct timeval fin,ini;\n\ttipo res=0;\n\n\tprintf(\"Word size: %ld bits\\n\",8*sizeof(tipo));\n\n\tif( argc!=2 )\n\t{\n\t\tprintf(\"Error: ./%s <matrix size>\\n\", argv[0]);\n\t\treturn -1;\n\t}\n\tn=atoi(argv[1]);\n\tm=generateMatrix(n);\n\tif( !m )\n\t{\n\t\treturn -1;\n\t}\n\n\n\t\n\tgettimeofday(&ini,NULL);\n\n\t/* Main computation */\n\tres = compute(m,n);\n\t/* End of computation */\n\n\tgettimeofday(&fin,NULL);\n\tprintf(\"Execution time: %f\\n\", ((fin.tv_sec*1000000+fin.tv_usec)-(ini.tv_sec*1000000+ini.tv_usec))*1.0/1000000.0);\n\tprintf(\"Total: %lf\\n\",res);\n\t\n\n\n\tfree(m);\n\treturn 0;\n}\n\n\ntipo compute(tipo **matrix,int n)\n{\n\ttipo sum;\n\tint i,j;\n\t\n\tfor(i=0;i<n;i++)\n\t{\n\t\tfor(j=0;j<n;j++)\n\t\t{\n\t\t\tsum += matrix[i][j];\n\t\t}\n\t}\n\treturn sum;\n}\n",
+			" \\",
+			"lw 2 ",
+			"1024",
+			"Nit",
+			"TS",
+			"a2/",
+			"tcp",
+			"ip",
+			"src",
+			"TCP",
+			"ip",
+			"SYN",
+			"switch",
+			"aux"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"",
+			"8192",
+			"4096",
+			"2048",
+			"UD",
+			"US",
+			"",
+			"udp",
+			"tcp",
+			"udp",
+			"tcp",
+			"dst",
+			"udp",
+			"tcp"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "IA.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
