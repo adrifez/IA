@@ -53,9 +53,10 @@
 ;;
 ;; Finds a root of f between the points a and b using bisection.
 ;;
-;; If f(a)f(b)>0 there is no guarantee that there will be a root in the
+;; If f(a)f(b)>=0 there is no guarantee that there will be a root in the
 ;; interval, and the function will return NIL.
 ;;
+;; INPUT:
 ;; f: function of a single real parameter with real values whose root
 ;; we want to find
 ;; a: lower extremum of the interval in which we search for the root
@@ -63,18 +64,19 @@
 ;; tol: tolerance for the stopping criterion: if b-a < tol the function
 ;; returns (a+b)/2 as a solution.
 ;;
+;; OUTPUT: Root of the function, or NIL if no root
+;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun bisect (f a b tol)
-  (cond ((null a) (return-from bisect NIL))
-        ((null b) (return-from bisect NIL))
-        ((> a b) (return-from bisect NIL))
+  (cond ((> a b) (return-from bisect NIL))
         ((> (* (funcall f a) (funcall f b)) 0.0) (return-from bisect NIL))
         ((< tol 0.0) (return-from bisect NIL))
         (t (return-from bisect (funcall #'bisect_rec f a b tol)))))
 
 
 (bisect #'(lambda(x) (sin (* 6.26 x))) 0.1 0.7 0.001) ;;---> 0.5020995
+(bisect #'(lambda(x) (sin (* 6.26 x))) 0.0 0.7 0.001) ;;---> NIL
 (bisect #'(lambda(x) (sin (* 6.28 x))) 1.1 1.5 0.001) ;;---> NIL
 (bisect #'(lambda(x) (sin (* 6.28 x))) 1.1 2.1 0.001) ;;---> NIL
 
@@ -168,8 +170,7 @@
 ;; Divides an interval up to a specified length and find all the roots of
 ;; the function f in the intervals thus obtained.
 ;;
-;; Parameters:
-;;
+;; INPUT:
 ;; f: function of a single real parameter with real values whose root
 ;; we want to find
 ;; a: lower extremum of the interval in which we search for the root
@@ -183,6 +184,7 @@
 ;; x[i]= a + i*dlt; a root is sought in each interval, and all the roots
 ;; thus found are assembled into a list that is returned.
 ;;
+;; OUTPUT: List with all the found roots.
 ;;
 ;; Hint:
 ;; One might find a way to use allroot to implement this function. This is
@@ -201,4 +203,5 @@
              (funcall #'allroot f (remove-duplicates (funcall #'allind_rec f a b N tol)) tol)))))
 
 
+(allind #'(lambda(x) (sin (* 6.28 x))) 0.1 2.25 1 0.0001) ;;---> NIL
 (allind #'(lambda(x) (sin (* 6.28 x))) 0.1 2.25 2 0.0001) ;;---> (0.50027084 1.0005027 1.5007347 2.0010324)
