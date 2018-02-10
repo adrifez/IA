@@ -18,7 +18,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;3.3
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun combine-lst-lsts (lst1 lsts)
+  (if (null (second lsts))
+      (return-from combine-lst-lsts
+        (mapcar #'(lambda (x) (append lst1 (list x))) (first lsts))))
+  (combine-lst-lsts (append lst1 (list (caar lsts))) (rest lsts)))
+
+(combine-lst-lsts '(1) '((1 2 3 4) (+ -) (a b c d)))
+ 
 (defun combine-list-of-lsts (lstolsts)
-  (if (null lstolsts)
+  (if (eql (first lstolsts) nil) 
       (return-from combine-list-of-lsts nil))
-  )
+  (mapcan #'(lambda (x) (combine-lst-lsts (list x) (rest lstolsts))) (first lstolsts)))
+
+(combine-list-of-lsts '((a b c) (+ -) (1 2 3 4)))
