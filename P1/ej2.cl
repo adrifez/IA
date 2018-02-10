@@ -122,7 +122,7 @@
 
 (defun allroot (f lst tol)
   (if (< tol 0.0) (return-from allroot nil)
-    (return-from allroot ( remove NIL (funcall #'allroot_rec f lst tol)))))
+    (return-from allroot (remove NIL (funcall #'allroot_rec f lst tol)))))
 
 
 (allroot #'(lambda(x) (sin (* 6.28 x))) '(0.25 0.75 1.25 1.75 2.25) 0.0001) ;;---> (0.50027466 1.0005188 1.5007629 2.001007)
