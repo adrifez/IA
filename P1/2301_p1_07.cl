@@ -488,29 +488,18 @@
 ;;; APARTADO 3.3 ;;;
 ;;;;;;;;;;;;;;;;;;;;
 
-(defun combine-lst-lsts (lst1 lsts)
-  (cond
-   ((null lst1) nil) ;;Lista vacia al principio
-   ((null lsts) lst1) ;;Caso de una sola lista
-   ((and (rest lsts) (null (second lsts))) nil) ;;Si alguna lista es nil o vacia, equivalente
-   ((not (null (second lsts))) ;;Caso recursivo, vamos construyendo las listas con la siguiente lista
-    (combine-lst-lsts
-     (mapcan
-       #'(lambda (x) 
-           (mapcar #'(lambda (y) (if (listp x)
-                                     (append x (list y))
-                                   (append (list x) (list y)))) 
-           (first lsts))) 
-       lst1) 
-     (rest lsts)))
-   (T (mapcan #'(lambda (x) (mapcar #'(lambda (y) (append x (list y))) (first lsts))) lst1)))) ;;Ultimo caso
+(defun combine-elt-lst-c (elt lst)
+  (if(or (null elt) (null lst))
+      (return-from combine-elt-lst-c nil))
+  (mapcar #'(lambda (x) (cons elt x)) lst))
 
 
 (defun combine-list-of-lsts (lstolsts)
-  (if (null lstolsts) ;;Caso de lista de listas vacia
-      (return-from combine-list-of-lsts (list nil)))
-  (combine-lst-lsts (mapcar #'(lambda (x) (list x)) (first lstolsts)) (rest lstolsts))) ;;Le pasamos una lista 
-
+  (if (null lstolsts)
+      (list NIL)  
+    (mapcan 
+      #'(lambda (x) (combine-elt-lst-c x (combine-list-of-lsts (rest lstolsts))))
+      (first lstolsts))))
 
 (combine-list-of-lsts '(() (+ -) (1 2 3 4))) ;; --> NIL
 (combine-list-of-lsts '((a b c) () (1 2 3 4))) ;; --> NIL
