@@ -1,29 +1,39 @@
 
+(defun combine-elt-lst (elt lst)
+  (if(or (null elt) (null lst))
+      (return-from combine-elt-lst nil))
+  (mapcar #'(lambda (x) (cons elt x)) lst))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;3.3
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun combine-lol-rec (lol)
-  (cond ((and (first lol) (not (first (rest lol))))
-         (return-from combine-lol-rec (mapcar #'(lambda (x) (list x)) (first lol))))
-        ((and (not (first lol)) (first (rest lol)))
-         (return-from combine-lol-rec NIL))
-        (t (return-from combine-lol-rec
-             (mapcan #'(lambda (x) (mapcar #'(lambda (y) (append (list x) y))
-                                     (combine-lol-rec (rest lol))))
-               (first lol))))))
-
-
 (defun combine-list-of-lsts (lstolsts)
-  (cond ((null lstolsts) (return-from combine-list-of-lsts NIL))
-        ((some #'null lstolsts) (return-from combine-list-of-lsts NIL))
-        (t (return-from combine-list-of-lsts (combine-lol-rec lstolsts)))))
+  (cond ((null lstolsts)
+         (return-from combine-list-of-lsts (list NIL)))  
+        (t (return-from combine-list-of-lsts
+             (mapcan #'(lambda (x) (combine-elt-lst x (combine-list-of-lsts (rest lstolsts))))
+               (first lstolsts))))))
 
 
+
+
+(list NIL)
+(equal '(NIL) (rest '((a b c) ())))
+
+
+(combine-elt-lst '1 '(NIL))
+(null '(()))
+(rest '((a b c) ()))
+(first '(()))
+
+(combine-list-of-lsts '(())) ;; --> (NIL)
 (combine-list-of-lsts '(() (+ -) (1 2 3 4))) ;; --> NIL
 (combine-list-of-lsts '((a b c) () (1 2 3 4))) ;; --> NIL
 (combine-list-of-lsts '((a b c) (1 2 3 4) ())) ;; --> NIL
+
 (combine-list-of-lsts '((1 2 3 4))) ;; --> ((1) (2) (3) (4))
+
 (combine-list-of-lsts '((a b c) (+ -) (1 2 3 4)))
 ;; --> ((A + 1) (A + 2) (A + 3) (A + 4) (A - 1) (A - 2) (A - 3) (A - 4)
 ;; (B + 1) (B + 2) (B + 3) (B + 4) (B - 1) (B - 2) (B - 3) (B - 4)
