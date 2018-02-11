@@ -4,12 +4,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun combine-lol-rec (lol)
-  (if (and (first lol) (not (first (rest lol))))
-      (return-from combine-lol-rec (mapcar #'(lambda (x) (list x)) (first lol))))
-  (return-from combine-lol-rec
-    (mapcan #'(lambda (x) (mapcar #'(lambda (y) (append (list x) y))
-                            (combine-lol-rec (rest lol))))
-      (first lol))))
+  (cond ((and (first lol) (not (first (rest lol))))
+         (return-from combine-lol-rec (mapcar #'(lambda (x) (list x)) (first lol))))
+        ((and (not (first lol)) (first (rest lol)))
+         (return-from combine-lol-rec NIL))
+        (t (return-from combine-lol-rec
+             (mapcan #'(lambda (x) (mapcar #'(lambda (y) (append (list x) y))
+                                     (combine-lol-rec (rest lol))))
+               (first lol))))))
 
 
 (defun combine-list-of-lsts (lstolsts)
