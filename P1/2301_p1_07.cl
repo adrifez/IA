@@ -15,6 +15,8 @@
       0
     (+ (* (first x) (first y)) (pesc-rec (rest x) (rest y)))))
 
+(pesc-rec '(1 2 3) '(3 2 1))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; sc-rec (x y)
 ;;; Calcula la similitud coseno de un vector de forma recursiva
@@ -50,6 +52,7 @@
   (apply 
    #'+ (mapcar #'(lambda (x y) (* x y)) x y)))
 
+(pesc-mapcar '(1 2 3) '(3 2 1))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; sc-mapcar (x y)
 ;;; Calcula la similitud coseno de un vector usando mapcar
@@ -94,6 +97,8 @@
     (remove-if
      #'(lambda (y) (<= (sc-mapcar x y) conf)) vs)) #'> :key #'(lambda (y) (sc-mapcar x y))))
 
+(sc-conf '(1 2 3) '((3 2 1) (1 2 3) (3 4 5)) 0.9)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;1.3
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -118,6 +123,8 @@
        vs))
     #'> :key #'second))) ;;Ordenamos de mayor a menor segun la similitud coseno
 
+(ord-conf '(1 2 3) '((1 2 1) (2 2 3) (3 4 5)) #'sc-mapcar)
+(ord-conf '(1 2 3) '((1 2 1) (2 2 3) (3 4 5)) #'sc-rec)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; sc-classifier (cats texts func)
 ;; Clasifica a los textos en categorías.
@@ -311,7 +318,8 @@
 
 (allroot #'(lambda(x) (sin (* 6.28 x))) '(0.25 0.75 1.25 1.75 2.25) 0.0001) ;;---> (0.50027466 1.0005188 1.5007629 2.001007)
 (allroot #'(lambda(x) (sin (* 6.28 x))) '(0.25 0.9 0.75 1.25 1.75 2.25) 0.0001) ;;---> (0.50027466 1.0005188 1.5007629 2.001007)
-
+(allroot #'(lambda(x) (cos (* 6.28 x))) '(0.00 0.50 1.00 1.50 2.00) 0.0001)
+(allroot #'(lambda(x) (cos (* 6.28 x))) '(0.00 0.50 1.00 1.50 2.00) 0.0001)
 
 ;;;;;;;;;;;;;;;;;;;;
 ;;; APARTADO 2.3 ;;;
@@ -329,6 +337,7 @@
 (defun mid_lst (a b)
   (list a (funcall #'mid a b)))
 
+(mid_lst 2 3)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Implements the recursive part of allind, thus preventing redundant error
@@ -382,6 +391,8 @@
 
 (allind #'(lambda(x) (sin (* 6.28 x))) 0.1 2.25 1 0.0001) ;;---> NIL
 (allind #'(lambda(x) (sin (* 6.28 x))) 0.1 2.25 2 0.0001) ;;---> (0.50027084 1.0005027 1.5007347 2.0010324)
+(allind #'(lambda(x) (cos (* 6.28 x))) 0.0 2.14 3 0.0001)
+(allind #'(lambda(x) (cos (* 6.28 x))) 0.0 2.15 4 0.0001)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;3.1
@@ -393,6 +404,8 @@
 
 (combine-elt-lst 'a nil) ;; --> NIL
 (combine-elt-lst 'a '(1 2 3)) ;; --> ((A 1) (A 2) (A 3))
+(combine-elt-lst '4 '(1 2 3)) ;;
+(combine-elt-lst nil '(1 2 3)) ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;3.2
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
