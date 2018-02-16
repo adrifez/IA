@@ -54,7 +54,8 @@
 
 (defun pesc-mapcar (x y)
   (apply 
-   #'+ (mapcar #'(lambda (x y) (* x y)) x y)))
+   #'+ (* double-float-epsilon double-float-epsilon)
+   (mapcar #'* x y)))
 
 (pesc-mapcar '(1 2 3) '(3 2 1))
 
@@ -115,6 +116,13 @@
     (remove-if
      #'(lambda (y) (<= (sc-mapcar x y) conf)) vs)) #'> :key #'(lambda (y) (sc-mapcar x y))))
 
+;;mejor insert sort
+
+(defun sc-conf (vector lst-of-vectors similarity-measure confidence-level)
+  (mapcar #'rest (sc-conf-aux vector lst-of-vectors similarity-measure confidence-level)))
+
+(defun sc-conf-aux (vector lst-of-vectors similarity-measure confidence-level)
+  )
 
 (sc-conf '(1 0) '((1 0.2) (1 0.4) (1 0.6) (1 0.8) (1 1))  1)
 ;; --> NIL
@@ -156,7 +164,17 @@
        (mapcar #'(lambda (y) (funcall func (rest x) (rest y))) vs) 
        vs))
     #'> :key #'second))) ;;Ordenamos de mayor a menor segun la similitud coseno
+;;mejor recursivo!!!!
 
+(defun classify-text (cats text similarity-measure best-similarity-value best-category)
+  (if (null categories)
+      (list (first category)
+            best similarity-value)
+    (let* ((category (first categories))
+           (similarity-value (funcall similarity-measure (rest category) text)))
+      (if (> similarity-value best-similarity-value)
+        (classify-text (rest categories) text similarity-measure similarity-value category)
+        (classify-text (rest categories) text similarity-measure best-similarity-value best-category)))))
 
 (ord-conf '(1 2 3) '((1 2 1) (2 2 3) (3 4 5)) #'sc-mapcar)
 (ord-conf '(1 2 3) '((1 2 1) (2 2 3) (3 4 5)) #'sc-rec)
@@ -361,6 +379,14 @@
   (if (< tol 0.0) (return-from allroot nil)
     (return-from allroot (funcall #'allroot_rec f lst tol))))
 
+;;mapcan
+
+(defun allroot (f lst tol)
+  (mapcan #'(lambda (x y) (let ((root (bisect f x y tol)))
+                            (when root (list root))))
+    lst
+    (rest lst)))
+
 
 (allroot #'(lambda(x) (sin (* 6.28 x))) '(0.25 0.75 1.25 1.75 2.25) 0.0001)
 ;; --> (0.50027466 1.0005188 1.5007629 2.001007)
@@ -477,6 +503,8 @@
   (if(or (null lst1) (null lst2))
       (return-from combine-lst-lst nil))
   (mapcan #'(lambda (x) (combine-elt-lst x lst2)) lst1))
+
+;; alternativa recursiva
 
 
 (combine-lst-lst nil nil) ;; --> NIL
