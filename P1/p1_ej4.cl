@@ -40,7 +40,7 @@
 ;;            NIL en caso contrario. 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun positive-literal-p (x)
-  (characterp x))
+  (and (not (truth-value-p x)) (not (connector-p x)) (not (listp x))))
 
 
 ;; EJEMPLOS:
@@ -66,10 +66,10 @@
 ;;            NIL en caso contrario. 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun negative-literal-p (x)
-  ;;
-  ;; 4.1.2 Completa el codigo
-  ;;
-  )
+  (when (listp x) (and
+                   (unary-connector-p (first x))
+                   (positive-literal-p (second x))
+                   (null (third x)))))
 
 ;; EJEMPLOS:
 (negative-literal-p '(~ p))        ; T
@@ -95,10 +95,7 @@
 ;;            NIL en caso contrario. 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun literal-p (x) 
-  ;;
-  ;; 4.1.3 Completa el codigo
-  ;;
-  )
+  (or (positive-literal-p x) (negative-literal-p x)))
 
 ;; EJEMPLOS:
 (literal-p 'p)             
@@ -156,17 +153,38 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; EJERCICIO 4.1.4
-;; Predicado para determinar si una expresion esta en formato prefijo 
+;; Predicado para determinar si una expresion esta en formato infijo 
 ;;
 ;; RECIBE   : expresion x 
-;; EVALUA A : T si x esta en formato prefijo, 
+;; EVALUA A : T si x esta en formato infijo, 
 ;;            NIL en caso contrario. 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun wff-infix-p (x)
-  ;;
-  ;; 4.1.4 Completa el codigo
-  ;;
-  ) 
+  (unless (null x)             ;; NIL no es FBF en formato infijo (por convencion)
+    (or (literal-p x)          ;; Un literal es FBF en formato infijo
+        (and (listp x)         ;; En caso de que no sea un literal debe ser una lista
+             (let ((first (first x))
+                   (second (first (rest x)))
+                   (rest_1 (rest (rest x))))
+               (cond
+                ((unary-connector-p first)  ;; Si el primer elemento es un connector unario
+                 (and (null rest_1)         ;; deberia tener la estructura (<conector> FBF)
+                      (wff-infix-p second))) 
+                ((binary-connector-p second) ;; Si el segundo elemento es un conector binario
+                 (let ((rest_2 (rest rest_1)))  ;; deberia tener la estructura 
+                   (and (null rest_2)
+                        (wff-infix-p first)
+                        (wff-infix-p (first rest_1)))))              
+                ((n-ary-connector-p second)  ;; Si el segundo elemento es un conector enario
+                 (let ((rest_2 (rest rest_1)))
+                   (or (and (null rest_2)  ;; Si esta al final de la lista
+                            (wff-infix-p first)
+                            (wff-infix-p (first rest_1)))
+                       (and (wff-infix-p first) ;; Si esta a mitad de lista
+                            (wff-infix-p rest_1)
+                            (eql second (first rest_2))))))
+                ((n-ary-connector-p first) (null (second x)))  ;; Si solo hay un conector n-ario
+                (t NIL)))))))                   ;; No es FBF en formato prefijo  
 
 ;;
 ;; EJEMPLOS:
@@ -252,10 +270,27 @@
 ;; EVALUA A : FBF en formato prefijo 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun infix-to-prefix (wff)
-  ;;
-  ;; 4.1.5 Completa el codigo
-  ;;
-  )
+  (when (wff-infix-p wff)
+    (if (literal-p wff)
+        wff
+      (let ((first (first wff))
+            (second (first (rest wff)))
+            (rest (rest (rest wff))))
+        (cond
+         ((unary-connector-p first) 
+          (list first (infix-to-prefix second)))
+         ((binary-connector-p second) 
+          (list second
+                (infix-to-prefix first)
+                (infix-to-prefix (first rest))))
+         ((n-ary-connector-p second)
+          (cond
+           ((null (rest rest))
+            (list second (infix-to-prefix first) (infix-to-prefix (first rest))))
+           (t
+            (list second (infix-to-prefix first) (infix-to-prefix rest)))))
+         ((and (n-ary-connector-p first) (null second)) wff)  ;; Si solo hay un conector n-ario
+         (t NIL)))))) ;; no deberia llegar a este paso nunca
 
 ;;
 ;; EJEMPLOS
