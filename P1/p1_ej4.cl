@@ -274,23 +274,24 @@
     (if (literal-p wff)
         wff
       (let ((first (first wff))
-            (second (first (rest wff)))
-            (rest (rest (rest wff))))
+            (second (second wff))
+            (third (third wff)))
         (cond
          ((unary-connector-p first) 
           (list first (infix-to-prefix second)))
          ((binary-connector-p second) 
           (list second
                 (infix-to-prefix first)
-                (infix-to-prefix (first rest))))
+                (infix-to-prefix third)))
+         ((and (n-ary-connector-p first) (null second)) wff)  ;; Si solo hay un conector n-ario
          ((n-ary-connector-p second)
           (cond
-           ((null (rest rest))
-            (list second (infix-to-prefix first) (infix-to-prefix (first rest))))
-           (t
-            (list second (infix-to-prefix first) (infix-to-prefix rest)))))
-         ((and (n-ary-connector-p first) (null second)) wff)  ;; Si solo hay un conector n-ario
-         (t NIL)))))) ;; no deberia llegar a este paso nunca
+            ((null (fourth wff))
+             (list second (infix-to-prefix first) (infix-to-prefix third)))
+            (t
+             (let ((rest (infix-to-prefix (rest (rest wff)))))
+               (append (list second) (list (infix-to-prefix first)) (rest rest))))))
+          (t NIL)))))) ;; no deberia llegar a este paso nunca
 
 ;;
 ;; EJEMPLOS
@@ -300,6 +301,8 @@
 (infix-to-prefix '((a)))   ;; NIL
 (infix-to-prefix '(a))     ;; NIL
 (infix-to-prefix '(((a)))) ;; NIL
+(infix-to-prefix '(a v b v c v d)) ;; (V A B C D)
+
 (prefix-to-infix (infix-to-prefix '((p v (a => (b ^ (~ c) ^ d))) ^ ((p <=> (~ q)) ^ p) ^ e)) ) 
 ;;-> ((P V (A => (B ^ (~ C) ^ D))) ^ ((P <=> (~ Q)) ^ P) ^ E)
 
@@ -329,7 +332,7 @@
 (infix-to-prefix '(~ ((~ p) v q v (~ r) v (~ s))))
 ;; (~ (V (~ P) Q (~ R) (~ S)))
 
-(infix-to-prefix  (prefix-to-infix '(^ (v p (=> a (^ b (~ c) d)))))) ; '(v p (=> a (^ b (~ c) d))))
+(infix-to-prefix  (prefix-to-infix '(^ (v p (=> a (^ b (~ c) d)))))) ; '(v p (=> a (^ b (~ c) d)))
 (infix-to-prefix  (prefix-to-infix '(^ (^ (<=> p (~ q)) p ) e))) ; '(^ (^ (<=> p (~ q)) p ) e))  
 (infix-to-prefix (prefix-to-infix '( v (~ p) q (~ r) (~ s))))  ; '( v (~ p) q (~ r) (~ s)))
 ;;;
@@ -345,11 +348,22 @@
 ;; RECIBE   : FBF en formato prefijo 
 ;; EVALUA A : T si FBF es una clausula, NIL en caso contrario. 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun clause-aux (lst)
+  (if (null lst)
+      T
+    (and
+     (literal-p (first lst))
+     (clause-aux (rest lst)))))
+
+(clause-aux '(a b (~ c)))
+
+
 (defun clause-p (wff)
-  ;;
-  ;; 4.1.6 Completa el codigo
-  ;;
-  )
+  (when (wff-prefix-p wff)
+    (when (not (literal-p wff))
+      (and
+       (eql (first wff) +or+)
+       (clause-aux (rest wff))))))
 
 ;;
 ;; EJEMPLOS:
@@ -376,11 +390,20 @@
 ;; EVALUA A : T si FBF esta en FNC con conectores, 
 ;;            NIL en caso contrario. 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun cnf-aux (lst)
+  (if (null lst)
+      T
+    (and
+     (clause-p (first lst))
+     (cnf-aux (rest lst)))))
+
+
 (defun cnf-p (wff)
-  ;;
-  ;; 4.1.7 Completa el codigo
-  ;;
-  )
+  (when (wff-prefix-p wff)
+    (when (not (literal-p wff))
+        (and
+         (eql (first wff) +and+)
+         (cnf-aux (rest wff))))))
 
 ;;
 ;; EJEMPLOS:
@@ -419,17 +442,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun eliminate-biconditional (wff)
-  (if (or (null wff) (literal-p wff))
+  (if (or (null wff) (literal-p wff)) ;; Caso base
       wff
     (let ((connector (first wff)))
-      (if (eq connector +bicond+)
+      (if (eq connector +bicond+) ;; Si encuentra el conector <=>
           (let ((wff1 (eliminate-biconditional (second wff)))
                 (wff2 (eliminate-biconditional (third  wff))))
-            (list +and+ 
+            (list +and+ ;; Descompone <=> en dos => conjuntas
                   (list +cond+ wff1 wff2)
                   (list +cond+ wff2 wff1)))
-        (cons connector 
-              (mapcar #'eliminate-biconditional (rest wff)))))))
+        (cons connector ;; Si no hay <=>
+              (mapcar #'eliminate-biconditional (rest wff))))))) ;; Continua buscando <=>
 
 ;;
 ;; EJEMPLOS:
@@ -450,10 +473,17 @@
 ;;            sin el connector =>
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun eliminate-conditional (wff)  
-  ;;
-  ;; 4.2.2 Completa el codigo
-  ;;
-  )       
+  (if (or (null wff) (literal-p wff)) ;; Caso base
+      wff
+    (let ((connector (first wff)))
+      (if (eq connector +cond+) ;; Si encuentra el conector =>
+          (let ((wff1 (eliminate-conditional (second wff)))
+                (wff2 (eliminate-conditional (third  wff))))
+            (list +or+ ;; Descompone (A => B) en (~B v A)
+                  (list +not+ wff1)
+                  wff2))
+        (cons connector ;; Si no hay =>
+              (mapcar #'eliminate-conditional (rest wff))))))) ;; Continua buscando =>       
 
 ;;
 ;; EJEMPLOS:
