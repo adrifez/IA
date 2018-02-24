@@ -566,48 +566,48 @@
       (list (list elt))
     (mapcar #'(lambda (x) (cons elt x)) lst)))
 
-(defun exchange-NF (nf)
-  (if (or (null nf) (literal-p nf)) 
+(defun exchange-NF (nf) ;; Funcion para cambiar de forma normal
+  (if (or (null nf) (literal-p nf)) ;; Caso base
       nf
     (let ((connector (first nf)))
-      (cons (exchange-and-or connector)
-            (mapcar #'(lambda (x)
+      (cons (exchange-and-or connector) ;; Cambiamos el conector
+            (mapcar #'(lambda (x) ;; Concatenamos el conector con el resultado del resto
                           (cons connector x))
                 (exchange-NF-aux (rest nf)))))))
 
-(defun exchange-NF-aux (nf)
-  (if (null nf) 
+(defun exchange-NF-aux (nf) ;; Funcion auxiliar de NF
+  (if (null nf)  ;; Caso base
       NIL
     (let ((lst (first nf)))
-      (mapcan #'(lambda (x) 
-                  (combine-elt-lst 
+      (mapcan #'(lambda (x)
+                  (combine-elt-lst ;; Combinamos x con el resto de la expresion 
                    x 
                    (exchange-NF-aux (rest nf)))) 
-        (if (literal-p lst) (list lst) (rest lst))))))
+        (if (literal-p lst) (list lst) (rest lst)))))) ;; Evaluamos un literal o una expresion
 
-(defun simplify (connector lst-wffs )
-  (if (literal-p lst-wffs)
+(defun simplify (connector lst-wffs) ;; Funcion para simplificar respecto a un conector
+  (if (literal-p lst-wffs) ;; Caso base
       lst-wffs                    
-    (mapcan #'(lambda (x) 
+    (mapcan #'(lambda (x) ;; Para cada elemento de la lista  
                 (cond 
-                 ((literal-p x) (list x))
-                 ((equal connector (first x))
-                  (mapcan 
+                 ((literal-p x) (list x)) ;; Si es un literal, devolvemos una lista que lo contiene
+                 ((equal connector (first x)) ;; Si el primer elemento igual a connector
+                  (mapcan ;; Simplificas cada elemento del resto de la lista
                       #'(lambda (y) (simplify connector (list y))) 
                     (rest x))) 
-                 (t (list x))))               
+                 (t (list x)))) ;; En el resto de casos devuelve una lista que lo contiene              
       lst-wffs)))
 
-(defun cnf (wff)
+(defun cnf (wff) ;; Funcion para pasar una FBF a FNC
   (cond
-   ((cnf-p wff) wff)
-   ((literal-p wff)
+   ((cnf-p wff) wff) ;; Si ya esta en FNC
+   ((literal-p wff) ;; Si es un literal
     (list +and+ (list +or+ wff)))
    ((let ((connector (first wff))) 
       (cond
-       ((equal +and+ connector) 
+       ((equal +and+ connector) ;; Si el conector es un and
         (cons +and+ (simplify +and+ (mapcar #'cnf (rest wff)))))
-       ((equal +or+ connector) 
+       ((equal +or+ connector) ;; Si el conector es un or
         (cnf (exchange-NF (cons +or+ (simplify +or+ (rest wff)))))))))))
 
 
@@ -665,11 +665,22 @@
 ;; EVALUA A : FBF en FNC (con conectores ^, v eliminaos)
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun e-c-aux (lst)
+  (cond
+   ((null lst)
+    NIL)
+   ((literal-p lst)
+    lst)
+   ((n-ary-connector-p (first lst))
+    (e-c-aux (rest lst)))
+   (t
+    (cons (e-c-aux (first lst)) (e-c-aux (rest lst))))))
+
+
 (defun eliminate-connectors (cnf)
-  ;;
-  ;; 4.2.5 Completa el codigo
-  ;;
-  )
+  (when (wff-prefix-p cnf)
+    (e-c-aux cnf)))
+
 
 (eliminate-connectors 'nil)
 (eliminate-connectors (cnf '(^ (v p  (~ q))  (v k  r  (^ m  n)))))
@@ -701,11 +712,22 @@
 ;; EVALUA A : FBF en FNC (con conectores ^, v eliminados)
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun w-i-t-c-aux (lst)
+  (cond
+   ((null lst)
+    NIL)
+   ((literal-p lst)
+    lst)
+   ((n-ary-connector-p (second lst))
+    (cons (w-i-t-c-aux (first lst)) (w-i-t-c-aux (rest (rest lst)))))
+   (t
+    (cons (w-i-t-c-aux (first lst)) (w-i-t-c-aux (rest lst))))))
+
+
 (defun wff-infix-to-cnf (wff)
-  ;;
-  ;; 4.2.6 Completa el codigo
-  ;;
-  )
+  (when (wff-infix-p wff)
+    (w-i-t-c-aux (eliminate-conditional (eliminate-biconditional wff)))
+
 
 ;;
 ;; EJEMPLOS:
