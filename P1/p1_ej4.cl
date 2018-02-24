@@ -503,17 +503,42 @@
 ;;            la negacion  aparece unicamente en literales 
 ;;            negativos.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun reduce-scope-of-negation (wff)
-  ;;
-  ;; 4.2.3 Completa el codigo
-  ;;
-  )
-
 (defun exchange-and-or (connector)
   (cond
    ((eq connector +and+) +or+)    
    ((eq connector +or+) +and+)
    (t connector)))
+
+(defun invert (lst)
+  (cond
+   ((null lst) ;; Condicion de parada de conectores n-arios
+    NIL)
+   ((positive-literal-p lst) ;; Caso base con literal positivo
+    (list +not+ lst))
+   ((negative-literal-p lst) ;; Caso base con literal negativo
+    (second lst))
+   ((n-ary-connector-p lst) ;; Caso con conector n-ario
+    (exchange-and-or lst))
+   ((unary-connector-p (first lst)) ;; Expresion negada
+    (second lst))
+   (t
+    (cons (invert (first lst)) (invert (rest lst))))))
+
+(invert '(~ (^ (v (~ a) b c) d)))
+
+
+(defun r-s-o-n-aux (lst)
+  (cond ((literal-p lst)
+           lst)
+          ((unary-connector-p (first lst))
+           (invert (second lst)))
+          (t
+           (cons (first lst) (r-s-o-n-aux (rest lst))))))
+
+(defun reduce-scope-of-negation (wff)
+  (when (wff-prefix-p wff)
+    (r-s-o-n-aux wff)))
+
 
 ;;
 ;;  EJEMPLOS:
@@ -536,7 +561,7 @@
 ;; EVALUA A : FBF equivalente en formato prefijo FNC 
 ;;            con conectores ^, v
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun combine-elt-lst (elt lst)
+(defun combine-elt-lst (elt lst) ;; Funcion para combinar un elemento con una lista
   (if (null lst)
       (list (list elt))
     (mapcar #'(lambda (x) (cons elt x)) lst)))
