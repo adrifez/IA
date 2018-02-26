@@ -479,7 +479,7 @@
       (if (eq connector +cond+) ;; Si encuentra el conector =>
           (let ((wff1 (eliminate-conditional (second wff)))
                 (wff2 (eliminate-conditional (third  wff))))
-            (list +or+ ;; Descompone (A => B) en (~B v A)
+            (list +or+ ;; Descompone (A => B) en (~A v B)
                   (list +not+ wff1)
                   wff2))
         (cons connector ;; Si no hay =>
@@ -528,12 +528,14 @@
 
 
 (defun r-s-o-n-aux (lst)
-  (cond ((literal-p lst)
-           lst)
-          ((unary-connector-p (first lst))
-           (invert (second lst)))
-          (t
-           (cons (first lst) (r-s-o-n-aux (rest lst))))))
+  (cond ((null lst)
+         NIL)
+        ((literal-p lst)
+         lst)
+        ((unary-connector-p (first lst))
+         (invert (second lst)))
+        (t
+         (cons (first lst) (mapcar #'r-s-o-n-aux (rest lst))))))
 
 (defun reduce-scope-of-negation (wff)
   (when (wff-prefix-p wff)
@@ -726,7 +728,11 @@
 
 (defun wff-infix-to-cnf (wff)
   (when (wff-infix-p wff)
-    (w-i-t-c-aux (eliminate-conditional (eliminate-biconditional wff)))
+    (eliminate-connectors
+     (cnf
+      (reduce-scope-of-negation
+       (eliminate-conditional
+        (eliminate-biconditional (infix-to-prefix wff))))))))
 
 
 ;;
@@ -738,6 +744,7 @@
 (wff-infix-to-cnf  '((p v (a => (b ^ (~ c) ^ d))) ^ ((p <=> (~ q)) ^ p) ^ e))
 ;; ((P (~ A) B) (P (~ A) (~ C)) (P (~ A) D) ((~ P) (~ Q)) (Q P) (P) (E))
 
+ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; EJERCICIO 4.3.1
 ;; eliminacion de literales repetidos una clausula 
@@ -745,12 +752,22 @@
 ;; RECIBE   : K - clausula (lista de literales, disyuncion implicita)
 ;; EVALUA A : clausula equivalente sin literales repetidos 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun find-plus (elmnt lst method-eq)
+  (if (null lst)
+      NIL
+    (if (funcall method-eq elmnt (first lst))
+        (first lst)
+      (find-plus elmnt (rest lst) method-eq))))
+
 
 (defun eliminate-repeated-literals (k)
-  ;;
-  ;; 4.3.1 Completa el codigo
-  ;;
-  )
+  (when (list k)
+    (let ((first (first k))
+          (rest (rest k)))
+      (when (literal-p first)
+        (if (find-plus first rest #'equal)
+            (eliminate-repeated-literals rest)
+          (cons first (eliminate-repeated-literals rest)))))))
 
 ;;
 ;; EJEMPLO:
@@ -765,11 +782,38 @@
 ;; RECIBE   : cnf - FBF en FNC (lista de clausulas, conjuncion implicita)
 ;; EVALUA A : FNC equivalente sin clausulas repetidas 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun clause-lst-p (lst)
+  (when (list lst)
+    (when (literal-p (first lst))
+      (if (null (rest lst))
+          T
+        (clause-aux (rest lst))))))
+
+(defun e-c-aux (c1 c2)
+  (cond
+   ((and (null c1) (null c2))
+    T)
+   ((or (null c1) (null c2))
+    NIL)
+   (t
+    (let ((elmnt (find-plus (first c1) c2 #'equal)))
+      (if elmnt
+          (e-c-aux (rest c1) (remove elmnt c2))
+        NIL)))))
+
+(defun equal-clause (c1 c2)
+  (when (clause-lst-p c2)
+    (e-c-aux c1 (eliminate-repeated-literals c2))))
+
+
 (defun eliminate-repeated-clauses (cnf) 
-  ;;
-  ;; 4.3.2 Completa el codigo
-  ;;
-  )
+  (when (list cnf)
+    (when (clause-lst-p (first cnf))
+      (let ((first (eliminate-repeated-literals (first cnf)))
+            (rest (rest cnf)))
+        (if (find-plus first rest #'equal-clause)
+            (eliminate-repeated-clauses rest)
+          (cons first (eliminate-repeated-clauses rest)))))))
 
 ;;
 ;; EJEMPLO:
@@ -785,17 +829,27 @@
 ;; EVALUA a : K1 si K1 subsume a K2
 ;;            NIL en caso contrario
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun subsume-aux (K1 K2)
+  (if (null K1)
+      T
+    (let ((elmnt (find-plus (first K1) K2 #'equal)))
+      (if elmnt
+          (and T (subsume-aux (rest K1) K2))
+        NIL))))
+
 (defun subsume (K1 K2)
-  ;;
-  ;; 4.3.3 Completa el codigo
-  ;;
-  )
+  (if (null K1)
+      (list NIL)
+    (when (and (clause-lst-p K1) (clause-lst-p K2))
+      (if (subsume-aux K1 K2)
+          K1
+        NIL))))
   
 ;;
 ;;  EJEMPLOS:
 ;;
 (subsume '(a) '(a b (~ c)))
-;; ((a))
+;; (a)
 (subsume NIL '(a b (~ c)))
 ;; (NIL)
 (subsume '(a b (~ c)) '(a) )
