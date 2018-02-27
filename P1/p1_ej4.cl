@@ -527,7 +527,7 @@
 (invert '(~ (^ (v (~ a) b c) d)))
 
 
-(defun r-s-o-n-aux (lst)
+(defun reduce-scope-of-negation-aux (lst)
   (cond ((null lst)
          NIL)
         ((literal-p lst)
@@ -535,11 +535,11 @@
         ((unary-connector-p (first lst))
          (invert (second lst)))
         (t
-         (cons (first lst) (mapcar #'r-s-o-n-aux (rest lst))))))
+         (cons (first lst) (mapcar #'reduce-scope-of-negation-aux (rest lst))))))
 
 (defun reduce-scope-of-negation (wff)
   (when (wff-prefix-p wff)
-    (r-s-o-n-aux wff)))
+    (reduce-scope-of-negation-aux wff)))
 
 
 ;;
@@ -667,21 +667,22 @@
 ;; EVALUA A : FBF en FNC (con conectores ^, v eliminaos)
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun e-c-aux (lst)
+(defun eliminate-connectors-aux (lst)
   (cond
    ((null lst)
     NIL)
    ((literal-p lst)
     lst)
    ((n-ary-connector-p (first lst))
-    (e-c-aux (rest lst)))
+    (eliminate-connectors-aux (rest lst)))
    (t
-    (cons (e-c-aux (first lst)) (e-c-aux (rest lst))))))
+    (cons (eliminate-connectors-aux (first lst))
+          (eliminate-connectors-aux (rest lst))))))
 
 
 (defun eliminate-connectors (cnf)
   (when (wff-prefix-p cnf)
-    (e-c-aux cnf)))
+    (eliminate-connectors-aux cnf)))
 
 
 (eliminate-connectors 'nil)
@@ -714,18 +715,6 @@
 ;; EVALUA A : FBF en FNC (con conectores ^, v eliminados)
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun w-i-t-c-aux (lst)
-  (cond
-   ((null lst)
-    NIL)
-   ((literal-p lst)
-    lst)
-   ((n-ary-connector-p (second lst))
-    (cons (w-i-t-c-aux (first lst)) (w-i-t-c-aux (rest (rest lst)))))
-   (t
-    (cons (w-i-t-c-aux (first lst)) (w-i-t-c-aux (rest lst))))))
-
-
 (defun wff-infix-to-cnf (wff)
   (when (wff-infix-p wff)
     (eliminate-connectors
@@ -752,22 +741,25 @@
 ;; RECIBE   : K - clausula (lista de literales, disyuncion implicita)
 ;; EVALUA A : clausula equivalente sin literales repetidos 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun find-plus (elmnt lst method-eq)
-  (if (null lst)
-      NIL
-    (if (funcall method-eq elmnt (first lst))
-        (first lst)
-      (find-plus elmnt (rest lst) method-eq))))
+(defun clause-lst-p (lst)
+  (when (list lst)
+    (when (literal-p (first lst))
+      (if (null (rest lst))
+          T
+        (clause-aux (rest lst))))))
 
+(defun eliminate-repeated-literals-aux (lst)
+  (let ((first (first lst))
+          (rest (rest lst)))
+      (when (literal-p first)
+        (if (member first rest :test #'equal)
+            (eliminate-repeated-literals-aux rest)
+          (cons first
+                (eliminate-repeated-literals-aux rest))))))
 
 (defun eliminate-repeated-literals (k)
-  (when (list k)
-    (let ((first (first k))
-          (rest (rest k)))
-      (when (literal-p first)
-        (if (find-plus first rest #'equal)
-            (eliminate-repeated-literals rest)
-          (cons first (eliminate-repeated-literals rest)))))))
+  (when (clause-lst-p k)
+    (eliminate-repeated-literals-aux k)))
 
 ;;
 ;; EJEMPLO:
@@ -782,38 +774,50 @@
 ;; RECIBE   : cnf - FBF en FNC (lista de clausulas, conjuncion implicita)
 ;; EVALUA A : FNC equivalente sin clausulas repetidas 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun clause-lst-p (lst)
+(defun cnf-lst-p (lst)
   (when (list lst)
-    (when (literal-p (first lst))
+    (when (clause-lst-p (first lst))
       (if (null (rest lst))
           T
-        (clause-aux (rest lst))))))
+        (cnf-lst-p (rest lst))))))
 
-(defun e-c-aux (c1 c2)
-  (cond
-   ((and (null c1) (null c2))
-    T)
-   ((or (null c1) (null c2))
-    NIL)
-   (t
-    (let ((elmnt (find-plus (first c1) c2 #'equal)))
+(cnf-lst-p '((a) (a b) ((~ c))))
+
+(defun contain-clause-aux (c1 c2)
+  (if (null c1)
+      T
+    (let ((elmnt (find (first c1) c2 :test #'equal)))
       (if elmnt
-          (e-c-aux (rest c1) (remove elmnt c2))
-        NIL)))))
+          (and T (contain-clause-aux (rest c1) c2))
+        NIL))))
+
+(defun contain-clause (c1 c2)
+  (if (null c1)
+      (list NIL)
+    (when (and (clause-lst-p c1) (clause-lst-p c2))
+      (if (contain-clause-aux c1 c2)
+          T
+        NIL))))
 
 (defun equal-clause (c1 c2)
-  (when (clause-lst-p c2)
-    (e-c-aux c1 (eliminate-repeated-literals c2))))
+  (when (and (clause-lst-p c1) (clause-lst-p c2))
+    (let ((c1-aux (eliminate-repeated-literals c1))
+          (c2-aux (eliminate-repeated-literals c2)))
+      (and (contain-clause c1-aux c2-aux)
+           (contain-clause c2-aux c1-aux)))))
 
+(defun eliminate-repeated-clauses-aux (lst)
+  (when (clause-lst-p (first lst))
+      (let ((first (eliminate-repeated-literals (first lst)))
+            (rest (rest lst)))
+        (if (member first rest :test #'equal-clause)
+            (eliminate-repeated-clauses-aux rest)
+          (cons first
+                (eliminate-repeated-clauses-aux rest))))))
 
 (defun eliminate-repeated-clauses (cnf) 
-  (when (list cnf)
-    (when (clause-lst-p (first cnf))
-      (let ((first (eliminate-repeated-literals (first cnf)))
-            (rest (rest cnf)))
-        (if (find-plus first rest #'equal-clause)
-            (eliminate-repeated-clauses rest)
-          (cons first (eliminate-repeated-clauses rest)))))))
+  (when (cnf-lst-p cnf)
+    (eliminate-repeated-clauses-aux cnf)))
 
 ;;
 ;; EJEMPLO:
@@ -832,7 +836,7 @@
 (defun subsume-aux (K1 K2)
   (if (null K1)
       T
-    (let ((elmnt (find-plus (first K1) K2 #'equal)))
+    (let ((elmnt (find (first K1) K2 :test #'equal)))
       (if elmnt
           (and T (subsume-aux (rest K1) K2))
         NIL))))
@@ -872,11 +876,28 @@
 ;; RECIBE   : K (clausula), cnf (FBF en FNC)
 ;; EVALUA A : FBF en FNC equivalente a cnf sin clausulas subsumidas 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun subsume-lst (lst clause)
+  (when (clause-lst-p (first lst))
+    (cond ((eq (first lst) clause)
+           (subsume-lst (rest lst) clause))
+          ((subsume (first lst) clause)
+           T)
+          (T
+           (subsume-lst (rest lst) clause)))))
+
+(subsume-lst '((a b c) (b c) (a (~ c) b)  ((~ a) b) (a b (~ a)) (c b a)) '(a b c))
+
+(defun eliminate-subsumed-clauses-aux (aux cnf)
+  (if (null aux)
+      NIL
+    (if (subsume-lst cnf (first aux))
+        (eliminate-subsumed-clauses-aux (rest aux) cnf)
+      (cons (first aux)
+            (eliminate-subsumed-clauses-aux (rest aux) cnf)))))
+
 (defun eliminate-subsumed-clauses (cnf) 
-  ;;
-  ;; 4.3.4 Completa el codigo
-  ;;
-)
+  (when (cnf-lst-p cnf)
+    (eliminate-subsumed-clauses-aux cnf cnf)))
 
 ;;
 ;;  EJEMPLOS:
@@ -899,11 +920,29 @@
 ;; EVALUA a : T si K es tautologia
 ;;            NIL en caso contrario
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun equal-inv (lit1 lit2)
+  (cond ((and (positive-literal-p lit1)
+              (negative-literal-p lit2)
+              (equal lit1 (second lit2)))
+         T)
+        ((and (negative-literal-p lit1)
+              (positive-literal-p lit2)
+              (equal (second lit1) lit2))
+         T)
+        (T
+         NIL)))
+
+(defun tautology-p-aux (lst)
+  (cond ((null lst)
+         NIL)
+        ((member (first lst) (rest lst) :test #'equal-inv)
+         T)
+        (T
+         (tautology-p-aux (rest lst)))))
+
 (defun tautology-p (K) 
-  ;;
-  ;; 4.3.5 Completa el codigo
-  ;;
-  )
+  (when (clause-lst-p K)
+    (tautology-p-aux K)))
 
 ;;
 ;;  EJEMPLOS:
@@ -918,11 +957,17 @@
 ;; RECIBE   : cnf - FBF en FNC
 ;; EVALUA A : FBF en FNC equivalente a cnf sin tautologias 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun eliminate-tautologies-aux (lst)
+  (if (null lst)
+      NIL
+    (if (tautology-p (first lst))
+        (eliminate-tautologies-aux (rest lst))
+      (cons (first lst)
+            (eliminate-tautologies-aux (rest lst))))))
+
 (defun eliminate-tautologies (cnf) 
-  ;;
-  ;; 4.3.6 Completa el codigo
-  ;;
-  )
+  (when (cnf-lst-p cnf)
+    (eliminate-tautologies-aux cnf)))
 
 ;;
 ;;  EJEMPLOS:
@@ -947,11 +992,15 @@
 ;;            sin literales repetidos en las clausulas
 ;;            y sin clausulas subsumidas
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun simplify-cnf-aux (lst)
+  (eliminate-subsumed-clauses
+   (eliminate-tautologies
+    (eliminate-repeated-clauses
+     (mapcar #'eliminate-repeated-literals lst)))))
+
 (defun simplify-cnf (cnf) 
-  ;;
-  ;; 4.3.7 Completa el codigo
-  ;;
-  )
+  (when (cnf-lst-p cnf)
+    (simplify-cnf-aux cnf)))
 
 ;;
 ;;  EJEMPLOS:
@@ -969,11 +1018,21 @@
 ;; EVALUA A : cnf_lambda^(0) subconjunto de clausulas de cnf  
 ;;            que no contienen el literal lambda ni ~lambda   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun extract-neutral-clauses (lambda cnf) 
-  ;;
-  ;; 4.4.1 Completa el codigo
-  ;;
-  )
+(defun equal-literal (lit1 lit2)
+  (or (equal lit1 lit2) (equal-inv lit1 lit2)))
+
+(defun extract-neutral-clauses-aux (lit lst)
+  (if (null lst)
+      NIL
+    (when (clause-lst-p (first lst))
+      (if (member lit (first lst) :test #'equal-literal)
+          (extract-neutral-clauses-aux lit (rest lst))
+        (cons (first lst)
+              (extract-neutral-clauses-aux lit (rest lst)))))))
+
+(defun extract-neutral-clauses (lambda cnf)
+  (when (and (positive-literal-p lambda) (cnf-lst-p cnf))
+    (extract-neutral-clauses-aux lambda cnf)))
 
 ;;
 ;;  EJEMPLOS:
@@ -1006,11 +1065,17 @@
 ;; EVALUA A : cnf_lambda^(+) subconjunto de clausulas de cnf 
 ;;            que contienen el literal lambda  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun extract-positive-clauses-aux (lit lst)
+  (if (null lst)
+      NIL
+    (when (clause-lst-p (first lst))
+      (if (member lit (first lst) :test #'equal)
+          (cons (first lst) (extract-positive-clauses-aux lit (rest lst)))
+      (extract-positive-clauses-aux lit (rest lst))))))
+
 (defun extract-positive-clauses (lambda cnf) 
-  ;;
-  ;; 4.4.2 Completa el codigo
-  ;;
-  )
+  (when (and (positive-literal-p lambda) (cnf-lst-p cnf))
+    (extract-positive-clauses-aux lambda cnf)))
 
 ;;
 ;;  EJEMPLOS:
