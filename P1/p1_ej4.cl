@@ -1041,7 +1041,6 @@
                            '((p (~ q) r) (p q) (r (~ s) q) (a b p) (a (~ p) c) ((~ r) s)))
 ;; ((R (~ S) Q) ((~ R) S))
 
-
 (extract-neutral-clauses 'r NIL)
 ;; NIL
 
@@ -1065,17 +1064,17 @@
 ;; EVALUA A : cnf_lambda^(+) subconjunto de clausulas de cnf 
 ;;            que contienen el literal lambda  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun extract-positive-clauses-aux (lit lst)
+(defun extract-lit-clauses-aux (lit lst)
   (if (null lst)
       NIL
     (when (clause-lst-p (first lst))
       (if (member lit (first lst) :test #'equal)
-          (cons (first lst) (extract-positive-clauses-aux lit (rest lst)))
-      (extract-positive-clauses-aux lit (rest lst))))))
+          (cons (first lst) (extract-lit-clauses-aux lit (rest lst)))
+      (extract-lit-clauses-aux lit (rest lst))))))
 
 (defun extract-positive-clauses (lambda cnf) 
   (when (and (positive-literal-p lambda) (cnf-lst-p cnf))
-    (extract-positive-clauses-aux lambda cnf)))
+    (extract-lit-clauses-aux lambda cnf)))
 
 ;;
 ;;  EJEMPLOS:
@@ -1107,10 +1106,8 @@
 ;;            que contienen el literal ~lambda  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun extract-negative-clauses (lambda cnf) 
-  ;;
-  ;; 4.4.3 Completa el codigo
-  ;;
-  )
+  (when (and (positive-literal-p lambda) (cnf-lst-p cnf))
+    (extract-lit-clauses-aux (list +not+ lambda) cnf)))
 
 ;;
 ;;  EJEMPLOS:
@@ -1143,23 +1140,34 @@
 ;;                          eliminados
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun resolve-on (lambda K1 K2) 
-  ;;
-  ;; 4.4.4 Completa el codigo
-  ;;
-  )
+  (if (or (null K1) (null K2))
+      '() ;NIL
+    (let ((neg-lit (list +not+ lambda)))
+      (when (or
+             (and (member lambda K1) (member neg-lit K2 :test #'equal))
+             (and (member lambda K2) (member neg-lit K1 :test #'equal))) ;Comprobamos que sea posible la resolucion
+        (
+        
+        
+;;        (remove-if #'(lambda (x) 
+;;                       (when (or (equal lambda x) (equal neg-lit x))
+;;                         T)) 
+;;                   (union K1 K2))))))
 
 ;;
 ;;  EJEMPLOS:
 ;;
+(union '(1 2 3) '(4 2 3) :test #'(lambda (x y) 
+                                   (if (= x 2)))
+
 (resolve-on 'p '(a b (~ c) p) '((~ p) b a q r s))
 ;; (((~ C) B A Q R S))
 
-(resolve-on 'p '(a b (~ c) (~ p)) '( p b a q r s))
+(resolve-on 'p '(a b (~ c) (~ p)) '(p b a q r s))
 ;; (((~ C) B A Q R S))
 
 (resolve-on 'p '(p) '((~ p)))
 ;; (NIL)
-
 
 (resolve-on 'p NIL '(p b a q r s))
 ;; NIL
