@@ -1139,27 +1139,33 @@
 ;;                          sobre K1 y K2, con los literales repetidos 
 ;;                          eliminados
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun resolve-on-aux (lambda K1 K2 founded)
+  (if (null K1) ;Cuando termina K1 comprobamos si hemos encontrado lambda y not-lambda
+      (if (eq founded NIL)
+          NIL
+        (if (null K2) '(NIL) K2))
+    (let ((el (first K1))
+          (res (rest K1))
+          (lambda-neg (invert lambda)))
+      (cond
+       ((member el K2 :test #'equal) ;Si esta repetido lo omitimos
+        (resolve-on-aux lambda res K2 founded))
+       ((and (member el K2 :test #'equal-inv) ;Si encontramos lambda y not-lambda
+             (or (equal lambda el)
+                 (equal lambda-neg el)))
+        (resolve-on-aux lambda res (remove el (copy-list K2) :test #'equal-inv) T))
+       (T (let ((out (resolve-on-aux lambda res K2 founded))) ;Si no esta repetido lo agregamos 
+            (if (eq out nil)                              ;en caso de encontrar lambda y not-lambda
+                out                                       ;en caso contrario, arrastamos el nil
+              (cons el out))))))))
+
 (defun resolve-on (lambda K1 K2) 
   (if (or (null K1) (null K2))
-      '() ;NIL
-    (let ((neg-lit (list +not+ lambda)))
-      (when (or
-             (and (member lambda K1) (member neg-lit K2 :test #'equal))
-             (and (member lambda K2) (member neg-lit K1 :test #'equal))) ;Comprobamos que sea posible la resolucion
-        (
-        
-        
-;;        (remove-if #'(lambda (x) 
-;;                       (when (or (equal lambda x) (equal neg-lit x))
-;;                         T)) 
-;;                   (union K1 K2))))))
-
+      '()
+    (resolve-on-aux lambda K1 K2 NIL)))
 ;;
 ;;  EJEMPLOS:
 ;;
-(union '(1 2 3) '(4 2 3) :test #'(lambda (x y) 
-                                   (if (= x 2)))
-
 (resolve-on 'p '(a b (~ c) p) '((~ p) b a q r s))
 ;; (((~ C) B A Q R S))
 
@@ -1190,11 +1196,20 @@
 ;;            
 ;; EVALUA A : RES_lambda(cnf) con las clauses repetidas eliminadas
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun build-res-aux (lambda list cnf) ;aplica resolve-on de list sobre cada una
+  (if (or (null list) (null cnf))      ;de las listas en cnf
+      NIL
+    (let ((output (resolve-on lambda list (first cnf))))
+      (if (null output)
+          (build-res-aux lambda list (rest cnf))
+        (cons output (build-res-aux lambda list (rest cnf)))))))
+
 (defun build-RES (lambda cnf)
-  ;;
-  ;; 4.4.5 Completa el codigo
-  ;;
-)
+  (if (null cnf)
+      NIL
+    (eliminate-repeated-clauses
+     (append (build-res-aux lambda (first cnf) (rest cnf))
+             (build-RES lambda (rest cnf))))))
 
 ;;
 ;;  EJEMPLOS:
@@ -1226,10 +1241,9 @@
 ;;                NIL  si cnf es UNSAT
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun  RES-SAT-p (cnf) 
-  ;;
-  ;; 4.5 Completa el codigo
-  ;;
-  )
+  (if (null cnf)
+      NIL
+    ())
 
 ;;
 ;;  EJEMPLOS:
