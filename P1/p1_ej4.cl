@@ -882,11 +882,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun subsume-lst (lst clause)
   (when lst
-    (or (and (not (eq (first lst) clause))
+    (if (equal (first lst) 'NIL)
+        T
+      (or (and (not (eq (first lst) clause))
              (not (null (subsume (first lst) clause))))
-        (subsume-lst (rest lst) clause))))
+        (subsume-lst (rest lst) clause)))))
+    
 
-(subsume-lst '((a b c) (b c) (a (~ c) b)  ((~ a) b) (a b (~ a)) ()) '())
+(subsume-lst '((a b c) (b c) (a (~ c) b)  ((~ a) b) (a b (~ a))) '(c b))
 
 (defun eliminate-subsumed-clauses-aux (aux cnf)
   (if (null aux)
