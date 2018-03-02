@@ -742,11 +742,14 @@
 ;; EVALUA A : clausula equivalente sin literales repetidos 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun clause-lst-p (lst)
-  (when (list lst)
-    (when (literal-p (first lst))
-      (if (null (rest lst))
-          T
-        (clause-aux (rest lst))))))
+  (if (null lst)
+      T
+    (when (list lst)
+      (when (literal-p (first lst))
+        (if (null (rest lst))
+            T
+          (clause-aux (rest lst)))))))
+  
 
 (defun eliminate-repeated-literals-aux (lst)
   (let ((first (first lst))
@@ -788,7 +791,7 @@
       T
     (let ((elmnt (find (first c1) c2 :test #'equal)))
       (if elmnt
-          (and T (contain-clause-aux (rest c1) c2))
+          (contain-clause-aux (rest c1) c2)
         NIL))))
 
 (defun contain-clause (c1 c2)
@@ -807,13 +810,16 @@
            (contain-clause c2-aux c1-aux)))))
 
 (defun eliminate-repeated-clauses-aux (lst)
-  (when (clause-lst-p (first lst))
+  (if (null lst)
+      NIL
+    (when (clause-lst-p (first lst))
       (let ((first (eliminate-repeated-literals (first lst)))
             (rest (rest lst)))
         (if (member first rest :test #'equal-clause)
             (eliminate-repeated-clauses-aux rest)
           (cons first
-                (eliminate-repeated-clauses-aux rest))))))
+                (eliminate-repeated-clauses-aux rest)))))))
+  
 
 (defun eliminate-repeated-clauses (cnf) 
   (when (cnf-lst-p cnf)
@@ -838,34 +844,32 @@
       T
     (let ((elmnt (find (first K1) K2 :test #'equal)))
       (if elmnt
-          (and T (subsume-aux (rest K1) K2))
+          (subsume-aux (rest K1) K2)
         NIL))))
 
 (defun subsume (K1 K2)
-  (if (null K1)
-      (list NIL)
-    (when (and (clause-lst-p K1) (clause-lst-p K2))
-      (if (subsume-aux K1 K2)
-          K1
-        NIL))))
+  (when (and (clause-lst-p K1) (clause-lst-p K2))
+    (if (subsume-aux K1 K2)
+        (list K1)
+      NIL)))
   
 ;;
 ;;  EJEMPLOS:
 ;;
 (subsume '(a) '(a b (~ c)))
-;; (a)
+;; ((a))
 (subsume NIL '(a b (~ c)))
 ;; (NIL)
 (subsume '(a b (~ c)) '(a) )
 ;; NIL
 (subsume '( b (~ c)) '(a b (~ c)) )
-;; ( b (~ c))
+;; (( b (~ c)))
 (subsume '(a b (~ c)) '( b (~ c)))
 ;; NIL
 (subsume '(a b (~ c)) '(d  b (~ c)))
 ;; nil
 (subsume '(a b (~ c)) '((~ a) b (~ c) a))
-;; (A B (~ C))
+;; ((A B (~ C)))
 (subsume '((~ a) b (~ c) a) '(a b (~ c)) )
 ;; nil
 
