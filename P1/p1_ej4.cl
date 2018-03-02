@@ -881,15 +881,12 @@
 ;; EVALUA A : FBF en FNC equivalente a cnf sin clausulas subsumidas 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun subsume-lst (lst clause)
-  (when (clause-lst-p (first lst))
-    (cond ((eq (first lst) clause)
-           (subsume-lst (rest lst) clause))
-          ((subsume (first lst) clause)
-           T)
-          (T
-           (subsume-lst (rest lst) clause)))))
+  (when lst
+    (or (and (not (eq (first lst) clause))
+             (not (null (subsume (first lst) clause))))
+        (subsume-lst (rest lst) clause))))
 
-(subsume-lst '((a b c) (b c) (a (~ c) b)  ((~ a) b) (a b (~ a)) (c b a)) '(a b c))
+(subsume-lst '((a b c) (b c) (a (~ c) b)  ((~ a) b) (a b (~ a)) ()) '())
 
 (defun eliminate-subsumed-clauses-aux (aux cnf)
   (if (null aux)
@@ -924,17 +921,15 @@
 ;; EVALUA a : T si K es tautologia
 ;;            NIL en caso contrario
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun equal-inv (lit1 lit2)
-  (cond ((and (positive-literal-p lit1)
-              (negative-literal-p lit2)
-              (equal lit1 (second lit2)))
-         T)
-        ((and (negative-literal-p lit1)
-              (positive-literal-p lit2)
-              (equal (second lit1) lit2))
-         T)
-        (T
-         NIL)))
+(defun equal-inv (lit1 lit2) ;; T si son dos literales conjugados
+  (when (and (literal-p lit1) (literal-p lit2))
+    (or (and (positive-literal-p lit1)
+             (negative-literal-p lit2)
+             (equal lit1 (second lit2)))
+        (and (negative-literal-p lit1)
+             (positive-literal-p lit2)
+             (equal (second lit1) lit2)))))
+  
 
 (defun tautology-p-aux (lst)
   (cond ((null lst)
