@@ -1208,6 +1208,7 @@
     (let ((pos (extract-positive-clauses lambda cnf))
           (neg (extract-negative-clauses lambda cnf))
           (neu (extract-neutral-clauses lambda cnf)))
+      (mapcar #'(lambda (x) (union )) neu)
       
        )))
 ;;
