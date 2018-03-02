@@ -1045,7 +1045,6 @@
                            '((p (~ q) r) (p q) (r (~ s) q) (a b p) (a (~ p) c) ((~ r) s)))
 ;; ((R (~ S) Q) ((~ R) S))
 
-
 (extract-neutral-clauses 'r NIL)
 ;; NIL
 
@@ -1069,17 +1068,17 @@
 ;; EVALUA A : cnf_lambda^(+) subconjunto de clausulas de cnf 
 ;;            que contienen el literal lambda  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun extract-positive-clauses-aux (lit lst)
+(defun extract-lit-clauses-aux (lit lst)
   (if (null lst)
       NIL
     (when (clause-lst-p (first lst))
       (if (member lit (first lst) :test #'equal)
-          (cons (first lst) (extract-positive-clauses-aux lit (rest lst)))
-      (extract-positive-clauses-aux lit (rest lst))))))
+          (cons (first lst) (extract-lit-clauses-aux lit (rest lst)))
+      (extract-lit-clauses-aux lit (rest lst))))))
 
 (defun extract-positive-clauses (lambda cnf) 
   (when (and (positive-literal-p lambda) (cnf-lst-p cnf))
-    (extract-positive-clauses-aux lambda cnf)))
+    (extract-lit-clauses-aux lambda cnf)))
 
 ;;
 ;;  EJEMPLOS:
@@ -1111,10 +1110,8 @@
 ;;            que contienen el literal ~lambda  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun extract-negative-clauses (lambda cnf) 
-  ;;
-  ;; 4.4.3 Completa el codigo
-  ;;
-  )
+  (when (and (positive-literal-p lambda) (cnf-lst-p cnf))
+    (extract-lit-clauses-aux (list +not+ lambda) cnf)))
 
 ;;
 ;;  EJEMPLOS:
@@ -1146,24 +1143,38 @@
 ;;                          sobre K1 y K2, con los literales repetidos 
 ;;                          eliminados
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun resolve-on (lambda K1 K2) 
-  ;;
-  ;; 4.4.4 Completa el codigo
-  ;;
-  )
+(defun union-aux (LL1 LL2 lambda flag)
+  (let ((L1 (copy-list (first LL1)))
+        (L2 (copy-list (first LL2)))
+        (lambda-conj (invert lambda)))
+  (if (= flag 1)
+      (list (union (remove lambda L1) (remove lambda-conj L2 :test #'equal)))
+    (list (union (remove lambda-conj L1 :test #'equal) (remove lambda L2))))))
 
+(defun resolve-on (lambda K1 K2) 
+  (if (or (null K1) (null K2))
+      '()
+    (let ((pos1 (extract-positive-clauses lambda (list K1)))
+          (neg1 (extract-negative-clauses lambda (list K2)))
+          (pos2 (extract-positive-clauses lambda (list K2)))
+          (neg2 (extract-negative-clauses lambda (list K1))))
+      (cond
+       ((and pos1 neg1)
+        (union-aux pos1 neg1 lambda 1))
+       ((and pos2 neg2)
+        (union-aux neg2 pos2 lambda 2))
+       (T NIL))))) ;Solo llega aqui si no es posible la resolucion
 ;;
 ;;  EJEMPLOS:
 ;;
 (resolve-on 'p '(a b (~ c) p) '((~ p) b a q r s))
 ;; (((~ C) B A Q R S))
 
-(resolve-on 'p '(a b (~ c) (~ p)) '( p b a q r s))
+(resolve-on 'p '(a b (~ c) (~ p)) '(p b a q r s))
 ;; (((~ C) B A Q R S))
 
 (resolve-on 'p '(p) '((~ p)))
 ;; (NIL)
-
 
 (resolve-on 'p NIL '(p b a q r s))
 ;; NIL
@@ -1186,12 +1197,15 @@
 ;;            
 ;; EVALUA A : RES_lambda(cnf) con las clauses repetidas eliminadas
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun build-RES (lambda cnf)
-  ;;
-  ;; 4.4.5 Completa el codigo
-  ;;
-)
+(defun build-res-aux (lambda list cnf) ;aplica resolve-on de list sobre cada una
+  (if (or (null list) (null cnf))      ;de las listas en cnf
+      NIL
+    ()))
 
+(defun build-RES (lambda cnf)
+  (if (null cnf)
+      NIL
+    ()))
 ;;
 ;;  EJEMPLOS:
 ;;
@@ -1222,10 +1236,9 @@
 ;;                NIL  si cnf es UNSAT
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun  RES-SAT-p (cnf) 
-  ;;
-  ;; 4.5 Completa el codigo
-  ;;
-  )
+  (if (null cnf)
+      NIL
+    ()))
 
 ;;
 ;;  EJEMPLOS:
