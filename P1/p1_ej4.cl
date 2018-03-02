@@ -1236,6 +1236,28 @@
 ;; EVALUA A :	T  si cnf es SAT
 ;;                NIL  si cnf es UNSAT
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun check-same-cl (K1 K2) ;Comprueba si dos clausulas son equivalentes
+  (if (and (null K1) (null K2))
+      T
+    (if (member (first K1) K2 :test #'equal)
+        (check-same-cl (rest K1) 
+                       (remove 
+                        (first K1) 
+                        (copy-list K2) 
+                        :count 1 :test #'equal))
+      NIL)))
+
+(defun check-same-list (l1 l2) ;Comprueba si dos listas tienen las mismas
+  (if (null l2)                ;cláusulas, o si la segunda está contenida en la
+      T                        ;primera
+    (if (member (first l2) l1 :test #'check-same-cl)
+        (check-same-list (remove 
+                          (first l2) 
+                          (copy-list l1) 
+                          :count 1 :test #'check-same-cl)
+                         (rest l2))
+      NIL)))
+
 (defun extract-atoms-aux (list)
   (if (null list) 
       NIL
@@ -1246,17 +1268,27 @@
 (defun extract-atoms (lol)
   (if (null lol) 
       NIL
-    (if)))
+    (eliminate-repeated-literals (mapcan #'extract-atoms-aux lol))))
 
-(extract-atoms '((a b d) ((~ p) q) ((~ c) a b) ((~ b) (~ p) d) (c d (~ a))))
 (defun  RES-SAT-p (cnf) 
   (if (null cnf)
       T
-    (mapcan #'(lambda (x) 
-                (build-res x cnf))
-      (extract-literals cnf))))
-
-;;build-RES lambda cnf
+    (if (member nil cnf)
+        NIL
+      (let ((lista (mapcar #'(lambda (x) 
+                               (build-RES x cnf))
+                     (extract-atoms cnf))))
+        (if (member '(nil) lista :test #'equal) ;Si hemos derivado la cláusula vacía
+            NIL
+          (let ((l-new-knowlg (simplify-cnf (apply #'append lista))))
+            (if (null l-new-knowlg) ;Cláusula vacía
+                NIL
+              (if (check-same-list cnf l-new-knowlg) ;Si no hemos adquirido nuevo
+                  T                                  ;conocimiento
+                (RES-SAT-p (union ;Si hemos adquirido nuevo conocimiento seguimos
+                            l-new-knowlg 
+                            cnf 
+                            :test #'check-same-cl))))))))))
 ;;
 ;;  EJEMPLOS:
 ;;
