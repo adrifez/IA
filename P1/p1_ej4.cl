@@ -1139,30 +1139,27 @@
 ;;                          sobre K1 y K2, con los literales repetidos 
 ;;                          eliminados
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun resolve-on-aux (lambda K1 K2 founded)
-  (if (null K1) ;Cuando termina K1 comprobamos si hemos encontrado lambda y not-lambda
-      (if (eq founded NIL)
-          NIL
-        (if (null K2) '(NIL) K2))
-    (let ((el (first K1))
-          (res (rest K1))
-          (lambda-neg (invert lambda)))
-      (cond
-       ((member el K2 :test #'equal) ;Si esta repetido lo omitimos
-        (resolve-on-aux lambda res K2 founded))
-       ((and (member el K2 :test #'equal-inv) ;Si encontramos lambda y not-lambda
-             (or (equal lambda el)
-                 (equal lambda-neg el)))
-        (resolve-on-aux lambda res (remove el (copy-list K2) :test #'equal-inv) T))
-       (T (let ((out (resolve-on-aux lambda res K2 founded))) ;Si no esta repetido lo agregamos 
-            (if (eq out nil)                              ;en caso de encontrar lambda y not-lambda
-                out                                       ;en caso contrario, arrastamos el nil
-              (cons el out))))))))
+(defun union-aux (LL1 LL2 lambda flag)
+  (let ((L1 (copy-list (first LL1)))
+        (L2 (copy-list (first LL2)))
+        (lambda-conj (invert lambda)))
+  (if (= flag 1)
+      (list (union (remove lambda L1) (remove lambda-conj L2 :test #'equal)))
+    (list (union (remove lambda-conj L1 :test #'equal) (remove lambda L2))))))
 
 (defun resolve-on (lambda K1 K2) 
   (if (or (null K1) (null K2))
       '()
-    (resolve-on-aux lambda K1 K2 NIL)))
+    (let ((pos1 (extract-positive-clauses lambda (list K1)))
+          (neg1 (extract-negative-clauses lambda (list K2)))
+          (pos2 (extract-positive-clauses lambda (list K2)))
+          (neg2 (extract-negative-clauses lambda (list K1))))
+      (cond
+       ((and pos1 neg1)
+        (union-aux pos1 neg1 lambda 1))
+       ((and pos2 neg2)
+        (union-aux neg2 pos2 lambda 2))
+       (T NIL))))) ;Solo llega aqui si no es posible la resolucion
 ;;
 ;;  EJEMPLOS:
 ;;
@@ -1199,20 +1196,12 @@
 (defun build-res-aux (lambda list cnf) ;aplica resolve-on de list sobre cada una
   (if (or (null list) (null cnf))      ;de las listas en cnf
       NIL
-    (let ((output (resolve-on lambda list (first cnf)))
-          (next (build-res-aux lambda list (rest cnf))))
-      (if (null output)
-          next
-        (cons output next)))))
+    ()))
 
 (defun build-RES (lambda cnf)
   (if (null cnf)
       NIL
-    (let ((output (build-res-aux lambda (first cnf) (rest cnf))))
-      (if ())
-      (eliminate-repeated-clauses
-       (append output (build-RES lambda (rest cnf)))))))
-
+    ()))
 ;;
 ;;  EJEMPLOS:
 ;;
