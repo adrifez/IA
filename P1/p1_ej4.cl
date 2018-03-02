@@ -1199,17 +1199,19 @@
 (defun build-res-aux (lambda list cnf) ;aplica resolve-on de list sobre cada una
   (if (or (null list) (null cnf))      ;de las listas en cnf
       NIL
-    (let ((output (resolve-on lambda list (first cnf))))
+    (let ((output (resolve-on lambda list (first cnf)))
+          (next (build-res-aux lambda list (rest cnf))))
       (if (null output)
-          (build-res-aux lambda list (rest cnf))
-        (cons output (build-res-aux lambda list (rest cnf)))))))
+          next
+        (cons output next)))))
 
 (defun build-RES (lambda cnf)
   (if (null cnf)
       NIL
-    (eliminate-repeated-clauses
-     (append (build-res-aux lambda (first cnf) (rest cnf))
-             (build-RES lambda (rest cnf))))))
+    (let ((output (build-res-aux lambda (first cnf) (rest cnf))))
+      (if ())
+      (eliminate-repeated-clauses
+       (append output (build-RES lambda (rest cnf)))))))
 
 ;;
 ;;  EJEMPLOS:
@@ -1243,7 +1245,7 @@
 (defun  RES-SAT-p (cnf) 
   (if (null cnf)
       NIL
-    ())
+    ()))
 
 ;;
 ;;  EJEMPLOS:
