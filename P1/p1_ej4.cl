@@ -1160,9 +1160,9 @@
           (neg2 (extract-negative-clauses lambda (list K1))))
       (cond
        ((and pos1 neg1)
-        (union-aux pos1 neg1 lambda 1))
+        (union-aux pos1 neg1 lambda 1)) ;res on lambda:lambda-conj
        ((and pos2 neg2)
-        (union-aux neg2 pos2 lambda 2))
+        (union-aux neg2 pos2 lambda 2)) ;res on lambda-conj:lambda
        (T NIL))))) ;Solo llega aqui si no es posible la resolucion
 ;;
 ;;  EJEMPLOS:
@@ -1205,7 +1205,11 @@
 (defun build-RES (lambda cnf)
   (if (null cnf)
       NIL
-    ()))
+    (let ((pos (extract-positive-clauses lambda cnf))
+          (neg (extract-negative-clauses lambda cnf))
+          (neu (extract-neutral-clauses lambda cnf)))
+      
+       )))
 ;;
 ;;  EJEMPLOS:
 ;;
