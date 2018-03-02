@@ -1195,20 +1195,18 @@
 ;;            
 ;; EVALUA A : RES_lambda(cnf) con las clauses repetidas eliminadas
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun build-res-aux (lambda list cnf) ;aplica resolve-on de list sobre cada una
-  (if (or (null list) (null cnf))      ;de las listas en cnf
-      NIL
-    ()))
-
 (defun build-RES (lambda cnf)
   (if (null cnf)
       NIL
     (let ((pos (extract-positive-clauses lambda cnf))
           (neg (extract-negative-clauses lambda cnf))
           (neu (extract-neutral-clauses lambda cnf)))
-      (mapcar #'(lambda (x) (union )) neu)
-      
-       )))
+      (eliminate-repeated-clauses 
+       (append 
+        neu 
+        (mapcan #'(lambda(x) 
+                    (mapcan #'(lambda (y) (resolve-on lambda x y)) neg))
+          pos))))))
 ;;
 ;;  EJEMPLOS:
 ;;
@@ -1238,11 +1236,27 @@
 ;; EVALUA A :	T  si cnf es SAT
 ;;                NIL  si cnf es UNSAT
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun extract-atoms-aux (list)
+  (if (null list) 
+      NIL
+    (if (positive-literal-p (first list))
+        (cons (first list) (extract-atoms-aux (rest list)))
+      (extract-atoms-aux (rest list)))))
+
+(defun extract-atoms (lol)
+  (if (null lol) 
+      NIL
+    (if)))
+
+(extract-atoms '((a b d) ((~ p) q) ((~ c) a b) ((~ b) (~ p) d) (c d (~ a))))
 (defun  RES-SAT-p (cnf) 
   (if (null cnf)
-      NIL
-    ()))
+      T
+    (mapcan #'(lambda (x) 
+                (build-res x cnf))
+      (extract-literals cnf))))
 
+;;build-RES lambda cnf
 ;;
 ;;  EJEMPLOS:
 ;;
