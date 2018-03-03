@@ -1321,11 +1321,21 @@
 ;;            NIL en caso de que no sea consecuencia logica.  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun logical-consequence-RES-SAT-p (wff w)
-  ;;
-  ;; 4.6 Completa el codigo
-  ;;
-  )
-
+  (if (or (null wff) (eq w nil))
+      NIL
+    (let ((fnc (append           ;Incluimos la negación de la meta en la
+                (simplify-cnf    ;base de conocimiento
+                 (wff-infix-to-cnf 
+                  (prefix-to-infix 
+                   (reduce-scope-of-negation
+                    (list +not+ (eliminate-conditional 
+                                 (eliminate-biconditional 
+                                  (infix-to-prefix w)))))))) 
+                (simplify-cnf 
+                 (wff-infix-to-cnf wff)))))
+      (if (eq (RES-SAT-p fnc) nil) ;Si derivamos la cláusula vacía con
+          T                        ;w negado, entonces es consecuencia lógica
+        NIL))))                    ;si no, no
 ;;
 ;;  EJEMPLOS:
 ;;
@@ -1386,5 +1396,5 @@
   'q) ;; NIL
  (logical-consequence-RES-SAT-p 
   '(((~ p) => q) ^ (p <=> ((~ a) ^ b)) ^ ( (~ p) => (r  ^ (~ q)))) 
-  '(~ q)))
+  '(~ q))) ;;NIL
 
