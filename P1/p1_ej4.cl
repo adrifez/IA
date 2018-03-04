@@ -184,7 +184,7 @@
                             (wff-infix-p rest_1)
                             (eql second (first rest_2))))))
                 ((n-ary-connector-p first) (null (second x)))  ;; Si solo hay un conector n-ario
-                (t NIL)))))))                   ;; No es FBF en formato prefijo  
+                (t NIL)))))))                   ;; No es FBF en formato infijo  
 
 ;;
 ;; EJEMPLOS:
@@ -362,7 +362,7 @@
   (when (wff-prefix-p wff)
     (when (not (literal-p wff))
       (and
-       (eql (first wff) +or+)
+       (eq (first wff) +or+)
        (clause-aux (rest wff))))))
 
 ;;
@@ -402,7 +402,7 @@
   (when (wff-prefix-p wff)
     (when (not (literal-p wff))
         (and
-         (eql (first wff) +and+)
+         (eq (first wff) +and+)
          (cnf-aux (rest wff))))))
 
 ;;
@@ -924,7 +924,7 @@
 ;; EVALUA a : T si K es tautologia
 ;;            NIL en caso contrario
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun equal-inv (lit1 lit2) ;; T si son dos literales conjugados
+(defun conjugado (lit1 lit2) ;; T si son dos literales conjugados
   (when (and (literal-p lit1) (literal-p lit2))
     (or (and (positive-literal-p lit1)
              (negative-literal-p lit2)
@@ -935,12 +935,9 @@
   
 
 (defun tautology-p-aux (lst)
-  (cond ((null lst)
-         NIL)
-        ((member (first lst) (rest lst) :test #'equal-inv)
-         T)
-        (T
-         (tautology-p-aux (rest lst)))))
+  (unless (null lst)
+    (or (member (first lst) (rest lst) :test #'conjugado)
+        (not (null (tautology-p-aux (rest lst)))))))
 
 (defun tautology-p (K) 
   (when (clause-lst-p K)
@@ -1021,7 +1018,7 @@
 ;;            que no contienen el literal lambda ni ~lambda   
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun equal-literal (lit1 lit2)
-  (or (equal lit1 lit2) (equal-inv lit1 lit2)))
+  (or (equal lit1 lit2) (conjugado lit1 lit2)))
 
 (defun extract-neutral-clauses-aux (lit lst)
   (if (null lst)
