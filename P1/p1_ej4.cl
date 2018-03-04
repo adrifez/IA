@@ -1192,19 +1192,18 @@
 ;;            
 ;; EVALUA A : RES_lambda(cnf) con las clauses repetidas eliminadas
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun build-res-aux (lambda list cnf) ;aplica resolve-on de list sobre cada una
-  (if (or (null list) (null cnf))      ;de las listas en cnf
-      NIL
-    ()))
-
 (defun build-RES (lambda cnf)
   (if (null cnf)
       NIL
     (let ((pos (extract-positive-clauses lambda cnf))
           (neg (extract-negative-clauses lambda cnf))
           (neu (extract-neutral-clauses lambda cnf)))
-      
-       )))
+      (eliminate-repeated-clauses 
+       (append 
+        neu 
+        (mapcan #'(lambda(x) 
+                    (mapcan #'(lambda (y) (resolve-on lambda x y)) neg))
+          pos))))))
 ;;
 ;;  EJEMPLOS:
 ;;
@@ -1234,11 +1233,59 @@
 ;; EVALUA A :	T  si cnf es SAT
 ;;                NIL  si cnf es UNSAT
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun check-same-cl (K1 K2) ;Comprueba si dos clausulas son equivalentes
+  (if (and (null K1) (null K2))
+      T
+    (if (member (first K1) K2 :test #'equal)
+        (check-same-cl (rest K1) 
+                       (remove 
+                        (first K1) 
+                        (copy-list K2) 
+                        :count 1 :test #'equal))
+      NIL)))
+
+(defun check-same-list (l1 l2) ;Comprueba si dos listas tienen las mismas
+  (if (null l2)                ;cláusulas, o si la segunda está contenida en la
+      T                        ;primera
+    (if (member (first l2) l1 :test #'check-same-cl)
+        (check-same-list (remove 
+                          (first l2) 
+                          (copy-list l1) 
+                          :count 1 :test #'check-same-cl)
+                         (rest l2))
+      NIL)))
+
+(defun extract-atoms-aux (list)
+  (if (null list) 
+      NIL
+    (if (positive-literal-p (first list))
+        (cons (first list) (extract-atoms-aux (rest list)))
+      (extract-atoms-aux (rest list)))))
+
+(defun extract-atoms (lol)
+  (if (null lol) 
+      NIL
+    (eliminate-repeated-literals (mapcan #'extract-atoms-aux lol))))
+
 (defun  RES-SAT-p (cnf) 
   (if (null cnf)
-      NIL
-    ()))
-
+      T
+    (if (member nil cnf)
+        NIL
+      (let ((lista (mapcar #'(lambda (x) 
+                               (build-RES x cnf))
+                     (extract-atoms cnf))))
+        (if (member '(nil) lista :test #'equal) ;Si hemos derivado la cláusula vacía
+            NIL
+          (let ((l-new-knowlg (simplify-cnf (apply #'append lista))))
+            (if (null l-new-knowlg) ;Cláusula vacía
+                NIL
+              (if (check-same-list cnf l-new-knowlg) ;Si no hemos adquirido nuevo
+                  T                                  ;conocimiento
+                (RES-SAT-p (union ;Si hemos adquirido nuevo conocimiento seguimos
+                            l-new-knowlg 
+                            cnf 
+                            :test #'check-same-cl))))))))))
 ;;
 ;;  EJEMPLOS:
 ;;
@@ -1271,11 +1318,21 @@
 ;;            NIL en caso de que no sea consecuencia logica.  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun logical-consequence-RES-SAT-p (wff w)
-  ;;
-  ;; 4.6 Completa el codigo
-  ;;
-  )
-
+  (if (or (null wff) (eq w nil))
+      NIL
+    (let ((fnc (append           ;Incluimos la negación de la meta en la
+                (simplify-cnf    ;base de conocimiento
+                 (wff-infix-to-cnf 
+                  (prefix-to-infix 
+                   (reduce-scope-of-negation
+                    (list +not+ (eliminate-conditional 
+                                 (eliminate-biconditional 
+                                  (infix-to-prefix w)))))))) 
+                (simplify-cnf 
+                 (wff-infix-to-cnf wff)))))
+      (if (eq (RES-SAT-p fnc) nil) ;Si derivamos la cláusula vacía con
+          T                        ;w negado, entonces es consecuencia lógica
+        NIL))))                    ;si no, no
 ;;
 ;;  EJEMPLOS:
 ;;
@@ -1336,5 +1393,5 @@
   'q) ;; NIL
  (logical-consequence-RES-SAT-p 
   '(((~ p) => q) ^ (p <=> ((~ a) ^ b)) ^ ( (~ p) => (r  ^ (~ q)))) 
-  '(~ q)))
+  '(~ q))) ;;NIL
 
