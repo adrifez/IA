@@ -1350,7 +1350,7 @@
 (logical-consequence-RES-SAT-p '((p => q) ^ p) 'q)
 ;; T
 
-(logical-consequence-RES-SAT-p '((p => q) ^ p) '(~q))
+(logical-consequence-RES-SAT-p '((p => q) ^ p) '(~ q))
 ;; NIL
 
 (logical-consequence-RES-SAT-p 
