@@ -127,9 +127,9 @@
     (let* ((sensor (first sensors))
            (planet (first sensor))
            (cost (second sensor)))
-      (if (equal state planet)
-          cost
-        (f-h-galaxy state (rest sensors))))))
+      (if (equal state planet)                     ; Si encuentra el planeta
+          cost                                     ; devuelve el coste
+        (f-h-galaxy state (rest sensors))))))      ; Si no continua evaluando
     
 
 (f-h-galaxy 'Sirtis *sensors*) ;-> 0
@@ -147,7 +147,6 @@
 ;;
 ;; BEGIN: Exercise 2 -- Navigation operators
 ;;
-
 (defun find-lnks (state links forbidden)
   (unless (null links)
     (let ((link (first links))
@@ -158,7 +157,7 @@
                 found-links)
         found-links))))                                              ; Si no, seguimos evaluando
 
-(find-lnks 'Mallory *white-holes*)
+(find-lnks 'Mallory *white-holes* '())
 
 
 (defun navigate (state holes forbidden funct-name)
@@ -208,15 +207,24 @@
 ;;
 ;; BEGIN: Exercise 3 -- Goal test
 ;;
-
 (defun check-mandatory (node mandatory)
-  (if (null mandatory)
-      T
-    ))
+  (unless (null node)                                    ; Si node es NIL no se han alcanzado mandatory
+    (let* ((parent (node-parent node))                   ; Padre del nodo
+           (state (find (node-state node)                ; Etiqueta del nodo si es mandatory,
+                        mandatory                        ; NIL en caso contrario
+                        :test #'eql))
+           (new-mandatory (remove state mandatory)))     ; Mandatory sin state
+      (if (null mandatory)                                           ; Caso base
+          T                                                          ; Caso recurrente
+        (or (check-mandatory (node-parent node) new-mandatory)
+            (null new-mandatory))))))
+
 
 (defun f-goal-test-galaxy (node planets-destination planets-mandatory) 
-  (unless (null (node-parent node))
-    ()))
+  (and (check-mandatory node planets-mandatory)         ; Debe haber alcanzado los mandatorios
+       (not (null (member (node-state node)             ; Y ser destino
+                          planets-destination
+                          :test #'eql)))))
 
 
 (defparameter node-01
@@ -227,6 +235,12 @@
   (make-node :state 'Katril :parent node-02))
 (defparameter node-04
   (make-node :state 'Kentares :parent node-03))
+
+(check-mandatory node-01 '(Avalon Katril)); -> NIL
+(check-mandatory node-02 '(Avalon Katril)); -> NIL
+(check-mandatory node-03 '(Avalon Katril)); -> T
+(check-mandatory node-04 '(Avalon Katril)); -> T
+
 (f-goal-test-galaxy node-01 '(kentares urano) '(Avalon Katril)); -> NIL
 (f-goal-test-galaxy node-02 '(kentares urano) '(Avalon Katril)); -> NIL
 (f-goal-test-galaxy node-03 '(kentares urano) '(Avalon Katril)); -> NIL
@@ -250,8 +264,15 @@
    :f-goal-test       #'(lambda (node) 
                           (f-goal-test-galaxy node *planets-destination*
                                                    *planets-mandatory*))
-   :f-h               ...
-   :operators         (list ...))) 
+   :f-h               #'(lambda (node)
+                          (f-h-galaxy node *sensors*))
+   :operators         (list #'(lambda (node) (navigate-white-hole
+                                              node
+                                              *white-holes*))
+                            #'(lambda (node) (navigate-worm-hole
+                                              node
+                                              *worm-holes*
+                                              *planets-forbidden*))))) 
 
 ;;
 ;;  END: Exercise 4 -- Define the galaxy structure
@@ -264,7 +285,23 @@
 ;; BEGIN Exercise 5: Expand node
 ;;
 (defun expand-node (node problem)
-  ...)
+  (mapcan
+      #'(lambda (oper)                             ; Para cada operador del problema
+          (mapcar #'(lambda (act)                  ; Para cada accion del del nodo con el operador
+                      (let ((gfun (+ (node-g node)                  ; g es la suma del g del nodo
+                                     (action-cost act)))            ; y el coste de la accion
+                            (hfun (funcall (problem-f-h problem)    ; h es la funcion f del problema
+                                           (action-final act))))    ; evaluada en el final de la accion
+                        (make-node :state (action-final act)        ; state es el final de la accion
+                                   :parent node                     ; parent es el nodo original
+                                   :action act                      ; action es la accion que estamos evaluando
+                                   :depth (+ (node-depth node) 1)   ; profundidad del nodo mas 1
+                                   :g gfun
+                                   :h hfun
+                                   :f (+ gfun hfun))))              ; f es la suma de g h
+            (funcall oper (node-state node))))
+    (problem-operators problem)))
+
 
 (expand-node (make-node :state 'Kentares :depth 0 :g 0 :f 0) *galaxy-M35*)
 ;;;(#S(NODE :STATE AVALON
@@ -328,9 +365,41 @@
 ;;;
 ;;;  BEGIN Exercise 6 -- Node list management
 ;;;  
-(defun insert-nodes-strategy (nodes lst-nodes strategy)
-  ...)
+(defun insert-node-strategy (node lst-nodes strategy)
+  (unless (null lst-nodes)                                    ; Si la lista de nodos es vacia devolvemos NIL
+    (let* ((sorted-node (first lst-nodes))                    ; Primer nodo de la listad de ordenados
+           (res (funcall (strategy-node-compare-p strategy)   ; Resultado de aplicar la estrategia
+                         node                                 ; al nodo evaluado
+                         sorted-node)))                       ; con el primer nodo de la lista ordenada
+      (cond (res
+             (cons node                                       ; Caso base
+                   lst-nodes))
+            ((null (second lst-nodes))                        ; Caso base
+             (append lst-nodes (list node)))
+            (T
+             (cons sorted-node                                ; Caso recursivo
+                   (insert-node-strategy node
+                                         (rest lst-nodes)
+                                         strategy)))))))
 
+
+(defun insert-nodes-strategy (nodes lst-nodes strategy)
+  (unless (null nodes)                                        ; Si la lista de nodos es vacia devolvemos NIL
+    (let* ((node (first nodes))                               ; Primer nodo a evaluar
+           (new-lst-nodes (insert-node-strategy node          ; Nueva lista con el nodo insertado correctamente
+                                                lst-nodes
+                                                strategy)))
+      (if (null (second nodes))                               ; Caso base  
+          new-lst-nodes
+        (insert-nodes-strategy (rest nodes)                   ; Caso recursivo
+                               new-lst-nodes
+                               strategy)))))
+
+
+(insert-nodes-strategy '(8)
+                       '(1 3 5 7) 
+                       (make-strategy :name 'simple
+                                      :node-compare-p #'<))
 
 (defparameter node-01
    (make-node :state 'Avalon :depth 0 :g 0 :f 0) )
