@@ -148,12 +148,34 @@
 ;; BEGIN: Exercise 2 -- Navigation operators
 ;;
 
+(defun find-lnks (state links forbidden)
+  (unless (null links)
+    (let ((link (first links))
+          (found-links (find-lnks state (rest links) forbidden)))
+      (if (and (eql state (first link))                              ; Si el origen es el estado actual
+               (not (member (second link) forbidden :test #'eql)))   ; y el destino no esta prohibido (worm-holes)
+          (cons (first links)                                        ; Incluimos el link como permitido
+                found-links)
+        found-links))))                                              ; Si no, seguimos evaluando
+
+(find-lnks 'Mallory *white-holes*)
+
+
+(defun navigate (state holes forbidden funct-name)
+  (let ((actions (find-lnks state holes forbidden)))
+    (mapcar #'(lambda (act) (make-action :name funct-name        ; Para cada link posible, creamos una accion
+                                         :origin (first act)
+                                         :final (second act)
+                                         :cost (third act)))
+      actions)))
+
 
 (defun navigate-white-hole (state white-holes)
-  ...)
+  (navigate state white-holes '() 'navigate-white-hole))
+
 
 (defun navigate-worm-hole (state worm-holes planets-forbidden)
-  ...)
+  (navigate state worm-holes planets-forbidden 'navigate-worm-hole))
 
 
 (navigate-worm-hole 'Mallory *worm-holes* *planets-forbidden*)  ;-> 
@@ -172,6 +194,7 @@
 ;;; #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN KENTARES :FINAL PROSERPINA :COST 7))
 
 
+(navigate-white-hole 'Uranus *white-holes*)  ;-> NIL
 (navigate-worm-hole 'Uranus *worm-holes* *planets-forbidden*)  ;-> NIL
 
 
@@ -186,18 +209,24 @@
 ;; BEGIN: Exercise 3 -- Goal test
 ;;
 
+(defun check-mandatory (node mandatory)
+  (if (null mandatory)
+      T
+    ))
+
 (defun f-goal-test-galaxy (node planets-destination planets-mandatory) 
-  ...)
+  (unless (null (node-parent node))
+    ()))
 
 
 (defparameter node-01
-   (make-node :state 'Avalon) )
+  (make-node :state 'Avalon))
 (defparameter node-02
-   (make-node :state 'Kentares :parent node-01))
+  (make-node :state 'Kentares :parent node-01))
 (defparameter node-03
-   (make-node :state 'Katril :parent node-02))
+  (make-node :state 'Katril :parent node-02))
 (defparameter node-04
-   (make-node :state 'Kentares :parent node-03))
+  (make-node :state 'Kentares :parent node-03))
 (f-goal-test-galaxy node-01 '(kentares urano) '(Avalon Katril)); -> NIL
 (f-goal-test-galaxy node-02 '(kentares urano) '(Avalon Katril)); -> NIL
 (f-goal-test-galaxy node-03 '(kentares urano) '(Avalon Katril)); -> NIL
