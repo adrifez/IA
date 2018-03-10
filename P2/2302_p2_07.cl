@@ -147,22 +147,22 @@
 ;;
 ;; BEGIN: Exercise 2 -- Navigation operators
 ;;
-(defun find-lnks (state links forbidden)
+(defun possible_links (state links forbidden)
   (unless (null links)
     (let ((link (first links))
-          (found-links (find-lnks state (rest links) forbidden)))
-      (if (and (eql state (first link))                              ; Si el origen es el estado actual
-               (not (member (second link) forbidden :test #'eql)))   ; y el destino no esta prohibido (worm-holes)
-          (cons (first links)                                        ; Incluimos el link como permitido
+          (found-links (possible_links state (rest links) forbidden)))
+      (if (and (eql state (first link))                                 ; Si el origen es el estado actual
+               (not (member (second link) forbidden :test #'eql)))      ; y el destino no esta prohibido
+          (cons (first links)                                           ; Incluimos el link como permitido
                 found-links)
-        found-links))))                                              ; Si no, seguimos evaluando
+        found-links))))                                                 ; Si no, seguimos evaluando
 
-(find-lnks 'Mallory *white-holes* '())
+(possible_links 'Mallory *white-holes* '())
 
 
-(defun navigate (state holes forbidden funct-name)
-  (let ((actions (find-lnks state holes forbidden)))
-    (mapcar #'(lambda (act) (make-action :name funct-name        ; Para cada link posible, creamos una accion
+(defun navigate (state holes forbidden action-name)
+  (let ((actions (possible_links state holes forbidden)))
+    (mapcar #'(lambda (act) (make-action :name action-name        ; Para cada link posible, creamos una accion
                                          :origin (first act)
                                          :final (second act)
                                          :cost (third act)))
