@@ -285,21 +285,20 @@
 ;; BEGIN Exercise 5: Expand node
 ;;
 (defun expand-node (node problem)
-  (mapcan
-      #'(lambda (oper)                             ; Para cada operador del problema
-          (mapcar #'(lambda (act)                  ; Para cada accion del del nodo con el operador
-                      (let ((gfun (+ (node-g node)                  ; g es la suma del g del nodo
-                                     (action-cost act)))            ; y el coste de la accion
-                            (hfun (funcall (problem-f-h problem)    ; h es la funcion f del problema
-                                           (action-final act))))    ; evaluada en el final de la accion
-                        (make-node :state (action-final act)        ; state es el final de la accion
-                                   :parent node                     ; parent es el nodo original
-                                   :action act                      ; action es la accion que estamos evaluando
-                                   :depth (+ (node-depth node) 1)   ; profundidad del nodo mas 1
-                                   :g gfun
-                                   :h hfun
-                                   :f (+ gfun hfun))))              ; f es la suma de g h
-            (funcall oper (node-state node))))
+  (mapcan #'(lambda (oper)                             ; Para cada operador del problema
+              (mapcar #'(lambda (act)                  ; Para cada accion del del nodo con el operador
+                          (let ((gfun (+ (node-g node)                  ; g es la suma del g del nodo
+                                         (action-cost act)))            ; y el coste de la accion
+                                (hfun (funcall (problem-f-h problem)    ; h es la funcion f del problema
+                                               (action-final act))))    ; evaluada en el final de la accion
+                            (make-node :state (action-final act)        ; state es el final de la accion
+                                       :parent node                     ; parent es el nodo original
+                                       :action act                      ; action es la accion evaluada
+                                       :depth (+ (node-depth node) 1)   ; profundidad del nodo mas 1
+                                       :g gfun
+                                       :h hfun
+                                       :f (+ gfun hfun))))              ; f es la suma de g h
+                (funcall oper (node-state node))))
     (problem-operators problem)))
 
 
@@ -374,7 +373,7 @@
       (cond (res
              (cons node                                       ; Caso base
                    lst-nodes))
-            ((null (second lst-nodes))                        ; Caso base
+            ((null (second lst-nodes))                        ; Si llegamos al final de la lista
              (append lst-nodes (list node)))
             (T
              (cons sorted-node                                ; Caso recursivo
@@ -396,7 +395,7 @@
                                strategy)))))
 
 
-(insert-nodes-strategy '(8)
+(insert-nodes-strategy '(4 8 6 2)
                        '(1 3 5 7) 
                        (make-strategy :name 'simple
                                       :node-compare-p #'<))
