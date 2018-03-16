@@ -466,9 +466,14 @@
 ;; us which nodes should be analyzed first. In the A* strategy, the first 
 ;; node to be analyzed is the one with the smallest value of g+h
 ;;
+(defun node-f-p (node-1 node-2)
+  (< (node-f node-1)
+     (node-f node-2)))
 
 (defparameter *A-star*
-  (make-strategy ...))
+  (make-strategy 
+   :name 'A-star
+   :node-compare-p #'node-f-p))
 
 ;;
 ;; END: Exercise 7 -- Definition of the A* strategy
