@@ -14,13 +14,16 @@
 ;;    Problem definition
 ;;
 (defstruct problem
-  states              ; List of states
-  initial-state       ; Initial state
-  f-goal-test         ; reference to a function that determines whether 
-                      ; a state fulfills the goal 
-  f-h                 ; reference to a function that evaluates to the 
-                      ; value of the heuristic of a state
-  operators)          ; list of operators (references to functions) to generate succesors
+  states               ; List of states
+  initial-state        ; Initial state
+  f-h                  ; reference to a function that evaluates to the 
+                       ; value of the heuristic of a state
+  f-goal-test          ; reference to a function that determines whether 
+                       ; a state fulfils the goal 
+  f-search-state-equal ; reference to a predictate that determines whether
+                       ; two nodes are equal, in terms of their search state      
+  operators)           ; list of operators (references to functions) to 
+                       ; generate successors
 ;;
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -208,21 +211,21 @@
 ;; BEGIN: Exercise 3 -- Goal test
 ;;
 (defun check-mandatory (node mandatory)
-  (unless (null node)                                    ; Si node es NIL no se han alcanzado mandatory
+  (if (null node)                                        ; Si node es NIL devolvemos mandatory
+      mandatory
     (let* ((parent (node-parent node))                   ; Padre del nodo
            (state (find (node-state node)                ; Etiqueta del nodo si es mandatory,
                         mandatory                        ; NIL en caso contrario
-                        :test #'eql))
+                        :test #'equal))
            (new-mandatory (remove state mandatory)))     ; Mandatory sin state
-      (if (null mandatory)                                           ; Caso base
-          T                                                          ; Caso recurrente
-        (or (check-mandatory (node-parent node) new-mandatory)
-            (null new-mandatory))))))
+      (if (null mandatory)                               ; Caso base
+          ()
+        (check-mandatory parent new-mandatory)))))       ; Caso recurrente
 
 
 (defun f-goal-test-galaxy (node planets-destination planets-mandatory) 
-  (and (check-mandatory node planets-mandatory)         ; Debe haber alcanzado los mandatorios
-       (not (null (member (node-state node)             ; Y ser destino
+  (and (null (check-mandatory node planets-mandatory))   ; Debe haber alcanzado los mandatorios
+       (not (null (member (node-state node)              ; Y ser destino
                           planets-destination
                           :test #'eql)))))
 
@@ -236,10 +239,10 @@
 (defparameter node-04
   (make-node :state 'Kentares :parent node-03))
 
-(check-mandatory node-01 '(Avalon Katril)); -> NIL
-(check-mandatory node-02 '(Avalon Katril)); -> NIL
-(check-mandatory node-03 '(Avalon Katril)); -> T
-(check-mandatory node-04 '(Avalon Katril)); -> T
+(check-mandatory node-01 '(Avalon Katril)); -> (Katril)
+(check-mandatory node-02 '(Avalon Katril)); -> (Katril)
+(check-mandatory node-03 '(Avalon Katril)); -> ()
+(check-mandatory node-04 '(Avalon Katril)); -> ()
 
 (f-goal-test-galaxy node-01 '(kentares urano) '(Avalon Katril)); -> NIL
 (f-goal-test-galaxy node-02 '(kentares urano) '(Avalon Katril)); -> NIL
@@ -254,25 +257,61 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
+;; BEGIN: Exercise  -- Equal predicate for search states
+;;
+
+(defun f-search-state-equal-galaxy (node-1 node-2 &optional planets-mandatory)
+  (and (equal (node-state node-1)                             ; Comparamos el nombre
+              (node-state node-2))
+       (equal (check-mandatory node-1 planets-mandatory)      ; Comparamos los planetas visitados
+              (check-mandatory node-2 planets-mandatory))))
+
+       
+(f-search-state-equal-galaxy node-01 node-01) ;-> T
+(f-search-state-equal-galaxy node-01 node-02) ;-> NIL
+(f-search-state-equal-galaxy node-02 node-04) ;-> T
+
+(f-search-state-equal-galaxy node-01 node-01 '(Avalon)) ;-> T
+(f-search-state-equal-galaxy node-01 node-02 '(Avalon)) ;-> NIL
+(f-search-state-equal-galaxy node-02 node-04 '(Avalon)) ;-> T
+
+(f-search-state-equal-galaxy node-01 node-01 '(Avalon Katril)) ;-> T
+(f-search-state-equal-galaxy node-01 node-02 '(Avalon Katril)) ;-> NIL
+(f-search-state-equal-galaxy node-02 node-04 '(Avalon Katril)) ;-> NIL
+
+
+;;
+;; END: Exercise  -- Equal predicate for search states
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
 ;;  BEGIN: Exercise 4 -- Define the galaxy structure
 ;;
 ;;
 (defparameter *galaxy-M35* 
   (make-problem 
-   :states            *planets*          
-   :initial-state     *planet-origin*
-   :f-goal-test       #'(lambda (node) 
-                          (f-goal-test-galaxy node *planets-destination*
-                                                   *planets-mandatory*))
-   :f-h               #'(lambda (node)
-                          (f-h-galaxy node *sensors*))
-   :operators         (list #'(lambda (node) (navigate-white-hole
-                                              node
-                                              *white-holes*))
-                            #'(lambda (node) (navigate-worm-hole
-                                              node
-                                              *worm-holes*
-                                              *planets-forbidden*))))) 
+   :states               *planets*          
+   :initial-state        *planet-origin*
+   :f-h                  #'(lambda (node)
+                             (f-h-galaxy node *sensors*))
+   :f-goal-test          #'(lambda (node) 
+                             (f-goal-test-galaxy node *planets-destination*
+                                                      *planets-mandatory*))
+   :f-search-state-equal #'(lambda (node-1 node-2)
+                             (f-search-state-equal-galaxy node-1
+                                                          node-2
+                                                          *planets-mandatory*))
+   :operators            (list #'(lambda (node) (navigate-white-hole
+                                                 node
+                                                 *white-holes*))
+                               #'(lambda (node) (navigate-worm-hole
+                                                 node
+                                                 *worm-holes*
+                                                 *planets-forbidden*)))))
 
 ;;
 ;;  END: Exercise 4 -- Define the galaxy structure
@@ -302,55 +341,42 @@
     (problem-operators problem)))
 
 
-(expand-node (make-node :state 'Kentares :depth 0 :g 0 :f 0) *galaxy-M35*)
+(defparameter node-00
+  (make-node :state 'Proserpina :depth 12 :g 10 :f 20))
+
+(defparameter lst-nodes-00
+  (expand-node node-00 *galaxy-M35*))
+
+
+(expand-node node-00 *galaxy-M35*);->
 ;;;(#S(NODE :STATE AVALON
-;;;         :PARENT #S(NODE :STATE KENTARES
-;;;                         :PARENT NIL
-;;;                         :ACTION NIL
-;;;                         :DEPTH 0
-;;;                         :G ...)
-;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE
-;;;                           :ORIGIN KENTARES
-;;;                           :FINAL AVALON
-;;;                           :COST 3)
-;;;         :DEPTH 1
-;;;         :G ...)
-;;; #S(NODE :STATE KATRIL
-;;;         :PARENT #S(NODE :STATE KENTARES
-;;;                         :PARENT NIL
-;;;                         :ACTION NIL
-;;;                         :DEPTH 0
-;;;                         :G ...)
-;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE
-;;;                           :ORIGIN KENTARES
-;;;                           :FINAL KATRIL
-;;;                           :COST 10)
-;;;         :DEPTH 1
-;;;         :G ...)
-;;; #S(NODE :STATE PROSERPINA
-;;;         :PARENT #S(NODE :STATE KENTARES
-;;;                         :PARENT NIL
-;;;                         :ACTION NIL
-;;;                         :DEPTH 0
-;;;                         :G ...)
-;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE
-;;;                           :ORIGIN KENTARES
-;;;                           :FINAL PROSERPINA
-;;;                           :COST 7)
-;;;         :DEPTH 1
-;;;         :G ...)
-;;; #S(NODE :STATE PROSERPINA
-;;;         :PARENT #S(NODE :STATE KENTARES
-;;;                         :PARENT NIL
-;;;                         :ACTION NIL
-;;;                         :DEPTH 0
-;;;                         :G ...)
-;;;         :ACTION #S(ACTION :NAME NAVIGATE-WORM-HOLE
-;;;                           :ORIGIN KENTARES
-;;;                           :FINAL PROSERPINA
-;;;                           :COST 12)
-;;;         :DEPTH 1
-;;;         :G ...))
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL AVALON :COST 8.6)
+;;;         :DEPTH 13   :G 18.6  :H 15  :F 33.6)
+;;; #S(NODE :STATE DAVION
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL DAVION :COST 5)
+;;;         :DEPTH 13   :G 15    :H 5   :F 20)
+;;; #S(NODE :STATE MALLORY
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL MALLORY :COST 15)
+;;;         :DEPTH 13   :G 25    :H 12  :F 37)
+;;; #S(NODE :STATE SIRTIS
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL SIRTIS :COST 12)
+;;;         :DEPTH 13   :G 22    :H 0   :F 22)
+;;; #S(NODE :STATE KENTARES
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WORM-HOLE :ORIGIN PROSERPINA :FINAL KENTARES :COST 12)
+;;;         :DEPTH 13   :G 22    :H 14  :F 36)
+;;; #S(NODE :STATE MALLORY
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WORM-HOLE :ORIGIN PROSERPINA :FINAL MALLORY :COST 11)
+;;;         :DEPTH 13   :G 21    :H 12  :F 33)
+;;; #S(NODE :STATE SIRTIS
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WORM-HOLE :ORIGIN PROSERPINA :FINAL SIRTIS :COST 9)
+;;;         :DEPTH 13   :G 19    :H 0   :F 19))
 
 
 
@@ -371,14 +397,13 @@
            (res (funcall (strategy-node-compare-p strategy)   ; Resultado de aplicar la estrategia
                          node                                 ; al nodo evaluado
                          sorted-node)))                       ; con el primer nodo de la lista ordenada
-      (cond (res
-             (cons node                                       ; Caso base
-                   lst-nodes))
-            (T
-             (cons sorted-node                                ; Caso recursivo
-                   (insert-node-strategy node
-                                         (rest lst-nodes)
-                                         strategy)))))))
+      (if res
+          (cons node                                       ; Caso base
+                lst-nodes)
+        (cons sorted-node                                ; Caso recursivo
+              (insert-node-strategy node
+                                    (rest lst-nodes)
+                                    strategy))))))
 
 
 (defun insert-nodes-strategy (nodes lst-nodes strategy)
@@ -397,116 +422,109 @@
 (insert-nodes-strategy '(4 8 6 2)
                        '(1 3 5 7) 
                        (make-strategy :name 'simple
-                                      :node-compare-p #'<))
+                                      :node-compare-p #'<));-> (1 2 3 4 5 6 7)
 
 
 (defparameter *uniform-cost*
   (make-strategy :name 'uniform-cost
                  :node-compare-p #'(lambda (n1 n2)
-                                     (< (node-g n1) (node-g n2)))))
+                                     (<= (node-g n1)
+                                         (node-g n2)))))
+
+(defparameter node-05
+   (make-node :state 'Avalon :depth 0 :g 0 :f 0) )
+(defparameter node-06
+   (make-node :state 'Kentares :depth 2 :g 50 :f 50))
 
 
-(insert-nodes-strategy (list (make-node :state 'Proserpina :depth 0 :g 5 :f 0)) 
-                       (expand-node (make-node :state 'Kentares :depth 0 :g 0 :f 0)
-                                    *galaxy-M35*) 
-                       *uniform-cost*)
-;;; (#S(NODE :STATE AVALON
-;;;         :PARENT #S(NODE
-;;;                    :STATE
-;;;                    KENTARES
-;;;                    :PARENT
-;;;                    NIL
-;;;                    :ACTION
-;;;                    NIL
-;;;                    :DEPTH
-;;;                    0
-;;;                    :G
-;;;                    ...)
-;;;         :ACTION #S(ACTION
-;;;                    :NAME
-;;;                    NAVIGATE-WHITE-HOLE
-;;;                    :ORIGIN
-;;;                    KENTARES
-;;;                    :FINAL
-;;;                    AVALON
-;;;                    :COST
-;;;                    3)
-;;;         :DEPTH 1
-;;;         :G ...)
-;;; #S(NODE :STATE PROSERPINA
-;;;         :PARENT NIL
-;;;         :ACTION NIL
-;;;         :DEPTH 0
-;;;         :G ...)
-;;; #S(NODE :STATE KATRIL
-;;;         :PARENT #S(NODE
-;;;                    :STATE
-;;;                    KENTARES
-;;;                    :PARENT
-;;;                    NIL
-;;;                    :ACTION
-;;;                    NIL
-;;;                    :DEPTH
-;;;                    0
-;;;                    :G
-;;;                    ...)
-;;;         :ACTION #S(ACTION
-;;;                    :NAME
-;;;                    NAVIGATE-WHITE-HOLE
-;;;                    :ORIGIN
-;;;                    KENTARES
-;;;                    :FINAL
-;;;                    KATRIL
-;;;                    :COST
-;;;                    10)
-;;;         :DEPTH 1
-;;;         :G ...)
-;;; #S(NODE :STATE PROSERPINA
-;;;         :PARENT #S(NODE
-;;;                    :STATE
-;;;                    KENTARES
-;;;                    :PARENT
-;;;                    NIL
-;;;                    :ACTION
-;;;                    NIL
-;;;                    :DEPTH
-;;;                    0
-;;;                    :G
-;;;                    ...)
-;;;         :ACTION #S(ACTION
-;;;                    :NAME
-;;;                    NAVIGATE-WHITE-HOLE
-;;;                    :ORIGIN
-;;;                    KENTARES
-;;;                    :FINAL
-;;;                    PROSERPINA
-;;;                    :COST
-;;;                    7)
-;;;         :DEPTH 1
-;;;         :G ...)
-;;; #S(NODE :STATE PROSERPINA
-;;;         :PARENT #S(NODE
-;;;                    :STATE
-;;;                    KENTARES
-;;;                    :PARENT
-;;;                    NIL
-;;;                    :ACTION
-;;;                    NIL
-;;;                    :DEPTH
-;;;                    0
-;;;                    :G
-;;;                    ...)
-;;;         :ACTION #S(ACTION
-;;;                 :NAME
-;;;                 NAVIGATE-WORM-HOLE
-;;;                 :ORIGIN
-;;;                 KENTARES
-;;;                 :FINAL
-;;;                 PROSERPINA
-;;;                 :COST
-;;;                 12)
-;;;         :DEPTH 1
-;;;         :G ...))
+(insert-nodes-strategy (list node-00 node-05 node-06) 
+                       lst-nodes-00 
+                       *uniform-cost*);->
+;;;(#S(NODE :STATE AVALON 
+;;;         :PARENT NIL 
+;;;         :ACTION NIL 
+;;;         :DEPTH 0 :G 0 :H 0 :F 0)
+;;; #S(NODE :STATE PROSERPINA 
+;;;         :PARENT NIL 
+;;;         :ACTION NIL 
+;;;         :DEPTH 12 :G 10 :H 0 :F 20)
+;;; #S(NODE :STATE AVALON
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL AVALON :COST 8.6)
+;;;         :DEPTH 13    :G 18.6    :H 15    :F 33.6)
+;;; #S(NODE :STATE DAVION
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL DAVION :COST 5)
+;;;         :DEPTH 13    :G 15      :H 5     :F 20)
+;;; #S(NODE :STATE MALLORY
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL MALLORY :COST 15)
+;;;         :DEPTH 13    :G 25      :H 12    :F 37)
+;;; #S(NODE :STATE SIRTIS
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL SIRTIS :COST 12)
+;;;         :DEPTH 13    :G 22      :H 0     :F 22)
+;;; #S(NODE :STATE KENTARES
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WORM-HOLE :ORIGIN PROSERPINA :FINAL KENTARES :COST 12)
+;;;         :DEPTH 13    :G 22      :H 14    :F 36)
+;;; #S(NODE :STATE MALLORY
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WORM-HOLE :ORIGIN PROSERPINA :FINAL MALLORY :COST 11)
+;;;         :DEPTH 13    :G 21      :H 12    :F 33)
+;;; #S(NODE :STATE SIRTIS
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WORM-HOLE :ORIGIN PROSERPINA :FINAL SIRTIS :COST 9)
+;;;         :DEPTH 13    :G 19      :H 0     :F 19)
+;;; #S(NODE :STATE KENTARES 
+;;;         :PARENT NIL 
+;;;         :ACTION NIL 
+;;;         :DEPTH 2 :G 50 :H 0 :F 50)) 
+
+
+(insert-nodes-strategy (list node-00 node-05 node-06) 
+                       (sort (copy-list lst-nodes-00) #'<= :key #'node-g) 
+                       *uniform-cost*);->
+;;;(#S(NODE :STATE AVALON 
+;;;         :PARENT NIL 
+;;;         :ACTION NIL 
+;;;         :DEPTH 0    :G 0     :H 0   :F 0)
+;;; #S(NODE :STATE PROSERPINA 
+;;;         :PARENT NIL 
+;;;         :ACTION NIL 
+;;;         :DEPTH 12   :G 10    :H 0   :F 20)
+;;; #S(NODE :STATE DAVION
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL DAVION :COST 5)
+;;;         :DEPTH 13   :G 15    :H 5   :F 20)
+;;; #S(NODE :STATE AVALON
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL AVALON :COST 8.6)
+;;;         :DEPTH 13   :G 18.6  :H 15  :F 33.6)
+;;; #S(NODE :STATE SIRTIS
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WORM-HOLE :ORIGIN PROSERPINA :FINAL SIRTIS :COST 9)
+;;;         :DEPTH 13   :G 19    :H 0   :F 19)
+;;; #S(NODE :STATE MALLORY
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WORM-HOLE :ORIGIN PROSERPINA :FINAL MALLORY :COST 11)
+;;;         :DEPTH 13   :G 21    :H 12  :F 33)
+;;; #S(NODE :STATE KENTARES
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WORM-HOLE :ORIGIN PROSERPINA :FINAL KENTARES :COST 12)
+;;;         :DEPTH 13   :G 22    :H 14  :F 36)
+;;; #S(NODE :STATE SIRTIS
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL SIRTIS :COST 12)
+;;;         :DEPTH 13   :G 22    :H 0   :F 22)
+;;; #S(NODE :STATE MALLORY
+;;;         :PARENT #S(NODE :STATE PROSERPINA :PARENT NIL :ACTION NIL :DEPTH 12 :G 10 :H 0 :F 20)
+;;;         :ACTION #S(ACTION :NAME NAVIGATE-WHITE-HOLE :ORIGIN PROSERPINA :FINAL MALLORY :COST 15)
+;;;         :DEPTH 13   :G 25    :H 12  :F 37)
+;;; #S(NODE :STATE KENTARES 
+;;;         :PARENT NIL 
+;;;         :ACTION NIL 
+;;;         :DEPTH 2    :G 50    :H 0   :F 50))
  
 
 
@@ -524,14 +542,14 @@
 ;; us which nodes should be analyzed first. In the A* strategy, the first 
 ;; node to be analyzed is the one with the smallest value of g+h
 ;;
-(defun node-f-p (node-1 node-2)
-  (< (node-f node-1)
-     (node-f node-2)))
+(defun node-f-<= (node-1 node-2)
+  (<= (node-f node-1)
+      (node-f node-2)))
 
 (defparameter *A-star*
   (make-strategy 
    :name 'A-star
-   :node-compare-p #'node-f-p))
+   :node-compare-p #'node-f-<=))
 
 ;;
 ;; END: Exercise 7 -- Definition of the A* strategy
@@ -544,32 +562,42 @@
 ;;; 
 ;;;    BEGIN Exercise 8: Search algorithm
 ;;;
-(defun graph-search-rec (open-nodes problem strategy)
-  (unless (null open-nodes)
-    (let* ((node (first open-nodes))
-           (new-lst (rest open-nodes))
-           (test (problem-f-goal-test node)))
-      (cond (test
-             node)
-            (T
-             (graph-search-rec (insert-nodes-strategy (expand-node node problem)
-                                                      new-lst
-                                                      strategy)
-                               problem
-                               strategy))))))
+(defun graph-search-rec (open-nodes closed-nodes problem strategy)
+  (unless (null open-nodes)                                       ; Si no encontramos la meta  
+    (let* ((node (first open-nodes))                              ; node es el primer nodo de la lista-abierta
+           (new-lst (rest open-nodes))                            ; new-lst es el resto de la lista
+           (test (funcall (problem-f-goal-test problem) node)))   ; test es T si node es meta, NIL si no
+      (if test                                                    ; Si node es meta
+          node                                                    ; Devolvemos node
+        (let ((closed-node (find node                                              ; closed-node es el resultado de
+                                 closed-nodes                                      ; buscar node en la lista-cerrada
+                                 :test (problem-f-search-state-equal problem))))   ; con el predicado de igualdad del problema
+          (if (null closed-node)                                                   ; Si no encontramos closed-node
+              (graph-search-rec (insert-nodes-strategy (expand-node node           ; Expandimos node y metemos los
+                                                                    problem)       ; nuevos nodos en la lista-abierta
+                                                       new-lst
+                                                       strategy)
+                                (cons node                                         ; Metemos node en la lista-cerrada
+                                      closed-nodes)
+                                problem
+                                strategy)
+            (graph-search-rec new-lst                                              ; Si lo encontramos, lo ignoramos
+                              closed-nodes
+                              problem
+                              strategy)))))))
 
 
 (defun graph-search (problem strategy)
-  (let* ((name (problem-initial-state problem))
-         (hfun (funcall (problem-f-h problem) name))
-         (node-ini (make-node :state name
+  (let* ((name (problem-initial-state problem))          ; state del nodo inicial
+         (hfun (funcall (problem-f-h problem) name))     ; h del nodo inicial
+         (node-ini (make-node :state name                ; Creamos el nodo inicial
                               :parent NIL
                               :action NIL
                               :h hfun
                               :f hfun))
-         (open-nodes (list node-ini))
-         )
-    (graph-search-rec open-nodes problem strategy)))
+         (open-nodes (list node-ini))                    ; Lista-abierta de nodos
+         (closed-nodes ()))                              ; Lista-cerrada de nodos
+    (graph-search-rec open-nodes closed-nodes problem strategy)))    ; Llamada a la funcion recursiva
 
 
 ;
@@ -586,7 +614,7 @@
 ;;;                        :PARENT #S(NODE :STATE ...)) 
 
 
-(print (a-star-search *galaxy-M35*));->
+(a-star-search *galaxy-M35*);->
 ;;;#S(NODE :STATE ...
 ;;;        :PARENT #S(NODE :STATE ...
 ;;;                        :PARENT #S(NODE :STATE ...)) 
