@@ -126,7 +126,7 @@
 ;;    The cost (a number) or NIL if the state is not in the sensor list
 ;;
 (defun f-h-galaxy (state sensors)
-  (unless (null sensors)
+  (when sensors
     (let* ((sensor (first sensors))
            (planet (first sensor))
            (cost (second sensor)))
@@ -151,7 +151,7 @@
 ;; BEGIN: Exercise 2 -- Navigation operators
 ;;
 (defun possible_links (state links forbidden)
-  (unless (null links)
+  (when links
     (let ((link (first links))
           (found-links (possible_links state (rest links) forbidden)))
       (if (and (eql state (first link))                                 ; Si el origen es el estado actual
@@ -407,7 +407,7 @@
 
 
 (defun insert-nodes-strategy (nodes lst-nodes strategy)
-  (unless (null nodes)                                        ; Si la lista de nodos es vacia devolvemos NIL
+  (when nodes                                                 ; Si la lista de nodos es vacia devolvemos NIL
     (let* ((node (first nodes))                               ; Primer nodo a evaluar
            (new-lst-nodes (insert-node-strategy node          ; Nueva lista con el nodo insertado correctamente
                                                 lst-nodes
@@ -563,7 +563,7 @@
 ;;;    BEGIN Exercise 8: Search algorithm
 ;;;
 (defun graph-search-rec (open-nodes closed-nodes problem strategy)
-  (unless (null open-nodes)                                       ; Si no encontramos la meta  
+  (when open-nodes                                                ; Si no encontramos la meta  
     (let* ((node (first open-nodes))                              ; node es el primer nodo de la lista-abierta
            (new-lst (rest open-nodes))                            ; new-lst es el resto de la lista
            (test (funcall (problem-f-goal-test problem) node)))   ; test es T si node es meta, NIL si no
@@ -632,13 +632,18 @@
 ;;;    BEGIN Exercise 9: Solution path / action sequence
 ;;;
 (defun solution-path (node)
-  ...)
+  (when node                                     ; Cuando no hay nodo devolvemos ()
+    (append (solution-path (node-parent node))   ; Juntamos lo que se obtenga de la llamada del padre
+            (list (node-state node))))))         ; con el nombre del nodo
 
 (solution-path nil) ;;; -> NIL 
 (solution-path (a-star-search *galaxy-M35*))  ;;;-> (MALLORY ...)
 
-(defun action-sequence-aux (node)
-  ...)
+(defun action-sequence (node)
+  (when node                                         ; Cuando no hay nodo devolvemos ()
+    (when (node-action node)                         ; Cuando el nodo no tiene accion devolvemos ()
+      (append (action-sequence (node-parent node))   ; Juntamos lo que se obtenga de la llamada del padre
+              (list (node-action node))))))
 
 (action-sequence (a-star-search *galaxy-M35*))
 ;;; ->
