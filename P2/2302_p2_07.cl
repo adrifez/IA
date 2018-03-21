@@ -634,7 +634,7 @@
 (defun solution-path (node)
   (when node                                     ; Cuando no hay nodo devolvemos ()
     (append (solution-path (node-parent node))   ; Juntamos lo que se obtenga de la llamada del padre
-            (list (node-state node))))))         ; con el nombre del nodo
+            (list (node-state node)))))          ; con el nombre del nodo
 
 (solution-path nil) ;;; -> NIL 
 (solution-path (a-star-search *galaxy-M35*))  ;;;-> (MALLORY ...)
