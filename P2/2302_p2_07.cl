@@ -575,8 +575,8 @@
           (cond ((null closed-node)                                                ; Si no encontramos closed-node
                  (graph-search-rec (insert-nodes-strategy (expand-node node        ; Expandimos node y metemos los
                                                                        problem)    ; nuevos nodos en la lista-abierta
-                                                                       new-lst
-                                                                       strategy)
+                                                          new-lst
+                                                          strategy)
                                 (cons node                                         ; Metemos node en la lista-cerrada
                                       closed-nodes)
                                 problem
@@ -584,8 +584,8 @@
                 ((< (node-g node) (node-g closed-node))
                  (graph-search-rec (insert-nodes-strategy (expand-node node        ; Expandimos node y metemos los
                                                                        problem)    ; nuevos nodos en la lista-abierta
-                                                                       new-lst
-                                                                       strategy)
+                                                          new-lst
+                                                          strategy)
                                 (cons node                                         ; Sustituimos node por closed-node en la lista-cerrada
                                       (remove closed-node
                                               closed-nodes))
