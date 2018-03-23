@@ -572,19 +572,30 @@
         (let ((closed-node (find node                                              ; closed-node es el resultado de
                                  closed-nodes                                      ; buscar node en la lista-cerrada
                                  :test (problem-f-search-state-equal problem))))   ; con el predicado de igualdad del problema
-          (if (null closed-node)                                                   ; Si no encontramos closed-node
-              (graph-search-rec (insert-nodes-strategy (expand-node node           ; Expandimos node y metemos los
-                                                                    problem)       ; nuevos nodos en la lista-abierta
-                                                       new-lst
-                                                       strategy)
+          (cond ((null closed-node)                                                ; Si no encontramos closed-node
+                 (graph-search-rec (insert-nodes-strategy (expand-node node        ; Expandimos node y metemos los
+                                                                       problem)    ; nuevos nodos en la lista-abierta
+                                                                       new-lst
+                                                                       strategy)
                                 (cons node                                         ; Metemos node en la lista-cerrada
                                       closed-nodes)
                                 problem
-                                strategy)
-            (graph-search-rec new-lst                                              ; Si lo encontramos, lo ignoramos
+                                strategy))
+                ((< (node-g node) (node-g closed-node))
+                 (graph-search-rec (insert-nodes-strategy (expand-node node        ; Expandimos node y metemos los
+                                                                       problem)    ; nuevos nodos en la lista-abierta
+                                                                       new-lst
+                                                                       strategy)
+                                (cons node                                         ; Sustituimos node por closed-node en la lista-cerrada
+                                      (remove closed-node
+                                              closed-nodes))
+                                problem
+                                strategy))
+                (T
+                 (graph-search-rec new-lst                                         ; Si lo encontramos, lo ignoramos
                               closed-nodes
                               problem
-                              strategy)))))))
+                              strategy))))))))
 
 
 (defun graph-search (problem strategy)
@@ -660,24 +671,25 @@
 ;;;    BEGIN Exercise 10: depth-first / breadth-first
 ;;;
 
+(defun depth-first-node-compare-p (node-1 node-2)
+  T)   ; Fuerza a insertar al principio de la lista (pila)
+
 (defparameter *depth-first*
   (make-strategy
    :name 'depth-first
    :node-compare-p #'depth-first-node-compare-p))
 
-(defun depth-first-node-compare-p (node-1 node-2)
-  ...)
 
 (solution-path (graph-search *galaxy-M35* *depth-first*))
 ;;; -> (MALLORY ... )
+
+(defun breadth-first-node-compare-p (node-1 node-2)
+  NIL)   ; Fuerza a insertar al final de la lista (cola)
 
 (defparameter *breadth-first*
   (make-strategy
    :name 'breadth-first
    :node-compare-p #'breadth-first-node-compare-p))
-
-(defun breadth-first-node-compare-p (node-1 node-2)
-  ...)
 
 (solution-path (graph-search *galaxy-M35* *breadth-first*))
 ;; -> (MALLORY ... )
