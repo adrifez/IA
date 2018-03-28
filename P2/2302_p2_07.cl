@@ -161,6 +161,7 @@
         found-links))))                                                 ; Si no, seguimos evaluando
 
 (possible_links 'Mallory *white-holes* '())
+;-> ((MALLORY KATRIL 10) (MALLORY PROSERPINA 15))
 
 
 (defun navigate (state holes forbidden action-name)
@@ -422,7 +423,8 @@
 (insert-nodes-strategy '(4 8 6 2)
                        '(1 3 5 7) 
                        (make-strategy :name 'simple
-                                      :node-compare-p #'<));-> (1 2 3 4 5 6 7)
+                                      :node-compare-p #'<))
+;-> (1 2 3 4 5 6 7)
 
 
 (defparameter *uniform-cost*
