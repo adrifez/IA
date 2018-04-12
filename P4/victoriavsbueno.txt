@@ -1,0 +1,1495 @@
+   5  4  3  2  1  0
+  ------------------
+*  3  3  3  3  3  3     18  Ac:  0
+ 0                  0 
+   3  3  3  3  3  3     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 1] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   3  3  4  4  4  0     18  Ac:  0
+ 0                  0 
+*  3  3  3  3  3  3     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 2] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  3  3  4  4  4  0     18  Ac:  0
+ 0                  0 
+   0  4  4  4  3  3     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 3] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   4  4  5  5  0  0     18  Ac:  0
+ 0                  0 
+*  0  4  4  4  3  3     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 4] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  4  4  5  5  0  0     18  Ac:  0
+ 0                  0 
+   0  0  5  5  4  4     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 5] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   5  5  0  5  0  0     16  Ac:  0
+ 1                  0 
+*  1  1  5  5  4  4     20  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 6] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  5  5  0  5  0  0     16  Ac:  0
+ 1                  0 
+   0  2  5  5  4  4     20  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 7] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   6  6  1  0  0  0     15  Ac:  0
+ 2                  0 
+*  1  2  5  5  4  4     21  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 8] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  6  6  1  0  0  0     15  Ac:  0
+ 2                  0 
+   0  3  5  5  4  4     21  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 9] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   6  7  0  0  0  0     15  Ac:  0
+ 2                  0 
+*  0  3  5  5  4  4     21  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 10] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  6  7  0  0  0  0     15  Ac:  0
+ 2                  0 
+   0  0  6  6  5  4     21  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 11] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   7  0  0  0  0  0     10  Ac:  0
+ 3                  0 
+*  1  1  7  7  6  4     26  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 12] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  7  0  0  0  0  0     10  Ac:  0
+ 3                  0 
+   0  2  7  7  6  4     26  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 13] El turno es de Ju-Nmx-Regular
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  0  0  0  0  0      4  Ac:  0
+ 4                  0 
+   1  3  8  8  7  5     32  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+
+  FIN DEL JUEGO por VICTORIA en 13 Jugadas
+  Marcador:  Ju-Nmx-Regular 32 - 4 Ju-Nmx-Regular
+
+1
+NIL
+  Juego: (1) Ju-Aleatorio vs Ju-Aleatorio (2) 
+CG-USER(150): 
+  Juego: (1) Ju-Aleatorio vs Ju-Aleatorio (2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  3  3  3  3  3  3     18  Ac:  0
+ 0                  0 
+   3  3  3  3  3  3     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 1] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   3  3  4  4  4  0     18  Ac:  0
+ 0                  0 
+*  3  3  3  3  3  3     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 2] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  3  3  4  4  4  0     18  Ac:  0
+ 0                  0 
+   0  4  4  4  3  3     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 3] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   4  4  5  5  0  0     18  Ac:  0
+ 0                  0 
+*  0  4  4  4  3  3     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 4] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  4  4  5  5  0  0     18  Ac:  0
+ 0                  0 
+   0  0  5  5  4  4     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 5] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   5  5  0  5  0  0     16  Ac:  0
+ 1                  0 
+*  1  1  5  5  4  4     20  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 6] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  5  5  0  5  0  0     16  Ac:  0
+ 1                  0 
+   0  2  5  5  4  4     20  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 7] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   6  6  1  0  0  0     15  Ac:  0
+ 2                  0 
+*  1  2  5  5  4  4     21  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 8] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  6  6  1  0  1  1     17  Ac:  0
+ 2                  1 
+   1  2  5  0  5  5     19  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 9] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  6  1  0  1  1     12  Ac:  0
+ 3                  1 
+*  2  3  6  1  6  5     24  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 10] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  0  6  1  0  2  2     14  Ac:  0
+ 3                  2 
+   2  3  0  2  7  6     22  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 11] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  6  2  1  0  2     14  Ac:  0
+ 3                  2 
+*  2  3  0  2  7  6     22  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 12] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  0  6  0  1  0  2     12  Ac:  0
+ 3                  5 
+   0  4  0  2  7  6     24  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 13] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  6  0  2  1  0     12  Ac:  0
+ 3                  5 
+*  0  4  0  2  7  6     24  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 14] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  0  6  0  2  1  0     12  Ac:  0
+ 3                  5 
+   0  0  1  3  8  7     24  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 15] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   1  0  0  2  1  0      8  Ac:  0
+ 4                  5 
+*  1  1  2  4  8  7     28  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 16] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  1  0  0  2  1  0      8  Ac:  0
+ 4                  5 
+   1  1  0  5  9  7     28  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 17] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  0  0  0  2  1  0      8  Ac:  0
+ 5                  5 
+   1  1  0  5  9  7     28  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 19] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  0  1  0  1  0      9  Ac:  1
+ 7                  5 
+*  1  0  0  5  9  7     27  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 20] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  0  0  1  0  2  1     11  Ac:  1
+ 7                  6 
+   1  0  0  0 10  8     25  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 21] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  1  0  0  2  1     11  Ac:  1
+ 7                  6 
+*  1  0  0  0 10  8     25  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 22] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  1  2  1  1  3  2     18  Ac:  1
+ 8                  7 
+   2  0  0  0  0  9     18  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 23] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  0  2  1  1  3  2     18  Ac:  1
+ 9                  7 
+   2  0  0  0  0  9     18  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 25] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  2  1  2  4  0     18  Ac:  1
+ 9                  7 
+*  2  0  0  0  0  9     18  Ac:  2
+  ------------------
+   0  1  2  3  4  5
+[J 26] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  0  2  0  2  4  0     17  Ac:  1
+ 9                  9 
+   0  1  0  0  0  9     19  Ac:  3
+  ------------------
+   0  1  2  3  4  5
+[J 27] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   1  3  1  3  0  0     17  Ac:  1
+ 9                  9 
+*  0  1  0  0  0  9     19  Ac:  3
+  ------------------
+   0  1  2  3  4  5
+[J 28] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  0  4  2  4  1  1     22  Ac:  1
+10                  13
+   0  1  0  0  0  0     14  Ac:  3
+  ------------------
+   0  1  2  3  4  5
+[J 29] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  4  2  4  2  0     22  Ac:  1
+10                  13
+*  0  1  0  0  0  0     14  Ac:  3
+  ------------------
+   0  1  2  3  4  5
+[J 30] El turno es de Ju-Aleatorio
+ 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  4  0  4  2  0     20  Ac:  1
+10                  16
+   0  0  0  0  0  0     16  Ac:  5
+  ------------------
+   0  1  2  3  4  5
+
+  FIN DEL JUEGO por VICTORIA en 30 Jugadas
+  Marcador:  Ju-Aleatorio 16 - 20 Ju-Aleatorio
+
+2
+NIL
+CG-USER(151): 
+2
+CG-USER(152): 
+T
+CG-USER(153): 
+T
+CG-USER(154): 
+T
+CG-USER(155): 
+NIL
+CG-USER(156): 
+  Juego: (1) Humano vs Ju-Nmx-Bueno (2) 
+Local game Humano-Ju-Nmx-Bueno depth=2  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   3  3  3  3  3  3     18  Ac:  0
+ 0                  0 
+*  3  3  3  3  3  3     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 1] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 3) (R 4) (R 5))
+  o en modo abreviado: (0 1 2 3 4 5)
+  Introduzca jugada o x para terminar : 3
+
+Juega (R 3)  => Ultima ficha en 6, con 0, contra: 0 => Kalaha contrario o vacio. Cede turno,
+[J 1] Humano juega (R 3)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  3  3  3  3  3  3     18  Ac:  0
+ 0                  1 
+   3  3  3  0  4  4     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 2] El turno es de Ju-Nmx-Bueno
+
+[J 2] Ju-Nmx-Bueno juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   4  4  4  0  3  3     18  Ac:  0
+ 0                  1 
+*  3  3  3  0  4  4     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 3] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 4) (R 5))
+  o en modo abreviado: (0 1 2 4 5)
+  Introduzca jugada o x para terminar : 0
+
+Juega (R 0)  => Ultima ficha en 3, con 0, contra: 0
+[J 3] Humano juega (R 0)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  4  4  4  0  3  3     18  Ac:  0
+ 0                  1 
+   0  4  4  1  4  4     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 4] El turno es de Ju-Nmx-Bueno
+
+[J 4] Ju-Nmx-Bueno juega (R 0)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   4  4  5  1  4  0     18  Ac:  0
+ 0                  1 
+*  0  4  4  1  4  4     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 5] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 1) (R 2) (R 3) (R 4) (R 5))
+  o en modo abreviado: (1 2 3 4 5)
+  Introduzca jugada o x para terminar : 4
+
+Juega (R 4)  => Ultima ficha en 1, con 4, contra: 0: (16 20)
+[J 5] Humano juega (R 4)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  4  4  5  1  5  1     20  Ac:  0
+ 0                  2 
+   0  4  4  1  0  5     16  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 6] El turno es de Ju-Nmx-Bueno
+
+[J 6] Ju-Nmx-Bueno juega (R 1)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   5  5  6  2  0  1     20  Ac:  0
+ 1                  2 
+*  0  4  4  1  0  5     16  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 7] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 1) (R 2) (R 3) (R 5))
+  o en modo abreviado: (1 2 3 5)
+  Introduzca jugada o x para terminar : 2
+
+Juega (R 2)  => Ultima ficha en 6, con 2, contra: 0 => Kalaha y sigue jugando,
+[J 7] Humano juega (R 2) 
+[J 8] Ju-Nmx-Bueno pasa turno. 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   5  5  6  2  0  1     20  Ac:  0
+ 1                  3 
+*  0  4  0  2  1  6     16  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 9] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 1) (R 3) (R 4) (R 5))
+  o en modo abreviado: (1 3 4 5)
+  Introduzca jugada o x para terminar : 3
+
+Juega (R 3)  => Ultima ficha en 5, con 6, contra: 1: (16 20)
+[J 9] Humano juega (R 3)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  5  5  6  2  0  1     20  Ac:  0
+ 1                  3 
+   0  4  0  0  2  7     16  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 10] El turno es de Ju-Nmx-Bueno
+
+[J 10] Ju-Nmx-Bueno juega (R 0)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   5  5  6  2  0  0     22  Ac:  2
+ 4                  3 
+*  0  4  0  0  0  7     14  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 11] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 1) (R 5))
+  o en modo abreviado: (1 5)
+  Introduzca jugada o x para terminar : 4
+
+Sintaxis: (S P)|PA  Donde S=sentido siembra, P=posicion valida, PA=posicion en modo abreviado 
+          Modo abreviado: n>=0 = (R |n|), n<0 = (L |n|)
+Jugador Humano. 
+  Elija entre: ((R 1) (R 5))
+  o en modo abreviado: (1 5)
+  Introduzca jugada o x para terminar : 3
+
+Sintaxis: (S P)|PA  Donde S=sentido siembra, P=posicion valida, PA=posicion en modo abreviado 
+          Modo abreviado: n>=0 = (R |n|), n<0 = (L |n|)
+Jugador Humano. 
+  Elija entre: ((R 1) (R 5))
+  o en modo abreviado: (1 5)
+  Introduzca jugada o x para terminar : 2
+
+Sintaxis: (S P)|PA  Donde S=sentido siembra, P=posicion valida, PA=posicion en modo abreviado 
+          Modo abreviado: n>=0 = (R |n|), n<0 = (L |n|)
+Jugador Humano. 
+  Elija entre: ((R 1) (R 5))
+  o en modo abreviado: (1 5)
+  Introduzca jugada o x para terminar : 1
+
+Juega (R 1)  => Ultima ficha en 5, con 7, contra: 0: (14 22)
+[J 11] Humano juega (R 1)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  5  5  6  2  0  0     22  Ac:  2
+ 4                  3 
+   0  0  1  1  1  8     14  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 12] El turno es de Ju-Nmx-Bueno
+
+[J 12] Ju-Nmx-Bueno juega (R 3)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   6  6  0  2  0  0     19  Ac:  2
+ 5                  3 
+*  1  1  2  1  1  8     17  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 13] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 3) (R 4) (R 5))
+  o en modo abreviado: (0 1 2 3 4 5)
+  Introduzca jugada o x para terminar : 5
+
+Juega (R 5)  => Ultima ficha en 6, con 5, contra: 0 => Kalaha contrario o vacio. Cede turno,
+[J 13] Humano juega (R 5)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  7  7  1  3  1  1     26  Ac:  2
+ 6                  4 
+   1  1  2  1  1  0     10  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 14] El turno es de Ju-Nmx-Bueno
+
+[J 14] Ju-Nmx-Bueno juega (R 0)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   7  7  1  3  2  0     26  Ac:  2
+ 6                  4 
+*  1  1  2  1  1  0     10  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 15] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 3) (R 4))
+  o en modo abreviado: (0 1 2 3 4)
+  Introduzca jugada o x para terminar : 4
+
+Juega (R 4)  => Ultima ficha en 5, con 0, contra: 0
+[J 15] Humano juega (R 4)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  7  7  1  3  2  0     26  Ac:  2
+ 6                  4 
+   1  1  2  1  0  1     10  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 16] El turno es de Ju-Nmx-Bueno
+
+[J 16] Ju-Nmx-Bueno juega (R 1)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   7  7  2  4  0  0     26  Ac:  2
+ 6                  4 
+*  1  1  2  1  0  1     10  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 17] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 3) (R 5))
+  o en modo abreviado: (0 1 2 3 5)
+  Introduzca jugada o x para terminar : 2
+
+Juega (R 2)  => Ultima ficha en 4, con 0, contra: 0
+[J 17] Humano juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  7  7  2  4  0  0     26  Ac:  2
+ 6                  4 
+   1  1  0  2  1  1     10  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 18] El turno es de Ju-Nmx-Bueno
+
+[J 18] Ju-Nmx-Bueno juega (R 2) 
+[J 19] Humano pasa turno. 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  8  8  3  0  0  0     26  Ac:  2
+ 7                  4 
+   1  1  0  2  1  1     10  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 20] El turno es de Ju-Nmx-Bueno
+
+[J 20] Ju-Nmx-Bueno juega (R 3) 
+[J 21] Humano pasa turno. 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  9  9  0  0  0  0     26  Ac:  2
+ 8                  4 
+   1  1  0  2  1  1     10  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 22] El turno es de Ju-Nmx-Bueno
+
+[J 22] Ju-Nmx-Bueno juega (R 4)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+  10  0  0  0  0  0     19  Ac:  2
+ 9                  5 
+*  2  2  1  3  2  2     17  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 23] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 3) (R 4) (R 5))
+  o en modo abreviado: (0 1 2 3 4 5)
+  Introduzca jugada o x para terminar : 4
+
+Juega (R 4)  => Ultima ficha en 6, con 5, contra: 0 => Kalaha y sigue jugando,
+[J 23] Humano juega (R 4) 
+[J 24] Ju-Nmx-Bueno pasa turno. 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+  10  0  0  0  0  0     19  Ac:  2
+ 9                  6 
+*  2  2  1  3  0  3     17  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 25] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 3) (R 5))
+  o en modo abreviado: (0 1 2 3 5)
+  Introduzca jugada o x para terminar : 3
+
+Juega (R 3)  => Ultima ficha en 6, con 6, contra: 0 => Kalaha y sigue jugando,
+[J 25] Humano juega (R 3) 
+[J 26] Ju-Nmx-Bueno pasa turno. 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+  10  0  0  0  0  0     19  Ac:  2
+ 9                  7 
+*  2  2  1  0  1  4     17  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 27] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 4) (R 5))
+  o en modo abreviado: (0 1 2 4 5)
+  Introduzca jugada o x para terminar : 2
+
+Juega (R 2)  => Ultima ficha en 3, con 0, contra: 0
+[J 27] Humano juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+* 10  0  0  0  0  0     19  Ac:  2
+ 9                  7 
+   2  2  0  1  1  4     17  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 28] El turno es de Ju-Nmx-Bueno
+
+[J 28] Ju-Nmx-Bueno juega (R 5)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  0  0  0  0  1     14  Ac:  2
+13                  8 
+*  3  3  1  2  0  5     22  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 29] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 3) (R 5))
+  o en modo abreviado: (0 1 2 3 5)
+  Introduzca jugada o x para terminar : 1
+
+Juega (R 1)  => Ultima ficha en 4, con 0, contra: 0
+[J 29] Humano juega (R 1)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  0  0  0  0  0  1     14  Ac:  2
+13                  8 
+   3  0  2  3  1  5     22  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 30] El turno es de Ju-Nmx-Bueno
+
+[J 30] Ju-Nmx-Bueno juega (R 0)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  0  0  0  0  0     15  Ac:  3
+15                  8 
+   3  0  2  3  0  5     21  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+
+  FIN DEL JUEGO por VICTORIA en 30 Jugadas
+  Marcador:  Humano 21 - 15 Ju-Nmx-Bueno
+
+1
+
+  Juego: (1) Humano vs Ju-Nmx-Bueno (2) 
+Local game Humano-Ju-Nmx-Bueno depth=2  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   3  3  3  3  3  3     18  Ac:  0
+ 0                  0 
+*  3  3  3  3  3  3     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 1] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 3) (R 4) (R 5))
+  o en modo abreviado: (0 1 2 3 4 5)
+  Introduzca jugada o x para terminar : 3
+
+Juega (R 3)  => Ultima ficha en 6, con 0, contra: 0 => Kalaha contrario o vacio. Cede turno,
+[J 1] Humano juega (R 3)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  3  3  3  3  3  3     18  Ac:  0
+ 0                  1 
+   3  3  3  0  4  4     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 2] El turno es de Ju-Nmx-Bueno
+
+[J 2] Ju-Nmx-Bueno juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   4  4  4  0  3  3     18  Ac:  0
+ 0                  1 
+*  3  3  3  0  4  4     18  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 3] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 4) (R 5))
+  o en modo abreviado: (0 1 2 4 5)
+  Introduzca jugada o x para terminar : 5
+
+Juega (R 5)  => Ultima ficha en 2, con 0, contra: 0: (15 21)
+[J 3] Humano juega (R 5)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  4  4  4  1  4  4     21  Ac:  0
+ 0                  2 
+   3  3  3  0  4  0     15  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 4] El turno es de Ju-Nmx-Bueno
+
+[J 4] Ju-Nmx-Bueno juega (R 0)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   4  5  5  2  5  0     21  Ac:  0
+ 0                  2 
+*  3  3  3  0  4  0     15  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 5] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 4))
+  o en modo abreviado: (0 1 2 4)
+  Introduzca jugada o x para terminar : 2
+
+Juega (R 2)  => Ultima ficha en 5, con 0, contra: 0
+[J 5] Humano juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  4  5  5  2  5  0     21  Ac:  0
+ 0                  2 
+   3  3  0  1  5  1     15  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 6] El turno es de Ju-Nmx-Bueno
+
+[J 6] Ju-Nmx-Bueno juega (R 1)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   5  6  6  3  0  0     21  Ac:  0
+ 1                  2 
+*  3  3  0  1  5  1     15  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 7] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 3) (R 4) (R 5))
+  o en modo abreviado: (0 1 3 4 5)
+  Introduzca jugada o x para terminar : 1
+
+Juega (R 1)  => Ultima ficha en 4, con 5, contra: 0: (15 21)
+[J 7] Humano juega (R 1)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  5  6  6  3  0  0     21  Ac:  0
+ 1                  2 
+   3  0  1  2  6  1     15  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 8] El turno es de Ju-Nmx-Bueno
+
+[J 8] Ju-Nmx-Bueno juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   6  7  7  0  0  0     21  Ac:  0
+ 1                  2 
+*  3  0  1  2  6  1     15  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 9] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 2) (R 3) (R 4) (R 5))
+  o en modo abreviado: (0 2 3 4 5)
+  Introduzca jugada o x para terminar : 4
+
+Juega (R 4)  => Ultima ficha en 3, con 7, contra: 1: (11 25)
+[J 9] Humano juega (R 4)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  6  7  8  1  1  1     25  Ac:  0
+ 1                  3 
+   3  0  1  2  0  2     11  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 10] El turno es de Ju-Nmx-Bueno
+
+[J 10] Ju-Nmx-Bueno juega (R 0)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   6  7  8  1  2  0     25  Ac:  0
+ 1                  3 
+*  3  0  1  2  0  2     11  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 11] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 2) (R 3) (R 5))
+  o en modo abreviado: (0 2 3 5)
+  Introduzca jugada o x para terminar : 3
+
+Juega (R 3)  => Ultima ficha en 5, con 2, contra: 0: (11 25)
+[J 11] Humano juega (R 3)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  6  7  8  1  2  0     25  Ac:  0
+ 1                  3 
+   3  0  1  0  1  3     11  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 12] El turno es de Ju-Nmx-Bueno
+
+[J 12] Ju-Nmx-Bueno juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   6  7  9  0  2  0     25  Ac:  0
+ 1                  3 
+*  3  0  1  0  1  3     11  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 13] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 2) (R 4) (R 5))
+  o en modo abreviado: (0 2 4 5)
+  Introduzca jugada o x para terminar : 2
+
+Juega (R 2)  => Ultima ficha en 3, con 0, contra: 0
+[J 13] Humano juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  6  7  9  0  2  0     25  Ac:  0
+ 1                  3 
+   3  0  0  1  1  3     11  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 14] El turno es de Ju-Nmx-Bueno
+
+[J 14] Ju-Nmx-Bueno juega (R 1)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   6  7 10  1  0  0     25  Ac:  0
+ 1                  3 
+*  3  0  0  1  1  3     11  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 15] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3) (R 4) (R 5))
+  o en modo abreviado: (0 3 4 5)
+  Introduzca jugada o x para terminar : 1
+
+Sintaxis: (S P)|PA  Donde S=sentido siembra, P=posicion valida, PA=posicion en modo abreviado 
+          Modo abreviado: n>=0 = (R |n|), n<0 = (L |n|)
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3) (R 4) (R 5))
+  o en modo abreviado: (0 3 4 5)
+  Introduzca jugada o x para terminar : 4
+
+Juega (R 4)  => Ultima ficha en 5, con 3, contra: 0: (11 25)
+[J 15] Humano juega (R 4)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  6  7 10  1  0  0     25  Ac:  0
+ 1                  3 
+   3  0  0  1  0  4     11  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 16] El turno es de Ju-Nmx-Bueno
+
+[J 16] Ju-Nmx-Bueno juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   6  7 11  0  0  0     25  Ac:  0
+ 1                  3 
+*  3  0  0  1  0  4     11  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 17] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3) (R 5))
+  o en modo abreviado: (0 3 5)
+  Introduzca jugada o x para terminar : 5
+
+Juega (R 5)  => Ultima ficha en 2, con 0, contra: 1: (8 28)
+[J 17] Humano juega (R 5)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  6  7 11  1  1  1     28  Ac:  0
+ 1                  4 
+   3  0  0  1  0  0      8  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 18] El turno es de Ju-Nmx-Bueno
+
+[J 18] Ju-Nmx-Bueno juega (R 1)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   6  7 11  2  0  1     28  Ac:  0
+ 1                  4 
+*  3  0  0  1  0  0      8  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 19] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3))
+  o en modo abreviado: (0 3)
+  Introduzca jugada o x para terminar : 3
+
+Juega (R 3)  => Ultima ficha en 4, con 0, contra: 0
+[J 19] Humano juega (R 3)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  6  7 11  2  0  1     28  Ac:  0
+ 1                  4 
+   3  0  0  0  1  0      8  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 20] El turno es de Ju-Nmx-Bueno
+
+[J 20] Ju-Nmx-Bueno juega (R 4)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   7  0 11  2  0  1     23  Ac:  0
+ 2                  4 
+*  4  1  1  1  2  0     13  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 21] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 3) (R 4))
+  o en modo abreviado: (0 1 2 3 4)
+  Introduzca jugada o x para terminar : 2
+
+Juega (R 2)  => Ultima ficha en 3, con 1, contra: 2: (13 23)
+[J 21] Humano juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  7  0 11  2  0  1     23  Ac:  0
+ 2                  4 
+   4  1  0  2  2  0     13  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 22] El turno es de Ju-Nmx-Bueno
+
+[J 22] Ju-Nmx-Bueno juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   7  0 12  0  0  1     24  Ac:  1
+ 4                  4 
+*  4  0  0  2  2  0     12  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 23] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3) (R 4))
+  o en modo abreviado: (0 3 4)
+  Introduzca jugada o x para terminar : 1
+
+Sintaxis: (S P)|PA  Donde S=sentido siembra, P=posicion valida, PA=posicion en modo abreviado 
+          Modo abreviado: n>=0 = (R |n|), n<0 = (L |n|)
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3) (R 4))
+  o en modo abreviado: (0 3 4)
+  Introduzca jugada o x para terminar : 2
+
+Sintaxis: (S P)|PA  Donde S=sentido siembra, P=posicion valida, PA=posicion en modo abreviado 
+          Modo abreviado: n>=0 = (R |n|), n<0 = (L |n|)
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3) (R 4))
+  o en modo abreviado: (0 3 4)
+  Introduzca jugada o x para terminar : 4
+
+Juega (R 4)  => Ultima ficha en 6, con 4, contra: 0 => Kalaha y sigue jugando,
+[J 23] Humano juega (R 4) 
+[J 24] Ju-Nmx-Bueno pasa turno. 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   7  0 12  0  0  1     24  Ac:  1
+ 4                  5 
+*  4  0  0  2  0  1     12  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 25] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3) (R 5))
+  o en modo abreviado: (0 3 5)
+  Introduzca jugada o x para terminar : 5
+
+Juega (R 5)  => Ultima ficha en 6, con 5, contra: 0 => Kalaha y sigue jugando,
+[J 25] Humano juega (R 5) 
+[J 26] Ju-Nmx-Bueno pasa turno. 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   7  0 12  0  0  1     24  Ac:  1
+ 4                  6 
+*  4  0  0  2  0  0     12  Ac:  0
+  ------------------
+   0  1  2  3  4  5
+[J 27] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3))
+  o en modo abreviado: (0 3)
+  Introduzca jugada o x para terminar : 3
+
+Juega (R 3)  => Ultima ficha en 5, con 0, contra: 1 => Captura 1 y termina,
+[J 27] Humano juega (R 3)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  7  0 12  0  0  0     23  Ac:  1
+ 4                  8 
+   4  0  0  0  1  0     13  Ac:  1
+  ------------------
+   0  1  2  3  4  5
+[J 28] El turno es de Ju-Nmx-Bueno
+
+[J 28] Ju-Nmx-Bueno juega (R 3)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   8  1  0  0  0  1     18  Ac:  1
+ 8                  9 
+*  5  1  1  1  0  1     18  Ac:  1
+  ------------------
+   0  1  2  3  4  5
+[J 29] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 2) (R 3) (R 5))
+  o en modo abreviado: (0 1 2 3 5)
+  Introduzca jugada o x para terminar : 2
+
+Juega (R 2)  => Ultima ficha en 3, con 1, contra: 0: (18 18)
+[J 29] Humano juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  8  1  0  0  0  1     18  Ac:  1
+ 8                  9 
+   5  1  0  2  0  1     18  Ac:  1
+  ------------------
+   0  1  2  3  4  5
+[J 30] El turno es de Ju-Nmx-Bueno
+
+[J 30] Ju-Nmx-Bueno juega (R 0)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   8  1  0  0  1  0     18  Ac:  1
+ 8                  9 
+*  5  1  0  2  0  1     18  Ac:  1
+  ------------------
+   0  1  2  3  4  5
+[J 31] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 1) (R 3) (R 5))
+  o en modo abreviado: (0 1 3 5)
+  Introduzca jugada o x para terminar : 1
+
+Juega (R 1)  => Ultima ficha en 2, con 0, contra: 0
+[J 31] Humano juega (R 1)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  8  1  0  0  1  0     18  Ac:  1
+ 8                  9 
+   5  0  1  2  0  1     18  Ac:  1
+  ------------------
+   0  1  2  3  4  5
+[J 32] El turno es de Ju-Nmx-Bueno
+
+[J 32] Ju-Nmx-Bueno juega (R 1)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   8  1  0  0  0  0     20  Ac:  3
+11                  9 
+*  5  0  1  0  0  1     16  Ac:  1
+  ------------------
+   0  1  2  3  4  5
+[J 33] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 2) (R 5))
+  o en modo abreviado: (0 2 5)
+  Introduzca jugada o x para terminar : 2
+
+Juega (R 2)  => Ultima ficha en 3, con 0, contra: 0
+[J 33] Humano juega (R 2)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  8  1  0  0  0  0     20  Ac:  3
+11                  9 
+   5  0  0  1  0  1     16  Ac:  1
+  ------------------
+   0  1  2  3  4  5
+[J 34] El turno es de Ju-Nmx-Bueno
+
+[J 34] Ju-Nmx-Bueno juega (R 4)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   9  0  0  0  0  0     20  Ac:  3
+11                  9 
+*  5  0  0  1  0  1     16  Ac:  1
+  ------------------
+   0  1  2  3  4  5
+[J 35] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3) (R 5))
+  o en modo abreviado: (0 3 5)
+  Introduzca jugada o x para terminar : 5
+
+Juega (R 5)  => Ultima ficha en 6, con 9, contra: 0 => Kalaha y sigue jugando,
+[J 35] Humano juega (R 5) 
+[J 36] Ju-Nmx-Bueno pasa turno. 
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   9  0  0  0  0  0     20  Ac:  3
+11                  10
+*  5  0  0  1  0  0     16  Ac:  1
+  ------------------
+   0  1  2  3  4  5
+[J 37] El turno es de Humano
+
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3))
+  o en modo abreviado: (0 3)
+  Introduzca jugada o x para terminar : 4
+
+Sintaxis: (S P)|PA  Donde S=sentido siembra, P=posicion valida, PA=posicion en modo abreviado 
+          Modo abreviado: n>=0 = (R |n|), n<0 = (L |n|)
+Jugador Humano. 
+  Elija entre: ((R 0) (R 3))
+  o en modo abreviado: (0 3)
+  Introduzca jugada o x para terminar : 3
+
+Juega (R 3)  => Ultima ficha en 4, con 0, contra: 0
+[J 37] Humano juega (R 3)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+*  9  0  0  0  0  0     20  Ac:  3
+11                  10
+   5  0  0  0  1  0     16  Ac:  1
+  ------------------
+   0  1  2  3  4  5
+[J 38] El turno es de Ju-Nmx-Bueno
+
+[J 38] Ju-Nmx-Bueno juega (R 5)  
+TABLERO: 
+
+   5  4  3  2  1  0
+  ------------------
+   0  0  0  0  0  0     14  Ac:  3
+14                  11
+   6  1  1  1  2  0     22  Ac:  1
+  ------------------
+   0  1  2  3  4  5
+
+  FIN DEL JUEGO por VICTORIA en 38 Jugadas
+  Marcador:  Humano 22 - 14 Ju-Nmx-Bueno
+
+1
