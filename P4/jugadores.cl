@@ -131,27 +131,14 @@
 
 ;;; Mi jugador
 ;;; ------------------------------------------------------------------------------------------
-(defun mi-f-ev (estado)
-  (apply 
-   #'+ 
-   (mapcar #'(lambda (pos) 
-               (let ((fichas-op (get-fichas (estado-tablero estado) 
-                                            (lado-contrario (estado-lado-sgte-jugador estado)) 
-                                            (op-pos pos)))
-                     (fichas (get-fichas (estado-tablero estado) 
-                                         (estado-lado-sgte-jugador estado) 
-                                         pos)))
-               (if (= fichas 0)
-                 (if (= fichas-op 0)
-                     0
-                   1)
-                 (if (= (+ fichas pos) 6)
-                     (if (= (+ fichas-op (op-pos pos)) 6)
-                         0
-                       1)
-                   0))))
-   '(0 1 2 3 4))))
-  
+(defun mi-ef-v (estado) 
+    (- (cuenta-fichas (estado-tablero estado) 
+                      (estado-lado-sgte-jugador estado) 
+                      1)
+       (cuenta-fichas (estado-tablero estado) 
+                      (lado-contrario (estado-lado-sgte-jugador estado)) 
+                      1)))
+
 (setf *mi-jugador* (make-jugador
                     :nombre 'MancalasGOD
                     :f-juego #'negamax
@@ -160,7 +147,7 @@
 ;;; Juego automatico sin presentacion del tablero pero con listado de contador
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(partida 0 1 (list *mi-jugador*   *jdr-nmx-bueno*))
+(partida 1 2 (list *mi-jugador*   *jdr-nmx-regular*))
 ;;; ------------------------------------------------------------------------------------------
 ;;; EJEMPLOS DE PARTIDAS DE PRUEBA
 ;;; ------------------------------------------------------------------------------------------
