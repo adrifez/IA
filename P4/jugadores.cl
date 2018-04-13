@@ -131,24 +131,6 @@
 
 ;;; Mi jugador
 ;;; ------------------------------------------------------------------------------------------
-(defun sim-pos (pos)
-  (case pos
-    (0 4)
-    (1 3)
-    (2 2)
-    (3 1)
-    (4 0)
-    (5 5)))
-
-(defun op-pos (pos)
-  (case pos
-    (0 5)
-    (1 4)
-    (2 3)
-    (3 2)
-    (4 1)
-    (5 0)))
-
 (defun mi-f-ev (estado)
   (apply 
    #'+ 
@@ -158,18 +140,17 @@
                                             (op-pos pos)))
                      (fichas (get-fichas (estado-tablero estado) 
                                          (estado-lado-sgte-jugador estado) 
-                                         pos))
-                     (fichas-sim (get-fichas (estado-tablero estado) 
-                                         (estado-lado-sgte-jugador estado) 
-                                         (sim-pos pos))))
-                  (if (= fichas 0)
-                      fichas-op
-                    (if (= fichas-op 0)
-                        (- 0 fichas-sim)
-                      (if (= (+ fichas pos) 6)
-                          1
-                        0)))))
-                  '(0 1 2 3 4 5))))
+                                         pos)))
+               (if (= fichas 0)
+                 (if (= fichas-op 0)
+                     0
+                   1)
+                 (if (= (+ fichas pos) 6)
+                     (if (= (+ fichas-op (op-pos pos)) 6)
+                         0
+                       1)
+                   0))))
+   '(0 1 2 3 4))))
   
 (setf *mi-jugador* (make-jugador
                     :nombre 'MancalasGOD
@@ -179,7 +160,7 @@
 ;;; Juego automatico sin presentacion del tablero pero con listado de contador
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(partida 0 1 (list *mi-jugador*   *jdr-nmx-regular*))
+(partida 0 1 (list *mi-jugador*   *jdr-nmx-bueno*))
 ;;; ------------------------------------------------------------------------------------------
 ;;; EJEMPLOS DE PARTIDAS DE PRUEBA
 ;;; ------------------------------------------------------------------------------------------
