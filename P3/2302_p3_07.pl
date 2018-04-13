@@ -41,6 +41,7 @@ sort_list([X-P|Rs], SL) :- sort_list(Rs, SLr), insert([X-P], SLr, SL).
 
 
 % Ejercicio 6
+build_tree([], nil).
 build_tree([X-_], tree(X, nil, nil)).
 build_tree([F, S|Rs], tree(1, Ti, Td)) :- Rs = [], build_tree([F], Ti), build_tree([S], Td).
 build_tree([F, S|Rs], tree(1, Ti, Td)) :- Rs \= [], build_tree([F], Ti), build_tree([S|Rs], Td).
