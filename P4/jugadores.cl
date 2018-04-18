@@ -129,14 +129,48 @@
                         :f-juego  #'f-j-nmx
                         :f-eval   #'f-eval-Regular))
 
-;;; Mi jugador ;;;((60 -35 16 -74) (-53 -24 57 -41) (9 87 21 61))
+;;; Mi jugador
 ;;; ------------------------------------------------------------------------------------------
 (defun mi-f-ev (estado) 
     (apply #'+ (mapcar #'* 
-                 '(60 -35 16 -74)
+                 '(19 38 -17 48 -73 -4 -94 -61 72 59 6 -12 41 98)
                  (list
-                  (suma-fila (estado-tablero estado) (estado-lado-sgte-jugador estado))
-                  (suma-fila (estado-tablero estado) (lado-contrario (estado-lado-sgte-jugador estado)))
+                  (get-fichas (estado-tablero estado) 
+                              (estado-lado-sgte-jugador estado) 
+                              0)
+                  (get-fichas (estado-tablero estado) 
+                              (estado-lado-sgte-jugador estado) 
+                              1)
+                  (get-fichas (estado-tablero estado) 
+                              (estado-lado-sgte-jugador estado) 
+                              2)
+                  (get-fichas (estado-tablero estado) 
+                              (estado-lado-sgte-jugador estado) 
+                              3)
+                  (get-fichas (estado-tablero estado) 
+                              (estado-lado-sgte-jugador estado) 
+                              4)
+                  (get-fichas (estado-tablero estado) 
+                              (estado-lado-sgte-jugador estado) 
+                              5)
+                  (get-fichas (estado-tablero estado) 
+                              (lado-contrario (estado-lado-sgte-jugador estado))
+                              0)
+                  (get-fichas (estado-tablero estado) 
+                              (lado-contrario (estado-lado-sgte-jugador estado))
+                              1)
+                  (get-fichas (estado-tablero estado) 
+                              (lado-contrario (estado-lado-sgte-jugador estado))
+                              2)
+                  (get-fichas (estado-tablero estado) 
+                              (lado-contrario (estado-lado-sgte-jugador estado))
+                              3)
+                  (get-fichas (estado-tablero estado) 
+                              (lado-contrario (estado-lado-sgte-jugador estado))       
+                              4)
+                  (get-fichas (estado-tablero estado) 
+                              (lado-contrario (estado-lado-sgte-jugador estado))   
+                              5)
                   (cuenta-ceros estado 0)
                   (cuenta-ceros estado 1)))))
 
@@ -148,7 +182,7 @@
 ;;; Juego automatico sin presentacion del tablero pero con listado de contador
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(partida 1 2 (list *mi-jugador*   *jdr-nmx-regular*))
+(partida 0 2 (list *mi-jugador*   *jdr-nmx-regular*))
 ;;; ------------------------------------------------------------------------------------------
 ;;; EJEMPLOS DE PARTIDAS DE PRUEBA
 ;;; ------------------------------------------------------------------------------------------
@@ -252,7 +286,7 @@
               (if (= (random 2) 0)
                   (random 100)
                 (- (random 100))))
-    '(1 2 3 4)))
+    '(1 2 3 4 5 6 7 8 9 10 11 12 13 14)))
 
 (defun rnd()
   (let ((randv (random-vector)))
@@ -265,17 +299,49 @@
                                          (apply #'+ (mapcar #'* 
                                                       randv
                                                       (list
-                                                       (suma-fila (estado-tablero estado) (estado-lado-sgte-jugador estado))
-                                                       (suma-fila (estado-tablero estado) (lado-contrario (estado-lado-sgte-jugador estado)))
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (estado-lado-sgte-jugador estado) 
+                                                                   0)
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (estado-lado-sgte-jugador estado) 
+                                                                   1)
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (estado-lado-sgte-jugador estado) 
+                                                                   2)
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (estado-lado-sgte-jugador estado) 
+                                                                   3)
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (estado-lado-sgte-jugador estado) 
+                                                                   4)
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (estado-lado-sgte-jugador estado) 
+                                                                   5)
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (lado-contrario (estado-lado-sgte-jugador estado))
+                                                                   0)
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (lado-contrario (estado-lado-sgte-jugador estado))
+                                                                   1)
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (lado-contrario (estado-lado-sgte-jugador estado))
+                                                                   2)
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (lado-contrario (estado-lado-sgte-jugador estado))
+                                                                   3)
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (lado-contrario (estado-lado-sgte-jugador estado))       
+                                                                   4)
+                                                       (get-fichas (estado-tablero estado) 
+                                                                   (lado-contrario (estado-lado-sgte-jugador estado))   
+                                                                   5)
                                                        (cuenta-ceros estado 0)
                                                        (cuenta-ceros estado 1)))))))))
-
-        (setq *heuris* (append *heuris* (list randv))))))
+      (setq *heuris* (append *heuris* (list randv))))))
 
 (defun tourn(list)
-  (loop while (> (length list) 3) do
-        (setq r (random 2))
-        (if (= (play (first list) (second list) r) 1)
+  (loop while (> (length list) 1) do
+        (if (= (play (first list) (second list) (random 2)) 1)
             (progn (setq list (remove (second list) list))
               (setq *heuris* (remove (second *heuris*) *heuris*)))
           (progn (setq list (remove (first list) list))
@@ -283,7 +349,7 @@
   list)
 
 ;Make players
-(loop for x from 1 to 10000 do
+(loop for x from 1 to 1000 do
       (rnd))
 
 (print *players*)
@@ -296,4 +362,4 @@
 (function-lambda-expression (mancala::jugador-f-eval (first winners)))
 (function-lambda-expression (mancala::jugador-f-eval (second winners)))
 
-;;;((60 -35 16 -74) (-53 -24 57 -41) (9 87 21 61))
+;;;(19 38 -17 48 -73 -4 -94 -61 72 59 6 -12 41 98)
