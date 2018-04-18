@@ -129,15 +129,16 @@
                         :f-juego  #'f-j-nmx
                         :f-eval   #'f-eval-Regular))
 
-;;; Mi jugador
+;;; Mi jugador ;;;((60 -35 16 -74) (-53 -24 57 -41) (9 87 21 61))
 ;;; ------------------------------------------------------------------------------------------
-(defun mi-ef-v (estado) 
-    (- (cuenta-fichas (estado-tablero estado) 
-                      (estado-lado-sgte-jugador estado) 
-                      1)
-       (cuenta-fichas (estado-tablero estado) 
-                      (lado-contrario (estado-lado-sgte-jugador estado)) 
-                      1)))
+(defun mi-f-ev (estado) 
+    (apply #'+ (mapcar #'* 
+                 '(60 -35 16 -74)
+                 (list
+                  (suma-fila (estado-tablero estado) (estado-lado-sgte-jugador estado))
+                  (suma-fila (estado-tablero estado) (lado-contrario (estado-lado-sgte-jugador estado)))
+                  (cuenta-ceros estado 0)
+                  (cuenta-ceros estado 1)))))
 
 (setf *mi-jugador* (make-jugador
                     :nombre 'MancalasGOD
@@ -215,3 +216,84 @@
 ;;;(partida 0 2 (list *jdr-humano*      *jdr-1st-opt*))
 ;;;(partida 0 2 (list *jdr-humano*      *jdr-last-opt*))
 ;;;(partida 0 2 (list *jdr-humano*      *jdr-human2*))
+
+;;;EL TORNEO
+(setq *players* '())
+(setq *heuris* '())
+
+(defun play(p1 p2 r)
+  (setq *verjugada* nil)   ; valor por defecto
+  (setq *vermarcador* nil)   ; valor por defecto
+  (partida r 2 (list p1 p2)))
+
+(defun cuenta-ceros(estado jugador)
+  (if (= jugador 0)
+      (apply #'+ (mapcar #'(lambda (pos) 
+                             (let 
+                                 ((fichas (get-fichas (estado-tablero estado) 
+                                                      (estado-lado-sgte-jugador estado) 
+                                                      pos)))
+                               (if (= fichas 0)
+                                   1
+                                 0)))
+                   '(0 1 2 3 4 5)))
+    (apply #'+ (mapcar #'(lambda (pos) 
+                           (let 
+                               ((fichas (get-fichas (estado-tablero estado) 
+                                                    (lado-contrario (estado-lado-sgte-jugador estado)) 
+                                                    pos)))
+                             (if (= fichas 0)
+                                 1
+                               0)))
+                 '(0 1 2 3 4 5)))))
+
+(defun random-vector()
+  (mapcar #'(lambda (x)
+              (if (= (random 2) 0)
+                  (random 100)
+                (- (random 100))))
+    '(1 2 3 4)))
+
+(defun rnd()
+  (let ((randv (random-vector)))
+    (progn (setq *players* 
+              (append *players* 
+                      (list (make-jugador
+                             :nombre 'MancalasGOD
+                             :f-juego #'negamax
+                             :f-eval #'(lambda (estado)
+                                         (apply #'+ (mapcar #'* 
+                                                      randv
+                                                      (list
+                                                       (suma-fila (estado-tablero estado) (estado-lado-sgte-jugador estado))
+                                                       (suma-fila (estado-tablero estado) (lado-contrario (estado-lado-sgte-jugador estado)))
+                                                       (cuenta-ceros estado 0)
+                                                       (cuenta-ceros estado 1)))))))))
+
+        (setq *heuris* (append *heuris* (list randv))))))
+
+(defun tourn(list)
+  (loop while (> (length list) 3) do
+        (setq r (random 2))
+        (if (= (play (first list) (second list) r) 1)
+            (progn (setq list (remove (second list) list))
+              (setq *heuris* (remove (second *heuris*) *heuris*)))
+          (progn (setq list (remove (first list) list))
+            (setq *heuris* (remove (first *heuris*) *heuris*)))))
+  list)
+
+;Make players
+(loop for x from 1 to 10000 do
+      (rnd))
+
+(print *players*)
+(print *heuris*)
+
+(setq winners (tourn *players*))
+
+(print *heuris*)
+
+(function-lambda-expression (mancala::jugador-f-eval (first winners)))
+(function-lambda-expression (mancala::jugador-f-eval (second winners)))
+
+;;;((60 -35 16 -74) (-53 -24 57 -41) (9 87 21 61))
