@@ -133,7 +133,7 @@
 ;;; ------------------------------------------------------------------------------------------
 (defun mi-f-ev (estado) 
     (apply #'+ (mapcar #'* 
-                 '(19 38 -17 48 -73 -4 -94 -61 72 59 6 -12 41 98)
+                 '(14 15 -71 -60 33 -78 68 29 -20 89 55 -62 95 25)
                  (list
                   (get-fichas (estado-tablero estado) 
                               (estado-lado-sgte-jugador estado) 
@@ -179,10 +179,44 @@
                     :f-juego #'negamax
                     :f-eval #'mi-f-ev))
 
+(defun heuristica (estado)
+  (apply 
+   #'+ 
+   (mapcar #'(lambda (pos) 
+               (let ((fichas-op (get-fichas (estado-tablero estado) 
+                                            (lado-contrario (estado-lado-sgte-jugador estado)) 
+                                            (op-pos pos)))
+                     (fichas (get-fichas (estado-tablero estado) 
+                                         (estado-lado-sgte-jugador estado) 
+                                         pos))
+                     (fichas-sim (get-fichas (estado-tablero estado) 
+                                         (estado-lado-sgte-jugador estado) 
+                                         (sim-pos pos))))
+                  (if (= fichas 0)
+                      fichas-op
+                    (if (= fichas-op 0)
+                        (- 0 fichas-sim)
+                      (if (= (+ fichas pos) 6)
+                          1
+                        0)))))
+     '(0 1 2 3 4 5))))
+
+(setf *mi-jugador2* (make-jugador
+                    :nombre 'MancalasSEMIGOD
+                    :f-juego #'negamax
+                    :f-eval #'heuristica))
+
 ;;; Juego automatico sin presentacion del tablero pero con listado de contador
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(partida 0 2 (list *mi-jugador*   *jdr-nmx-regular*))
+(partida 1 2 (list *mi-jugador* *mi-jugador2*))
+(partida 0 2 (list *mi-jugador* *jdr-nmx-bueno*))
+(partida 0 2 (list *mi-jugador* *jdr-1st-opt*))
+(partida 0 2 (list *mi-jugador* *jdr-last-opt*))
+(partida 1 2 (list *mi-jugador* *jdr-nmx-regular*))
+(partida 1 2 (list *mi-jugador* *jdr-nmx-bueno*))
+(partida 1 2 (list *mi-jugador* *jdr-1st-opt*))
+(partida 1 2 (list *mi-jugador* *jdr-last-opt*))
 ;;; ------------------------------------------------------------------------------------------
 ;;; EJEMPLOS DE PARTIDAS DE PRUEBA
 ;;; ------------------------------------------------------------------------------------------
@@ -341,11 +375,11 @@
 
 (defun tourn(list)
   (loop while (> (length list) 1) do
-        (if (= (play (first list) (second list) (random 2)) 1)
-            (progn (setq list (remove (second list) list))
-              (setq *heuris* (remove (second *heuris*) *heuris*)))
-          (progn (setq list (remove (first list) list))
-            (setq *heuris* (remove (first *heuris*) *heuris*)))))
+        (if (= (play (first list) (second list) (random 2)) 2)
+            (progn (setq list (remove (first list) list))
+              (setq *heuris* (remove (first *heuris*) *heuris*)))
+          (progn (setq list (remove (second list) list))
+            (setq *heuris* (remove (second *heuris*) *heuris*)))))
   list)
 
 ;Make players
@@ -363,3 +397,4 @@
 (function-lambda-expression (mancala::jugador-f-eval (second winners)))
 
 ;;;(19 38 -17 48 -73 -4 -94 -61 72 59 6 -12 41 98)
+;;;ELBUENO(14 15 -71 -60 33 -78 68 29 -20 89 55 -62 95 25)
