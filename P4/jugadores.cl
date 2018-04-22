@@ -131,76 +131,106 @@
 
 ;;; Mi jugador
 ;;; ------------------------------------------------------------------------------------------
-(defun mi-f-ev (estado) 
-    (apply #'+ (mapcar #'* 
-                 '(14 15 -71 -60 33 -78 68 29 -20 89 55 -62 95 25)
-                 (list
-                  (get-fichas (estado-tablero estado) 
-                              (estado-lado-sgte-jugador estado) 
-                              0)
-                  (get-fichas (estado-tablero estado) 
-                              (estado-lado-sgte-jugador estado) 
-                              1)
-                  (get-fichas (estado-tablero estado) 
-                              (estado-lado-sgte-jugador estado) 
-                              2)
-                  (get-fichas (estado-tablero estado) 
-                              (estado-lado-sgte-jugador estado) 
-                              3)
-                  (get-fichas (estado-tablero estado) 
-                              (estado-lado-sgte-jugador estado) 
-                              4)
-                  (get-fichas (estado-tablero estado) 
-                              (estado-lado-sgte-jugador estado) 
-                              5)
-                  (get-fichas (estado-tablero estado) 
-                              (lado-contrario (estado-lado-sgte-jugador estado))
-                              0)
-                  (get-fichas (estado-tablero estado) 
-                              (lado-contrario (estado-lado-sgte-jugador estado))
-                              1)
-                  (get-fichas (estado-tablero estado) 
-                              (lado-contrario (estado-lado-sgte-jugador estado))
-                              2)
-                  (get-fichas (estado-tablero estado) 
-                              (lado-contrario (estado-lado-sgte-jugador estado))
-                              3)
-                  (get-fichas (estado-tablero estado) 
-                              (lado-contrario (estado-lado-sgte-jugador estado))       
-                              4)
-                  (get-fichas (estado-tablero estado) 
-                              (lado-contrario (estado-lado-sgte-jugador estado))   
-                              5)
-                  (cuenta-ceros estado 0)
-                  (cuenta-ceros estado 1)))))
+(defun cuenta-ceros(estado jugador)
+  (if (= jugador 0)
+      (apply #'+ (mapcar #'(lambda (pos) 
+                             (let 
+                                 ((fichas (get-fichas (estado-tablero estado) 
+                                                      (estado-lado-sgte-jugador estado) 
+                                                      pos)))
+                               (if (= fichas 0)
+                                   1
+                                 0)))
+                   '(0 1 2 3 4 5)))
+    (apply #'+ (mapcar #'(lambda (pos) 
+                           (let 
+                               ((fichas (get-fichas (estado-tablero estado) 
+                                                    (lado-contrario (estado-lado-sgte-jugador estado)) 
+                                                    pos)))
+                             (if (= fichas 0)
+                                 1
+                               0)))
+                 '(0 1 2 3 4 5)))))
 
+(defun mi-f-ev (estado) 
+  (cond
+   ((and (juego-terminado-p estado) 
+         (> (get-tot (estado-lado-sgte-jugador estado)) 
+            (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))))
+    95534)
+   ((and (juego-terminado-p estado) 
+         (< (get-tot (estado-lado-sgte-jugador estado)) 
+            (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))))
+    (- 95534))
+   (T (apply #'+ (mapcar #'* 
+                   '(14 15 -71 -60 33 -78 68 29 -20 89 55 -62 95 25)
+                   (list
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                0)
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                1)
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                2)
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                3)
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                4)
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                5)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))
+                                0)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))
+                                1)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))
+                                2)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))
+                                3)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))       
+                                4)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))   
+                                5)
+                    (cuenta-ceros estado 0)
+                    (cuenta-ceros estado 1)))))))
+  
 (setf *mi-jugador* (make-jugador
                     :nombre 'MancalasGOD
                     :f-juego #'negamax
                     :f-eval #'mi-f-ev))
 
 (defun heuristica (estado)
-  (apply 
-   #'+ 
-   (mapcar #'(lambda (pos) 
-               (let ((fichas-op (get-fichas (estado-tablero estado) 
-                                            (lado-contrario (estado-lado-sgte-jugador estado)) 
-                                            (op-pos pos)))
-                     (fichas (get-fichas (estado-tablero estado) 
-                                         (estado-lado-sgte-jugador estado) 
-                                         pos))
-                     (fichas-sim (get-fichas (estado-tablero estado) 
-                                         (estado-lado-sgte-jugador estado) 
-                                         (sim-pos pos))))
-                  (if (= fichas 0)
-                      fichas-op
-                    (if (= fichas-op 0)
-                        (- 0 fichas-sim)
-                      (if (= (+ fichas pos) 6)
-                          1
-                        0)))))
-     '(0 1 2 3 4 5))))
-
+    (apply 
+     #'+ 
+     (mapcar #'(lambda (pos) 
+                 (let ((fichas-op (get-fichas (estado-tablero estado) 
+                                              (lado-contrario (estado-lado-sgte-jugador estado)) 
+                                              (op-pos pos)))
+                       (fichas (get-fichas (estado-tablero estado) 
+                                           (estado-lado-sgte-jugador estado) 
+                                           pos))
+                       (fichas-sim (get-fichas (estado-tablero estado) 
+                                               (estado-lado-sgte-jugador estado) 
+                                               (sim-pos pos))))
+                   (if (= fichas 0)
+                       fichas-op
+                     (if (= fichas-op 0)
+                         (- 0 fichas-sim)
+                       (if (= (+ fichas pos) 6)
+                           1
+                         0)))))
+       '(0 1 2 3 4 5))))
+  
 (setf *mi-jugador2* (make-jugador
                     :nombre 'MancalasSEMIGOD
                     :f-juego #'negamax
@@ -209,7 +239,7 @@
 ;;; Juego automatico sin presentacion del tablero pero con listado de contador
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(partida 1 2 (list *mi-jugador* *mi-jugador2*))
+(partida 0 2 (list *mi-jugador* *jdr-nmx-regular*))
 (partida 0 2 (list *mi-jugador* *jdr-nmx-bueno*))
 (partida 0 2 (list *mi-jugador* *jdr-1st-opt*))
 (partida 0 2 (list *mi-jugador* *jdr-last-opt*))
@@ -374,6 +404,7 @@
       (setq *heuris* (append *heuris* (list randv))))))
 
 (defun tourn(list)
+  (setq *aux* '())
   (loop while (> (length list) 1) do
         (if (= (play (first list) (second list) (random 2)) 2)
             (progn (setq list (remove (first list) list))

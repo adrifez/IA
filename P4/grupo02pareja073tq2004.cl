@@ -1,0 +1,80 @@
+(defpackage :grupo02pareja073tq2004 ; se declara un paquete lisp que usa common-lisp
+  (:use :common-lisp :mancala)      ; y mancala, y exporta la función de evaluación
+  (:export :heuristica :*alias*))   ; heurística y un alias para el torneo
+
+(in-package grupo02pareja073tq2004)
+
+(defun heuristica (estado) 
+  (cond
+   ((and (juego-terminado-p estado) 
+         (> (get-tot (estado-lado-sgte-jugador estado)) 
+            (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))))
+    95534)
+   ((and (juego-terminado-p estado) 
+         (< (get-tot (estado-lado-sgte-jugador estado)) 
+            (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))))
+    (- 95534))
+   (T (apply #'+ (mapcar #'* 
+                   '(14 15 -71 -60 33 -78 68 29 -20 89 55 -62 95 25)
+                   (list
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                0)
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                1)
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                2)
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                3)
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                4)
+                    (get-fichas (estado-tablero estado) 
+                                (estado-lado-sgte-jugador estado) 
+                                5)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))
+                                0)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))
+                                1)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))
+                                2)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))
+                                3)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))       
+                                4)
+                    (get-fichas (estado-tablero estado) 
+                                (lado-contrario (estado-lado-sgte-jugador estado))   
+                                5)
+                    (cuenta-ceros estado 0)
+                    (cuenta-ceros estado 1)))))))
+
+(defvar *alias* '|MANCALASGOD_ROADTOBRONZEV|) ; alias que aparecerá en el ranking
+
+(defun cuenta-ceros(estado jugador)
+  (if (= jugador 0)
+      (apply #'+ (mapcar #'(lambda (pos) 
+                             (let 
+                                 ((fichas (get-fichas (estado-tablero estado) 
+                                                      (estado-lado-sgte-jugador estado) 
+                                                      pos)))
+                               (if (= fichas 0)
+                                   1
+                                 0)))
+                   '(0 1 2 3 4 5)))
+    (apply #'+ (mapcar #'(lambda (pos) 
+                           (let 
+                               ((fichas (get-fichas (estado-tablero estado) 
+                                                    (lado-contrario (estado-lado-sgte-jugador estado)) 
+                                                    pos)))
+                             (if (= fichas 0)
+                                 1
+                               0)))
+                 '(0 1 2 3 4 5)))))
