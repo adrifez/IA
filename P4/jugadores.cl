@@ -327,7 +327,7 @@
 (defun play(p1 p2 r)
   (setq *verjugada* nil)   ; valor por defecto
   (setq *vermarcador* nil)   ; valor por defecto
-  (partida r 1 (list p1 p2)))
+  (partida r 2 (list p1 p2)))
 
 
 (defun cuenta-ceros(estado jugador)
@@ -353,9 +353,21 @@
 
 
 (defun random-vector()
-  (mapcar #'(lambda (x)
-              (- (random 1000) 500))
-    '(1 2 3 4 5 6 7 8 9 10 11 12 13 14)))
+  (let* ((vec (mapcar #'(lambda (x)
+                         (- (random 1000) 500))
+               '(1 2 3 4 5 6 7 8 9 10 11 12 13 14)))
+         (jug (crear-jugador vec)))
+    (if (and 
+         (= (partida 0 2 (list *jdr-nmx-Regular* jug)) 2) 
+         (= (partida 1 2 (list *jdr-nmx-Regular* jug)) 2)
+         (= (partida 0 2 (list *jdr-nmx-Bueno* jug)) 2)
+         (= (partida 1 2 (list *jdr-nmx-Bueno* jug)) 2)
+         (= (partida 0 2 (list *mi-jugador* jug)) 2)
+         (= (partida 1 2 (list *mi-jugador* jug)) 2))
+        vec
+      (random-vector))))
+    
+    
 
 
 (defun crear-jugador (vec)
@@ -441,7 +453,10 @@
 
 (setq *players* '())
 (loop for x from 1 to 32 do (rnd))
+(print *players*)
 (setq *players* (mapcar #'crear-jugador *players*))
+(setq *verjugada* nil)   ; valor por defecto
+(setq *vermarcador* nil)   ; valor por defecto
 (setq *winners* 
        (append *winners* (list (jugador-nombre (tourn *players*)))))
 
@@ -462,34 +477,46 @@
 ;;; ------------------------------------------------------------------------------------------
 ;;; PRUEBA JUGADORES
 ;;; ------------------------------------------------------------------------------------------
-
-;;; (19 38 -17 48 -73 -4 -94 -61 72 59 6 -12 41 98)
 ;;; ELBUENO (14 15 -71 -60 33 -78 68 29 -20 89 55 -62 95 25)
-;;; CHAMPION1 (-26 129 -281 -215 36 -480 158 -190 -452 -252 -181 108 -254 39)
-;;; CHAMPION2 (475 -166 457 287 -303 418 241 -125 67 240 -55 492 -368 -243)
-;;; CHAMPION3 (215 -43 -183 173 -179 -201 -24 377 -270 -215 121 76 -115 3)
-;;; CHAMPION4 (331 -93 -479 47 -200 -492 126 -43 421 425 342 196 84 -262)
+;;; ELAMO(-401 387 497 340 -315 -291 -236 -431 -47 414 -169 350 427 362)
+;;; ELAMO2.0(-443 93 -439 -417 -209 317 53 -339 193 -192 118 -325 398 255)
 
-
-(setf vec-champion1 '(-26 129 -281 -215 36 -480 158 -190 -452 -252 -181 108 -254 39))
+(setf vec-champion1 '(-401 387 497 340 -315 -291 -236 -431 -47 414 -169 350 427 362))
 (setf campeon1 (crear-jugador vec-champion1))
 
-(setf vec-champion2 '(475 -166 457 287 -303 418 241 -125 67 240 -55 492 -368 -243))
+(setf vec-champion2 '(-443 93 -439 -417 -209 317 53 -339 193 -192 118 -325 398 255))
 (setf campeon2 (crear-jugador vec-champion2))
 
-(setf vec-champion3 '(215 -43 -183 173 -179 -201 -24 377 -270 -215 121 76 -115 3))
-(setf campeon3 (crear-jugador vec-champion3))
+(partida 0 1 (list campeon1 *jdr-nmx-regular*))
+(partida 1 1 (list campeon1 *jdr-nmx-regular*))
+(partida 0 2 (list campeon1 *jdr-nmx-regular*))
+(partida 1 2 (list campeon1 *jdr-nmx-regular*))
 
-(setf vec-champion4 '(331 -93 -479 47 -200 -492 126 -43 421 425 342 196 84 -262))
-(setf campeon4 (crear-jugador vec-champion4))
+(partida 0 1 (list campeon1 *jdr-nmx-bueno*))
+(partida 1 1 (list campeon1 *jdr-nmx-bueno*))
+(partida 0 2 (list campeon1 *jdr-nmx-bueno*))
+(partida 1 2 (list campeon1 *jdr-nmx-bueno*))
 
+(partida 0 2 (list campeon1 *mi-jugador*))
+(partida 1 2 (list campeon1 *mi-jugador*))
+(partida 0 2 (list campeon1 *mi-jugador2*))
+(partida 1 2 (list campeon1 *mi-jugador2*))
+(partida 0 2 (list campeon2 *mi-jugador*))
+(partida 1 2 (list campeon2 *mi-jugador*))
+(partida 0 2 (list campeon2 *mi-jugador2*))
+(partida 1 2 (list campeon2 *mi-jugador2*))
 
-(partida 0 1 (list campeon4 *jdr-nmx-bueno*))
-(partida 1 1 (list campeon4 *jdr-nmx-bueno*))
-(partida 0 2 (list campeon4 *jdr-nmx-bueno*))
-(partida 1 2 (list campeon4 *jdr-nmx-bueno*))
+(partida 0 1 (list campeon2 *jdr-nmx-regular*))
+(partida 1 1 (list campeon2 *jdr-nmx-regular*))
+(partida 0 2 (list campeon2 *jdr-nmx-regular*))
+(partida 1 2 (list campeon2 *jdr-nmx-regular*))
 
-(partida 0 1 (list campeon3 campeon4))
-(partida 1 1 (list campeon3 campeon4))
-(partida 0 2 (list campeon3 campeon4))
-(partida 1 2 (list campeon3 campeon4))
+(partida 0 1 (list campeon2 *jdr-nmx-bueno*))
+(partida 1 1 (list campeon2 *jdr-nmx-bueno*))
+(partida 0 2 (list campeon2 *jdr-nmx-bueno*))
+(partida 1 2 (list campeon2 *jdr-nmx-bueno*))
+
+(partida 0 1 (list campeon1 campeon2))
+(partida 1 1 (list campeon1 campeon2))
+(partida 0 2 (list campeon1 campeon2))
+(partida 1 2 (list campeon1 campeon2))
