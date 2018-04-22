@@ -317,9 +317,7 @@
 
 (defun random-vector()
   (mapcar #'(lambda (x)
-              (if (= (random 2) 0)
-                  (random 100)
-                (- (random 100))))
+              (- (random 1000) 500))
     '(1 2 3 4 5 6 7 8 9 10 11 12 13 14)))
 
 (defun rnd()
@@ -327,7 +325,7 @@
     (progn (setq *players* 
               (append *players* 
                       (list (make-jugador
-                             :nombre 'MancalasGOD
+                             :nombre randv
                              :f-juego #'negamax
                              :f-eval #'(lambda (estado)
                                          (apply #'+ (mapcar #'* 
@@ -373,25 +371,52 @@
                                                        (cuenta-ceros estado 1)))))))))
       (setq *heuris* (append *heuris* (list randv))))))
 
-(defun tourn(list)
-  (loop while (> (length list) 1) do
-        (if (= (play (first list) (second list) (random 2)) 2)
-            (progn (setq list (remove (first list) list))
-              (setq *heuris* (remove (first *heuris*) *heuris*)))
-          (progn (setq list (remove (second list) list))
-            (setq *heuris* (remove (second *heuris*) *heuris*)))))
-  list)
+;;;(defun tourn(list)
+;;;  (loop while (> (length list) 1) do
+;;;        (let ((l (split list)))
+;;;        (if (= (play (first (first l)) (first (second l)) (random 2)) 2)
+;;;            (progn (setq list (remove (first (first l)) list)))
+;;;          (progn (setq list (remove (first (second l)) list))))))
+;;;  list)
+
+(defun tourn (lst)
+  (if (null (rest lst))
+      (first lst)
+    (let* ((l (split lst))
+           (l1 (first l))
+           (l2 (second l))
+           (res (mapcan #'(lambda (x y)
+                              (if (= (play x y 2) 2)
+                                  (list y)
+                                (list x)))
+                  l1 l2)))
+      (tourn res))))
+
+(mapcan #'(lambda (x y)
+            (if (> x y)
+                (list x)
+              (list y)))
+            '(1 2 3 4) '(5 6 7 8))
+
+(defun split (l)
+  (if (null (rest (rest l)))
+      (list (list (first l))
+            (list (second l)))
+    (let ((l1 (first (split (rest (rest l)))))
+          (l2 (second (split (rest (rest l))))))
+      (list (cons (first l) l1)
+            (cons (second l) l2)))))
+
+(split '(1 2))
 
 ;Make players
-(loop for x from 1 to 1000 do
+(setq *players* '())
+(loop for x from 1 to 4 do
       (rnd))
-
-(print *players*)
-(print *heuris*)
 
 (setq winners (tourn *players*))
 
-(print *heuris*)
+(print winners)
 
 (function-lambda-expression (mancala::jugador-f-eval (first winners)))
 (function-lambda-expression (mancala::jugador-f-eval (second winners)))
