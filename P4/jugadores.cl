@@ -318,6 +318,11 @@
 ;;; ------------------------------------------------------------------------------------------
 ;;; TORNEO
 ;;; ------------------------------------------------------------------------------------------
+(defun rnd()
+  (let ((randv (random-vector)))
+    (progn (setq *players* 
+                 (append *players* 
+                         (list randv))))))
 
 (defun play(p1 p2 r)
   (setq *verjugada* nil)   ; valor por defecto
@@ -488,4 +493,3 @@
 (partida 1 1 (list campeon3 campeon4))
 (partida 0 2 (list campeon3 campeon4))
 (partida 1 2 (list campeon3 campeon4))
->>>>>>> 209447221f0e3ebefc6750dd419896cdb05b8ae2
