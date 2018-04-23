@@ -252,13 +252,13 @@
                  f1 f2 f3 f4 f5 f6)
               (+ (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))
                  f1-op f2-op f3-op f4-op f5-op f6-op)))
-      999999999)
+      95534)
      ((and (juego-terminado-p estado) 
            (< (+ (get-tot (estado-lado-sgte-jugador estado))
                  f1 f2 f3 f4 f5 f6)
               (+ (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))
                  f1-op f2-op f3-op f4-op f5-op f6-op)))
-      (- 999999999))
+      (- 95534))
      (T (apply #'+ (mapcar #'* 
                      '(-401 387 497 340 -315 -291 -236 -431 -47 414 -169 350 427 362)
                      (list
@@ -276,7 +276,7 @@
                       f6-op
                       (cuenta-ceros estado 0)
                       (cuenta-ceros estado 1))))))))
-  
+
 (setf *mi-jugador2* (make-jugador
                     :nombre 'MancalasSEMIGOD
                     :f-juego #'negamax
@@ -400,7 +400,7 @@
 (defun random-vector()
   (let* ((vec (mapcar #'(lambda (x)
                          (- (random 1000) 500))
-               '(1 2 3 4 5 6 7 8 9 10 11 12 13 14)))
+               '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16)))
          (jug (crear-jugador vec)))
     (if (and 
          (= (partida 0 2 (list *jdr-nmx-Regular* jug)) 2) 
@@ -450,20 +450,18 @@
                                      4))
                      (f6-op (get-fichas (estado-tablero estado) 
                                      (lado-contrario (estado-lado-sgte-jugador estado))
-                                     5)))
+                                        5))
+                     (kl (get-tot (estado-lado-sgte-jugador estado)))
+                     (kl-op (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))))
                (cond
                 ((and (juego-terminado-p estado) 
-                      (> (+ (get-tot (estado-lado-sgte-jugador estado))
-                            f1 f2 f3 f4 f5 f6)
-                         (+ (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))
-                            f1-op f2-op f3-op f4-op f5-op f6-op)))
-                 999999)
+                      (> (+ kl f1 f2 f3 f4 f5 f6)
+                         (+ kl-op f1-op f2-op f3-op f4-op f5-op f6-op)))
+                 95534)
                 ((and (juego-terminado-p estado) 
-                      (< (+ (get-tot (estado-lado-sgte-jugador estado))
-                            f1 f2 f3 f4 f5 f6)
-                         (+ (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))
-                            f1-op f2-op f3-op f4-op f5-op f6-op)))
-                 (- 999999))
+                      (< (+ kl f1 f2 f3 f4 f5 f6)
+                         (+ kl-op f1-op f2-op f3-op f4-op f5-op f6-op)))
+                 (- 95534))
                 (T (apply #'+ (mapcar #'* 
                                 vec
                                 (list
@@ -479,6 +477,8 @@
                                  f4-op
                                  f5-op
                                  f6-op
+                                 kl
+                                 kl-op
                                  (cuenta-ceros estado 0)
                                  (cuenta-ceros estado 1))))))))))
 
@@ -541,8 +541,9 @@
 ;;; ELBUENO (14 15 -71 -60 33 -78 68 29 -20 89 55 -62 95 25)
 ;;; ELAMO(-401 387 497 340 -315 -291 -236 -431 -47 414 -169 350 427 362)
 ;;; ELSUBNOR(429 -283 264 -135 177 -310 209 -202 194 284 274 20 -368 -258)
+;;; ELGOD(491 50 201 264 -276 -350 443 194 337 -7 413 -62 -167 32)
 
-(setf vec-champion1 '(-401 387 497 340 -315 -291 -236 -431 -47 414 -169 350 427 362))
+(setf vec-champion1 '(491 50 201 264 -276 -350 443 194 337 -7 413 -62 -167 32))
 (setf campeon1 (crear-jugador vec-champion1))
 
 (setf vec-champion2 '(429 -283 264 -135 177 -310 209 -202 194 284 274 20 -368 -258))
@@ -551,13 +552,8 @@
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
 
-(partida 0 1 (list campeon1 *jdr-nmx-regular*))
-(partida 1 1 (list campeon1 *jdr-nmx-regular*))
 (partida 0 2 (list campeon1 *jdr-nmx-regular*))
 (partida 1 2 (list campeon1 *jdr-nmx-regular*))
-
-(partida 0 1 (list campeon1 *jdr-nmx-bueno*))
-(partida 1 1 (list campeon1 *jdr-nmx-bueno*))
 (partida 0 2 (list campeon1 *jdr-nmx-bueno*))
 (partida 1 2 (list campeon1 *jdr-nmx-bueno*))
 
@@ -570,17 +566,10 @@
 (partida 0 2 (list campeon2 *mi-jugador2*))
 (partida 1 2 (list campeon2 *mi-jugador2*))
 
-(partida 0 1 (list campeon2 *jdr-nmx-regular*))
-(partida 1 1 (list campeon2 *jdr-nmx-regular*))
 (partida 0 2 (list campeon2 *jdr-nmx-regular*))
 (partida 1 2 (list campeon2 *jdr-nmx-regular*))
-
-(partida 0 1 (list campeon2 *jdr-nmx-bueno*))
-(partida 1 1 (list campeon2 *jdr-nmx-bueno*))
 (partida 0 2 (list campeon2 *jdr-nmx-bueno*))
 (partida 1 2 (list campeon2 *jdr-nmx-bueno*))
 
-(partida 0 1 (list campeon1 campeon2))
-(partida 1 1 (list campeon1 campeon2))
 (partida 0 2 (list campeon1 campeon2))
 (partida 1 2 (list campeon1 campeon2))

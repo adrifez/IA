@@ -47,13 +47,13 @@
                  f1 f2 f3 f4 f5 f6)
               (+ (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))
                  f1-op f2-op f3-op f4-op f5-op f6-op)))
-      999999999)
+      95534)
      ((and (juego-terminado-p estado) 
            (< (+ (get-tot (estado-lado-sgte-jugador estado))
                  f1 f2 f3 f4 f5 f6)
               (+ (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))
                  f1-op f2-op f3-op f4-op f5-op f6-op)))
-      (- 999999999))
+      (- 95534))
      (T (apply #'+ (mapcar #'* 
                      '(-401 387 497 340 -315 -291 -236 -431 -47 414 -169 350 427 362)
                      (list
