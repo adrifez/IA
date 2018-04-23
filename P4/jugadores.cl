@@ -457,13 +457,13 @@
                             f1 f2 f3 f4 f5 f6)
                          (+ (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))
                             f1-op f2-op f3-op f4-op f5-op f6-op)))
-                 999999999)
+                 999999)
                 ((and (juego-terminado-p estado) 
                       (< (+ (get-tot (estado-lado-sgte-jugador estado))
                             f1 f2 f3 f4 f5 f6)
                          (+ (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))
                             f1-op f2-op f3-op f4-op f5-op f6-op)))
-                 (- 999999999))
+                 (- 999999))
                 (T (apply #'+ (mapcar #'* 
                                 vec
                                 (list
@@ -499,11 +499,9 @@
            (l1 (first l))
            (l2 (second l))
            (res (mapcar #'(lambda (x y)
-                            (if (<= (+ (partida 0 1 (list x y))
-                                       (partida 1 1 (list x y))
-                                       (partida 0 2 (list x y))
+                            (if (<= (+ (partida 0 2 (list x y))
                                        (partida 1 2 (list x y)))
-                                    6)
+                                    3)
                                 x
                               y))
                   l1 l2)))
@@ -515,7 +513,7 @@
 
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(loop for x from 1 to 32 do (rnd))
+(loop for x from 1 to 64 do (rnd))
 (print *players*)
 (setq *players* (mapcar #'crear-jugador *players*))
 (setq *verjugada* nil)   ; valor por defecto
@@ -542,11 +540,12 @@
 ;;; ------------------------------------------------------------------------------------------
 ;;; ELBUENO (14 15 -71 -60 33 -78 68 29 -20 89 55 -62 95 25)
 ;;; ELAMO(-401 387 497 340 -315 -291 -236 -431 -47 414 -169 350 427 362)
+;;; ELSUBNOR(429 -283 264 -135 177 -310 209 -202 194 284 274 20 -368 -258)
 
 (setf vec-champion1 '(-401 387 497 340 -315 -291 -236 -431 -47 414 -169 350 427 362))
 (setf campeon1 (crear-jugador vec-champion1))
 
-(setf vec-champion2 '(-443 93 -439 -417 -209 317 53 -339 193 -192 118 -325 398 255))
+(setf vec-champion2 '(429 -283 264 -135 177 -310 209 -202 194 284 274 20 -368 -258))
 (setf campeon2 (crear-jugador vec-champion2))
 
 (setq *verjugada* nil)   ; valor por defecto
