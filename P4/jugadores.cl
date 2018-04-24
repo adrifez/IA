@@ -210,72 +210,72 @@
                     :f-eval #'mi-f-ev))
 
 (defun heuristica (estado)
-  (let ((f1 (get-fichas (estado-tablero estado) 
-                        (estado-lado-sgte-jugador estado) 
-                        0))
-        (f2 (get-fichas (estado-tablero estado) 
-                        (estado-lado-sgte-jugador estado) 
-                        1))
-        (f3 (get-fichas (estado-tablero estado) 
-                        (estado-lado-sgte-jugador estado) 
-                        2))
-        (f4 (get-fichas (estado-tablero estado) 
-                        (estado-lado-sgte-jugador estado) 
-                        3))
-        (f5 (get-fichas (estado-tablero estado) 
-                        (estado-lado-sgte-jugador estado) 
-                        4))
-        (f6 (get-fichas (estado-tablero estado) 
-                        (estado-lado-sgte-jugador estado) 
-                        5))
-        (f1-op (get-fichas (estado-tablero estado) 
-                           (lado-contrario (estado-lado-sgte-jugador estado))
-                           0))
-        (f2-op (get-fichas (estado-tablero estado) 
-                           (lado-contrario (estado-lado-sgte-jugador estado)) 
-                           1))
-        (f3-op (get-fichas (estado-tablero estado) 
-                           (lado-contrario (estado-lado-sgte-jugador estado)) 
-                           2))
-        (f4-op (get-fichas (estado-tablero estado) 
-                           (lado-contrario (estado-lado-sgte-jugador estado)) 
-                           3))
-        (f5-op (get-fichas (estado-tablero estado) 
-                           (lado-contrario (estado-lado-sgte-jugador estado)) 
-                           4))
-        (f6-op (get-fichas (estado-tablero estado) 
-                           (lado-contrario (estado-lado-sgte-jugador estado))
-                           5)))
-    (cond
-     ((and (juego-terminado-p estado) 
-           (> (+ (get-tot (estado-lado-sgte-jugador estado))
-                 f1 f2 f3 f4 f5 f6)
-              (+ (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))
-                 f1-op f2-op f3-op f4-op f5-op f6-op)))
-      95534)
-     ((and (juego-terminado-p estado) 
-           (< (+ (get-tot (estado-lado-sgte-jugador estado))
-                 f1 f2 f3 f4 f5 f6)
-              (+ (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))
-                 f1-op f2-op f3-op f4-op f5-op f6-op)))
-      (- 95534))
-     (T (apply #'+ (mapcar #'* 
-                     '(-401 387 497 340 -315 -291 -236 -431 -47 414 -169 350 427 362)
-                     (list
-                      f1
-                      f2
-                      f3
-                      f4
-                      f5
-                      f6
-                      f1-op
-                      f2-op
-                      f3-op
-                      f4-op
-                      f5-op
-                      f6-op
-                      (cuenta-ceros estado 0)
-                      (cuenta-ceros estado 1))))))))
+    (let ((f1 (get-fichas (estado-tablero estado) 
+                          (estado-lado-sgte-jugador estado) 
+                          0))
+          (f2 (get-fichas (estado-tablero estado) 
+                          (estado-lado-sgte-jugador estado) 
+                          1))
+          (f3 (get-fichas (estado-tablero estado) 
+                          (estado-lado-sgte-jugador estado) 
+                          2))
+          (f4 (get-fichas (estado-tablero estado) 
+                          (estado-lado-sgte-jugador estado) 
+                          3))
+          (f5 (get-fichas (estado-tablero estado) 
+                          (estado-lado-sgte-jugador estado) 
+                          4))
+          (f6 (get-fichas (estado-tablero estado) 
+                          (estado-lado-sgte-jugador estado) 
+                          5))
+          (f1-op (get-fichas (estado-tablero estado) 
+                             (lado-contrario (estado-lado-sgte-jugador estado))
+                             0))
+          (f2-op (get-fichas (estado-tablero estado) 
+                             (lado-contrario (estado-lado-sgte-jugador estado)) 
+                             1))
+          (f3-op (get-fichas (estado-tablero estado) 
+                             (lado-contrario (estado-lado-sgte-jugador estado)) 
+                             2))
+          (f4-op (get-fichas (estado-tablero estado) 
+                             (lado-contrario (estado-lado-sgte-jugador estado)) 
+                             3))
+          (f5-op (get-fichas (estado-tablero estado) 
+                             (lado-contrario (estado-lado-sgte-jugador estado)) 
+                             4))
+          (f6-op (get-fichas (estado-tablero estado) 
+                             (lado-contrario (estado-lado-sgte-jugador estado))
+                             5))
+          (kl (get-tot (estado-lado-sgte-jugador estado)))
+          (kl-op (get-tot (lado-contrario (estado-lado-sgte-jugador estado)))))
+      (cond
+       ((and (juego-terminado-p estado) 
+             (> (+ kl f1 f2 f3 f4 f5 f6)
+                (+ kl-op f1-op f2-op f3-op f4-op f5-op f6-op)))
+        95534)
+       ((and (juego-terminado-p estado) 
+             (< (+ kl f1 f2 f3 f4 f5 f6)
+                (+ kl-op f1-op f2-op f3-op f4-op f5-op f6-op)))
+        (- 95534))
+       (T (apply #'+ (mapcar #'* 
+                       '(-364 373 -491 -213 -330 -369 285 31 403 -123 130 92 373 -480 316 179)
+                       (list
+                        f1
+                        f2
+                        f3
+                        f4
+                        f5
+                        f6
+                        f1-op
+                        f2-op
+                        f3-op
+                        f4-op
+                        f5-op
+                        f6-op
+                        kl
+                        kl-op
+                        (cuenta-ceros estado 0)
+                        (cuenta-ceros estado 1))))))))
 
 (setf *mi-jugador2* (make-jugador
                     :nombre 'MancalasSEMIGOD
@@ -513,7 +513,7 @@
 
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(loop for x from 1 to 64 do (rnd))
+(loop for x from 1 to 1024 do (rnd))
 (print *players*)
 (setq *players* (mapcar #'crear-jugador *players*))
 (setq *verjugada* nil)   ; valor por defecto
@@ -542,8 +542,9 @@
 ;;; ELAMO(-401 387 497 340 -315 -291 -236 -431 -47 414 -169 350 427 362)
 ;;; ELSUBNOR(429 -283 264 -135 177 -310 209 -202 194 284 274 20 -368 -258)
 ;;; ELGOD(491 50 201 264 -276 -350 443 194 337 -7 413 -62 -167 32)
+;;; THEREALGOD(-364 373 -491 -213 -330 -369 285 31 403 -123 130 92 373 -480 316 179)
 
-(setf vec-champion1 '(491 50 201 264 -276 -350 443 194 337 -7 413 -62 -167 32))
+(setf vec-champion1 '(-364 373 -491 -213 -330 -369 285 31 403 -123 130 92 373 -480 316 179))
 (setf campeon1 (crear-jugador vec-champion1))
 
 (setf vec-champion2 '(429 -283 264 -135 177 -310 209 -202 194 284 274 20 -368 -258))
@@ -556,6 +557,10 @@
 (partida 1 2 (list campeon1 *jdr-nmx-regular*))
 (partida 0 2 (list campeon1 *jdr-nmx-bueno*))
 (partida 1 2 (list campeon1 *jdr-nmx-bueno*))
+(partida 0 2 (list campeon1 *jdr-1st-opt*))
+(partida 1 2 (list campeon1 *jdr-1st-opt*))
+(partida 0 2 (list campeon1 *jdr-last-opt*))
+(partida 1 2 (list campeon1 *jdr-last-opt*))
 
 (partida 0 2 (list campeon1 *mi-jugador*))
 (partida 1 2 (list campeon1 *mi-jugador*))
