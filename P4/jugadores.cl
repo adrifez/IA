@@ -513,7 +513,7 @@
 
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(loop for x from 1 to 1024 do (rnd))
+(loop for x from 1 to 2048 do (rnd))
 (print *players*)
 (setq *players* (mapcar #'crear-jugador *players*))
 (setq *verjugada* nil)   ; valor por defecto
