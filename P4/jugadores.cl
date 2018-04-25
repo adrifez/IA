@@ -513,7 +513,7 @@
 
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(loop for x from 1 to 1024 do (rnd))
+(loop for x from 1 to 2048 do (rnd))
 (print *players*)
 (setq *players* (mapcar #'crear-jugador *players*))
 (setq *verjugada* nil)   ; valor por defecto
@@ -545,6 +545,8 @@
 ;;; THEREALGOD(-364 373 -491 -213 -330 -369 285 31 403 -123 130 92 373 -480 316 179)
 ;;; SANTISGOD(-352 -3 358 -165 -300 -496 -215 396 303 143 357 375 113 -409 -277 -157)
 ;;; ADRISGOD(-266 95 -115 -468 -124 -222 -450 -62 434 307 451 -328 -157 -371 320 434)
+;;; FINALIST1(-172 194 -159 -265 -342 -321 -240 427 458 187 -310 -471 215 254 -430 141)
+;;; FINALIST2(-199 341 -52 -3 -114 337 255 275 -352 -121 -39 -163 120 -242 -172 -154)
 
 (setf vec-champion1 '(-352 -3 358 -165 -300 -496 -215 396 303 143 357 375 113 -409 -277 -157))
 (setf campeon1 (crear-jugador vec-champion1))
