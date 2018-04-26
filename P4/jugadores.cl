@@ -258,8 +258,7 @@
                 (+ kl-op f1-op f2-op f3-op f4-op f5-op f6-op)))
         (- 95534))
        (T (apply #'+ (mapcar #'* 
-                       '(-364 373 -491 -213 -330 -369 285 31 403 -123 130 92 373 -480 316 179)
-                       (list
+                       '(-172 194 -159 -265 -342 -321 -240 427 458 187 -310 -471 215 254 -430 141)                       (list
                         f1
                         f2
                         f3
@@ -513,7 +512,7 @@
 
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(loop for x from 1 to 2048 do (rnd))
+(loop for x from 1 to 3000 do (rnd))
 (print *players*)
 (setq *players* (mapcar #'crear-jugador *players*))
 (setq *verjugada* nil)   ; valor por defecto
@@ -554,8 +553,16 @@
 (setf vec-champion2 '(-266 95 -115 -468 -124 -222 -450 -62 434 307 451 -328 -157 -371 320 434))
 (setf campeon2 (crear-jugador vec-champion2))
 
+(setf vec-champion3 '(-172 194 -159 -265 -342 -321 -240 427 458 187 -310 -471 215 254 -430 141))
+(setf campeon3 (crear-jugador vec-champion3))
+
+(setf vec-champion4 '(-199 341 -52 -3 -114 337 255 275 -352 -121 -39 -163 120 -242 -172 -154))
+(setf campeon4 (crear-jugador vec-champion4))
+
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
+
+;;;TEST CHAMPIONS
 
 (partida 0 2 (list campeon1 *jdr-nmx-regular*))
 (partida 1 2 (list campeon1 *jdr-nmx-regular*))
@@ -566,6 +573,33 @@
 (partida 0 2 (list campeon1 *jdr-last-opt*))
 (partida 1 2 (list campeon1 *jdr-last-opt*))
 
+(partida 0 2 (list campeon2 *jdr-nmx-regular*))
+(partida 1 2 (list campeon2 *jdr-nmx-regular*))
+(partida 0 2 (list campeon2 *jdr-nmx-bueno*))
+(partida 1 2 (list campeon2 *jdr-nmx-bueno*))
+(partida 0 2 (list campeon2 *jdr-1st-opt*))
+(partida 1 2 (list campeon2 *jdr-1st-opt*))
+(partida 0 2 (list campeon2 *jdr-last-opt*))
+(partida 1 2 (list campeon2 *jdr-last-opt*))
+
+(partida 0 2 (list campeon3 *jdr-nmx-regular*))
+(partida 1 2 (list campeon3 *jdr-nmx-regular*))
+(partida 0 2 (list campeon3 *jdr-nmx-bueno*))
+(partida 1 2 (list campeon3 *jdr-nmx-bueno*))
+(partida 0 2 (list campeon3 *jdr-1st-opt*))
+(partida 1 2 (list campeon3 *jdr-1st-opt*))
+(partida 0 2 (list campeon3 *jdr-last-opt*))
+(partida 1 2 (list campeon3 *jdr-last-opt*))
+
+(partida 0 2 (list campeon4 *jdr-nmx-regular*))
+(partida 1 2 (list campeon4 *jdr-nmx-regular*))
+(partida 0 2 (list campeon4 *jdr-nmx-bueno*))
+(partida 1 2 (list campeon4 *jdr-nmx-bueno*))
+(partida 0 2 (list campeon4 *jdr-1st-opt*))
+(partida 1 2 (list campeon4 *jdr-1st-opt*))
+(partida 0 2 (list campeon4 *jdr-last-opt*))
+(partida 1 2 (list campeon4 *jdr-last-opt*))
+
 (partida 0 2 (list campeon1 *mi-jugador*))
 (partida 1 2 (list campeon1 *mi-jugador*))
 (partida 0 2 (list campeon1 *mi-jugador2*))
@@ -574,11 +608,24 @@
 (partida 1 2 (list campeon2 *mi-jugador*))
 (partida 0 2 (list campeon2 *mi-jugador2*))
 (partida 1 2 (list campeon2 *mi-jugador2*))
-
-(partida 0 2 (list campeon2 *jdr-nmx-regular*))
-(partida 1 2 (list campeon2 *jdr-nmx-regular*))
-(partida 0 2 (list campeon2 *jdr-nmx-bueno*))
-(partida 1 2 (list campeon2 *jdr-nmx-bueno*))
+(partida 0 2 (list campeon3 *mi-jugador*))
+(partida 1 2 (list campeon3 *mi-jugador*))
+(partida 0 2 (list campeon3 *mi-jugador2*))
+(partida 1 2 (list campeon3 *mi-jugador2*))
+(partida 0 2 (list campeon4 *mi-jugador*))
+(partida 1 2 (list campeon4 *mi-jugador*))
+(partida 0 2 (list campeon4 *mi-jugador2*))
+(partida 1 2 (list campeon4 *mi-jugador2*))
 
 (partida 0 2 (list campeon1 campeon2))
 (partida 1 2 (list campeon1 campeon2))
+(partida 0 2 (list campeon1 campeon3))
+(partida 1 2 (list campeon1 campeon3))
+(partida 0 2 (list campeon1 campeon4))
+(partida 1 2 (list campeon1 campeon4))
+(partida 0 2 (list campeon3 campeon2))
+(partida 1 2 (list campeon3 campeon2))
+(partida 0 2 (list campeon4 campeon2))
+(partida 1 2 (list campeon4 campeon2))
+(partida 0 2 (list campeon3 campeon4))
+(partida 1 2 (list campeon3 campeon4))
