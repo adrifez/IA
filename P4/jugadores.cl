@@ -405,7 +405,9 @@
          (= (partida 0 2 (list *jdr-nmx-Regular* jug)) 2) 
          (= (partida 1 2 (list *jdr-nmx-Regular* jug)) 2)
          (= (partida 0 2 (list *jdr-nmx-Bueno* jug)) 2)
-         (= (partida 1 2 (list *jdr-nmx-Bueno* jug)) 2))
+         (= (partida 1 2 (list *jdr-nmx-Bueno* jug)) 2)
+         (= (partida 0 2 (list jerry jug)) 2)
+         (= (partida 1 2 (list jerry jug)) 2))
         vec
       (random-vector))))
 
@@ -550,7 +552,6 @@
 ;;; ANOTHER1(-235 131 148 -434 -362 -277 316 -82 399 -94 217 -386 158 -72 -276 452)
 ;;; 2NDPLACE(-259 -285 51 -78 -332 -424 6 -278 -387 -128 -493 118 387 -177 -369 -65)
 ;;; SOMERANDOMWINNER(106 488 -365 60 -215 -491 -238 -199 54 317 -154 236 298 -416 303 -13)
-
 
 (setf vec-champion1 '(-235 131 148 -434 -362 -277 316 -82 399 -94 217 -386 158 -72 -276 452))
 (setf campeon1 (crear-jugador vec-champion1))
