@@ -1,8 +1,8 @@
-(defpackage :grupo02pareja072tq2704 ; se declara un paquete lisp que usa common-lisp
+(defpackage :grupo02pareja071tq2604 ; se declara un paquete lisp que usa common-lisp
   (:use :common-lisp :mancala)      ; y mancala, y exporta la función de evaluación
   (:export :heuristica :*alias*))   ; heurística y un alias para el torneo
 
-(in-package grupo02pareja072tq2704)
+(in-package grupo02pareja071tq2604)
 
 (defun heuristica (estado)
     (let ((f1 (get-fichas (estado-tablero estado) 
@@ -53,7 +53,7 @@
                 (+ kl-op f1-op f2-op f3-op f4-op f5-op f6-op)))
         (- 95534))
        (T (apply #'+ (mapcar #'* 
-                       '(-352 -3 358 -165 -300 -496 -215 396 303 143 357 375 113 -409 -277 -157)                       (list
+                       '(-199 341 -52 -3 -114 337 255 275 -352 -121 -39 -163 120 -242 -172 -154)                       (list
                         f1
                         f2
                         f3
@@ -71,7 +71,7 @@
                         (cuenta-ceros estado 0)
                         (cuenta-ceros estado 1))))))))
 
-(defvar *alias* '|MR_POOPYBUTTHOLE|) ; alias que aparecerá en el ranking
+(defvar *alias* '|EVIL_MORTY|) ; alias que aparecerá en el ranking
 
 (defun cuenta-ceros(estado jugador)
   (if (= jugador 0)

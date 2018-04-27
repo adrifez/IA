@@ -258,7 +258,7 @@
                 (+ kl-op f1-op f2-op f3-op f4-op f5-op f6-op)))
         (- 95534))
        (T (apply #'+ (mapcar #'* 
-                       '(-172 194 -159 -265 -342 -321 -240 427 458 187 -310 -471 215 254 -430 141)                       (list
+                       '(-199 341 -52 -3 -114 337 255 275 -352 -121 -39 -163 120 -242 -172 -154)                       (list
                         f1
                         f2
                         f3
@@ -512,7 +512,7 @@
 
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(loop for x from 1 to 3000 do (rnd))
+(loop for x from 1 to 64 do (rnd))
 (print *players*)
 (setq *players* (mapcar #'crear-jugador *players*))
 (setq *verjugada* nil)   ; valor por defecto
@@ -546,8 +546,13 @@
 ;;; ADRISGOD(-266 95 -115 -468 -124 -222 -450 -62 434 307 451 -328 -157 -371 320 434)
 ;;; FINALIST1(-172 194 -159 -265 -342 -321 -240 427 458 187 -310 -471 215 254 -430 141)
 ;;; FINALIST2(-199 341 -52 -3 -114 337 255 275 -352 -121 -39 -163 120 -242 -172 -154)
+;;; JERRYBEATER(-226 382 301 34 255 -374 229 478 -205 148 291 56 355 -215 -214 -478)
+;;; ANOTHER1(-235 131 148 -434 -362 -277 316 -82 399 -94 217 -386 158 -72 -276 452)
+;;; 2NDPLACE(-259 -285 51 -78 -332 -424 6 -278 -387 -128 -493 118 387 -177 -369 -65)
+;;; SOMERANDOMWINNER(106 488 -365 60 -215 -491 -238 -199 54 317 -154 236 298 -416 303 -13)
 
-(setf vec-champion1 '(-352 -3 358 -165 -300 -496 -215 396 303 143 357 375 113 -409 -277 -157))
+
+(setf vec-champion1 '(-235 131 148 -434 -362 -277 316 -82 399 -94 217 -386 158 -72 -276 452))
 (setf campeon1 (crear-jugador vec-champion1))
 
 (setf vec-champion2 '(-266 95 -115 -468 -124 -222 -450 -62 434 307 451 -328 -157 -371 320 434))
@@ -558,6 +563,9 @@
 
 (setf vec-champion4 '(-199 341 -52 -3 -114 337 255 275 -352 -121 -39 -163 120 -242 -172 -154))
 (setf campeon4 (crear-jugador vec-champion4))
+
+(setf vec-champion5 '(106 488 -365 60 -215 -491 -238 -199 54 317 -154 236 298 -416 303 -13))
+(setf campeon5 (crear-jugador vec-champion5))
 
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
@@ -600,6 +608,15 @@
 (partida 0 2 (list campeon4 *jdr-last-opt*))
 (partida 1 2 (list campeon4 *jdr-last-opt*))
 
+(partida 0 2 (list campeon5 *jdr-nmx-regular*))
+(partida 1 2 (list campeon5 *jdr-nmx-regular*))
+(partida 0 2 (list campeon5 *jdr-nmx-bueno*))
+(partida 1 2 (list campeon5 *jdr-nmx-bueno*))
+(partida 0 2 (list campeon5 *jdr-1st-opt*))
+(partida 1 2 (list campeon5 *jdr-1st-opt*))
+(partida 0 2 (list campeon5 *jdr-last-opt*))
+(partida 1 2 (list campeon5 *jdr-last-opt*))
+
 (partida 0 2 (list campeon1 *mi-jugador*))
 (partida 1 2 (list campeon1 *mi-jugador*))
 (partida 0 2 (list campeon1 *mi-jugador2*))
@@ -616,6 +633,10 @@
 (partida 1 2 (list campeon4 *mi-jugador*))
 (partida 0 2 (list campeon4 *mi-jugador2*))
 (partida 1 2 (list campeon4 *mi-jugador2*))
+(partida 0 2 (list campeon5 *mi-jugador*))
+(partida 1 2 (list campeon5 *mi-jugador*))
+(partida 0 2 (list campeon5 *mi-jugador2*))
+(partida 1 2 (list campeon5 *mi-jugador2*))
 
 (partida 0 2 (list campeon1 campeon2))
 (partida 1 2 (list campeon1 campeon2))
@@ -623,9 +644,15 @@
 (partida 1 2 (list campeon1 campeon3))
 (partida 0 2 (list campeon1 campeon4))
 (partida 1 2 (list campeon1 campeon4))
+(partida 0 2 (list campeon1 campeon5))
+(partida 1 2 (list campeon1 campeon5))
 (partida 0 2 (list campeon3 campeon2))
 (partida 1 2 (list campeon3 campeon2))
 (partida 0 2 (list campeon4 campeon2))
 (partida 1 2 (list campeon4 campeon2))
+(partida 0 2 (list campeon5 campeon2))
+(partida 1 2 (list campeon5 campeon2))
 (partida 0 2 (list campeon3 campeon4))
 (partida 1 2 (list campeon3 campeon4))
+(partida 0 2 (list campeon5 campeon4))
+(partida 1 2 (list campeon5 campeon4))
