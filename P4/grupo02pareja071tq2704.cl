@@ -71,7 +71,7 @@
                         (cuenta-ceros estado 0)
                         (cuenta-ceros estado 1))))))))
 
-(defvar *alias* '|EVIL_MORTY|) ; alias que aparecerá en el ranking
+(defvar *alias* '|EVIL_MORTY_REFORMED|) ; alias que aparecerá en el ranking
 
 (defun cuenta-ceros(estado jugador)
   (if (= jugador 0)

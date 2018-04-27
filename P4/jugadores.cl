@@ -258,7 +258,7 @@
                 (+ kl-op f1-op f2-op f3-op f4-op f5-op f6-op)))
         (- 95534))
        (T (apply #'+ (mapcar #'* 
-                       '(-199 341 -52 -3 -114 337 255 275 -352 -121 -39 -163 120 -242 -172 -154)                       (list
+                       '(-294 -254 277 -182 -404 -364 -325 5 -213 54 -258 -306 62 -282 -248 -378)                       (list
                         f1
                         f2
                         f3
@@ -405,9 +405,7 @@
          (= (partida 0 2 (list *jdr-nmx-Regular* jug)) 2) 
          (= (partida 1 2 (list *jdr-nmx-Regular* jug)) 2)
          (= (partida 0 2 (list *jdr-nmx-Bueno* jug)) 2)
-         (= (partida 1 2 (list *jdr-nmx-Bueno* jug)) 2)
-         (= (partida 0 2 (list jerry jug)) 2)
-         (= (partida 1 2 (list jerry jug)) 2))
+         (= (partida 1 2 (list *jdr-nmx-Bueno* jug)) 2))
         vec
       (random-vector))))
 
@@ -552,6 +550,7 @@
 ;;; ANOTHER1(-235 131 148 -434 -362 -277 316 -82 399 -94 217 -386 158 -72 -276 452)
 ;;; 2NDPLACE(-259 -285 51 -78 -332 -424 6 -278 -387 -128 -493 118 387 -177 -369 -65)
 ;;; SOMERANDOMWINNER(106 488 -365 60 -215 -491 -238 -199 54 317 -154 236 298 -416 303 -13)
+;;; THEJERRYBEATER(-294 -254 277 -182 -404 -364 -325 5 -213 54 -258 -306 62 -282 -248 -378)
 
 (setf vec-champion1 '(-235 131 148 -434 -362 -277 316 -82 399 -94 217 -386 158 -72 -276 452))
 (setf campeon1 (crear-jugador vec-champion1))
@@ -565,7 +564,7 @@
 (setf vec-champion4 '(-199 341 -52 -3 -114 337 255 275 -352 -121 -39 -163 120 -242 -172 -154))
 (setf campeon4 (crear-jugador vec-champion4))
 
-(setf vec-champion5 '(106 488 -365 60 -215 -491 -238 -199 54 317 -154 236 298 -416 303 -13))
+(setf vec-champion5 '(-294 -254 277 -182 -404 -364 -325 5 -213 54 -258 -306 62 -282 -248 -378))
 (setf campeon5 (crear-jugador vec-champion5))
 
 (setq *verjugada* nil)   ; valor por defecto
