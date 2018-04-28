@@ -481,15 +481,16 @@
                                  (cuenta-ceros estado 0)
                                  (cuenta-ceros estado 1))))))))))
 
-
 (defun split (l)
-  (cond
-    ((endp l) '(() ()))
-    ((endp (rest l)) (list (list (first l)) '()))
-    ((destructuring-bind (odd-zs even-zs) 
-         (split (rest (rest l)))
-       (list (list* (first l) odd-zs)
-             (list* (second l) even-zs))))))
+  (setq l1 '())
+  (setq l2 '())
+  (let* ((long (length l))
+        (half (/ long 2)))
+    (loop for x from 0 to long
+          (if (< x half)
+              (setq l1 (append l1 (list (nth x l))))
+            (setq l2 (append l2 (list (nth x l))))))
+    (list l1 l2)))
 
 (defun tourn (lst)
   (if (null (rest lst))
@@ -509,10 +510,10 @@
 ;;; JUGADORES ALEATORIOS
 (setq *winners* '())
 (setq *players* '())
-
+(length *players*)
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(loop for x from 1 to 64 do (rnd))
+(loop for x from 1 to 4096 do (rnd))
 (print *players*)
 (setq *players* (mapcar #'crear-jugador *players*))
 (setq *verjugada* nil)   ; valor por defecto
