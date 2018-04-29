@@ -486,7 +486,7 @@
   (setq l2 '())
   (let* ((long (length l))
         (half (/ long 2)))
-    (loop for x from 0 to long
+    (loop for x from 0 to (- long 1) do
           (if (< x half)
               (setq l1 (append l1 (list (nth x l))))
             (setq l2 (append l2 (list (nth x l))))))
@@ -513,7 +513,7 @@
 (length *players*)
 (setq *verjugada* nil)   ; valor por defecto
 (setq *vermarcador* nil)   ; valor por defecto
-(loop for x from 1 to 4096 do (rnd))
+(loop for x from 1 to 8192 do (rnd))
 (print *players*)
 (setq *players* (mapcar #'crear-jugador *players*))
 (setq *verjugada* nil)   ; valor por defecto
@@ -552,20 +552,25 @@
 ;;; 2NDPLACE(-259 -285 51 -78 -332 -424 6 -278 -387 -128 -493 118 387 -177 -369 -65)
 ;;; SOMERANDOMWINNER(106 488 -365 60 -215 -491 -238 -199 54 317 -154 236 298 -416 303 -13)
 ;;; THEJERRYBEATER(-294 -254 277 -182 -404 -364 -325 5 -213 54 -258 -306 62 -282 -248 -378)
+;;; 40961ST(-269 207 155 -303 -494 -433 -338 46 -381 -211 -333 140 134 320 -198 295)
+;;; 40962ND(401 405 487 462 -54 -319 -210 224 436 473 302 -317 -442 18 -134 -285)
+;;; 81921ST(-288 73 37 -119 -411 -320 -294 280 -389 48 120 303 -102 -154 -453 150)
+;;; 81922ND(58 395 -456 -410 -454 -295 -38 -367 -94 484 -88 354 267 344 -147 -247)
 
-(setf vec-champion1 '(-235 131 148 -434 -362 -277 316 -82 399 -94 217 -386 158 -72 -276 452))
+
+(setf vec-champion1 '(-288 73 37 -119 -411 -320 -294 280 -389 48 120 303 -102 -154 -453 150))
 (setf campeon1 (crear-jugador vec-champion1))
 
-(setf vec-champion2 '(-266 95 -115 -468 -124 -222 -450 -62 434 307 451 -328 -157 -371 320 434))
+(setf vec-champion2 '(401 405 487 462 -54 -319 -210 224 436 473 302 -317 -442 18 -134 -285))
 (setf campeon2 (crear-jugador vec-champion2))
 
 (setf vec-champion3 '(-172 194 -159 -265 -342 -321 -240 427 458 187 -310 -471 215 254 -430 141))
 (setf campeon3 (crear-jugador vec-champion3))
 
-(setf vec-champion4 '(-199 341 -52 -3 -114 337 255 275 -352 -121 -39 -163 120 -242 -172 -154))
+(setf vec-champion4 '(58 395 -456 -410 -454 -295 -38 -367 -94 484 -88 354 267 344 -147 -247))
 (setf campeon4 (crear-jugador vec-champion4))
 
-(setf vec-champion5 '(-294 -254 277 -182 -404 -364 -325 5 -213 54 -258 -306 62 -282 -248 -378))
+(setf vec-champion5 '(-269 207 155 -303 -494 -433 -338 46 -381 -211 -333 140 134 320 -198 295))
 (setf campeon5 (crear-jugador vec-champion5))
 
 (setq *verjugada* nil)   ; valor por defecto
